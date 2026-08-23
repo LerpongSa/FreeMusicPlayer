@@ -1,0 +1,13 @@
+Closing running FreeMusicPlayer.exe ...
+Packaging a portable copy into "FreeMusicPlayer-Portable" ...
+
+Portable copy ready: D:\AI_Programming\C++\FreeMusicPlayer\FreeMusicPlayer-Portable
+
+Copy this whole folder anywhere - USB drive, another PC, zip it up and
+send it - and double-click FreeMusicPlayer.exe inside it. No installer,
+no Qt install needed on the other PC.
+
+Settings/playlist/EQ/volume are saved as FreeMusicPlayer.ini right next
+to the .exe (not the Windows registry), so the whole folder is fully
+self-contained: moving or copying it elsewhere carries its settings
+along, and never touches anything outside the folder itself.

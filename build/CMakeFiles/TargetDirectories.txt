@@ -1,0 +1,5 @@
+D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer.dir
+D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/edit_cache.dir
+D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/rebuild_cache.dir
+D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer_autogen_timestamp_deps.dir
+D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer_autogen.dir

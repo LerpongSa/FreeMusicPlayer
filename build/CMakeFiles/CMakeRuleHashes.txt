@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+d2053072ba5ee9870cf4971cb0870036 CMakeFiles/FreeMusicPlayer_autogen
+639b967765e80c50e4ddd054738dd0ad FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp
+2b52a8b9d416bb27e2ba17544d9de50f FreeMusicPlayer_autogen/timestamp

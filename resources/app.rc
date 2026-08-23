@@ -1,0 +1,14 @@
+// Windows resource script: embeds the multi-size .ico into the .exe so
+// Explorer, the taskbar, and Alt-Tab all show the app icon (this is a
+// separate mechanism from the in-app window icon set via
+// QApplication::setWindowIcon() in main.cpp - both are needed).
+//
+// NOTE (2026-08-22): icons/app.ico's bytes were replaced with the new
+// watercolor music-note icon, but this file's own text was untouched -
+// CMake/windres only recompile this .rc into a fresh .obj when app.rc
+// ITSELF has a newer mtime, not when a file it references via ICON/
+// BITMAP/etc changes. Without this comment, an incremental build.bat
+// (no clean.bat) silently keeps linking the OLD icon bytes into the .exe
+// even after app.ico on disk is correct - this comment exists purely to
+// force that mtime bump so the icon actually gets picked up.
+IDI_ICON1 ICON "icons/app.ico"
