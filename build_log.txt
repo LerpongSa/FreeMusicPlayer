@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 Existing build\ has a resource compiler (windres.exe) cached that
 is NOT Qt's bundled MinGW - likely auto-detected from MSYS2 or
 another MinGW on PATH. Removing build\ and reconfiguring with the
 correct windres.exe pinned, so the app icon compiles correctly.
 Configuring with MinGW Makefiles ...
+=======
+Existing build\ has a resource compiler (windres.exe) cached that
+is NOT Qt's bundled MinGW - likely auto-detected from MSYS2 or
+another MinGW on PATH. Removing build\ and reconfiguring with the
+correct windres.exe pinned, so the app icon compiles correctly.
+Configuring with MinGW Makefiles ...
+>>>>>>> f851bf01ef9f14c8d6d4d949392d695f9046e503
 -- The CXX compiler identification is GNU 13.1.0
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
@@ -19,6 +27,7 @@ Configuring with MinGW Makefiles ...
 -- Configuring done (5.1s)
 -- Generating done (0.2s)
 -- Build files have been written to: D:/AI_Programming/C++/FreeMusicPlayer/build
+<<<<<<< HEAD
 Building ...
 [  0%] Built target FreeMusicPlayer_autogen_timestamp_deps
 [  5%] Automatic MOC and UIC for target FreeMusicPlayer
@@ -112,6 +121,101 @@ Additionally, attach the logs folder of the Qt License Service that can be found
 On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
 
 To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+=======
+Building ...
+[  0%] Built target FreeMusicPlayer_autogen_timestamp_deps
+[  5%] Automatic MOC and UIC for target FreeMusicPlayer
+AutoMoc: Could not request license for qtframework:
+    Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
+    Status code: 100
+    Error details:
+      • The licenses available to the current user have expired. License IDs:
+        11893783. Check your available licenses in the customer portal or
+        contact your local license admin. For more details, see
+        https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-server.html#reservation-errors.
+Cannot acquire license to use qtframework.
+
+If the issue persists, please contact Qt Support: https://account.qt.io/s/support-center
+
+Attach the above details when contacting support.
+
+Additionally, attach the logs folder of the Qt License Service that can be found from the directory of this Qt installation.
+On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
+
+To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+AutoMoc: Could not request license for qtframework:
+    Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
+    Status code: 100
+    Error details:
+      • The licenses available to the current user have expired. License IDs:
+        11893783. Check your available licenses in the customer portal or
+        contact your local license admin. For more details, see
+        https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-server.html#reservation-errors.
+Cannot acquire license to use qtframework.
+
+If the issue persists, please contact Qt Support: https://account.qt.io/s/support-center
+
+Attach the above details when contacting support.
+
+Additionally, attach the logs folder of the Qt License Service that can be found from the directory of this Qt installation.
+On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
+
+To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+AutoMoc: Could not request license for qtframework:
+    Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
+    Status code: 100
+    Error details:
+      • The licenses available to the current user have expired. License IDs:
+        11893783. Check your available licenses in the customer portal or
+        contact your local license admin. For more details, see
+        https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-server.html#reservation-errors.
+Cannot acquire license to use qtframework.
+
+If the issue persists, please contact Qt Support: https://account.qt.io/s/support-center
+
+Attach the above details when contacting support.
+
+Additionally, attach the logs folder of the Qt License Service that can be found from the directory of this Qt installation.
+On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
+
+To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+AutoMoc: Could not request license for qtframework:
+    Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
+    Status code: 100
+    Error details:
+      • The licenses available to the current user have expired. License IDs:
+        11893783. Check your available licenses in the customer portal or
+        contact your local license admin. For more details, see
+        https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-server.html#reservation-errors.
+Cannot acquire license to use qtframework.
+
+If the issue persists, please contact Qt Support: https://account.qt.io/s/support-center
+
+Attach the above details when contacting support.
+
+Additionally, attach the logs folder of the Qt License Service that can be found from the directory of this Qt installation.
+On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
+
+To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+AutoMoc: Could not request license for qtframework:
+    Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
+    Status code: 100
+    Error details:
+      • The licenses available to the current user have expired. License IDs:
+        11893783. Check your available licenses in the customer portal or
+        contact your local license admin. For more details, see
+        https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-server.html#reservation-errors.
+Cannot acquire license to use qtframework.
+
+If the issue persists, please contact Qt Support: https://account.qt.io/s/support-center
+
+Attach the above details when contacting support.
+
+Additionally, attach the logs folder of the Qt License Service that can be found from the directory of this Qt installation.
+On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
+
+To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+>>>>>>> f851bf01ef9f14c8d6d4d949392d695f9046e503
 [  5%] Built target FreeMusicPlayer_autogen
 [ 11%] Automatic RCC for resources/resources.qrc
 [ 16%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/mocs_compilation.cpp.obj
@@ -138,6 +242,7 @@ D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.cpp:756:57: warning: hex esc
 [ 94%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj
 [100%] Linking CXX executable FreeMusicPlayer.exe
 Running windeployqt
+<<<<<<< HEAD
 D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer.exe 64 bit, release executable
 Adding in plugin type generic for module: Qt6Gui
 Adding in plugin type iconengines for module: Qt6Gui
@@ -237,3 +342,104 @@ Creating qt_zh_TW.qm...
 
 Build succeeded: build\FreeMusicPlayer.exe
 (windeployqt runs automatically after each build to copy Qt DLLs next to it.)
+=======
+D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer.exe 64 bit, release executable
+Adding in plugin type generic for module: Qt6Gui
+Adding in plugin type iconengines for module: Qt6Gui
+Adding Qt6Svg for qsvgicon.dll from plugin type: iconengines
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type multimedia for module: Qt6Multimedia
+Adding in plugin type networkinformation for module: Qt6Network
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type styles for module: Qt6Widgets
+Adding in plugin type tls for module: Qt6Network
+Skipping plugin qopensslbackend.dll. Use -force-openssl or specify -openssl-root if you want to use it.
+Performing additional pass of finding Qt plugins due to updated Qt module list: Qt6Core Qt6Gui Qt6Multimedia Qt6Network Qt6Svg Qt6Widgets
+Adding in plugin type generic for module: Qt6Gui
+Adding in plugin type iconengines for module: Qt6Gui
+Adding in plugin type imageformats for module: Qt6Gui
+Adding in plugin type multimedia for module: Qt6Multimedia
+Adding in plugin type networkinformation for module: Qt6Network
+Adding in plugin type platforms for module: Qt6Gui
+Adding in plugin type styles for module: Qt6Widgets
+Adding in plugin type tls for module: Qt6Network
+Skipping plugin qopensslbackend.dll. Use -force-openssl or specify -openssl-root if you want to use it.
+Direct dependencies: Qt6Core Qt6Gui Qt6Multimedia Qt6Network Qt6Widgets
+All dependencies   : Qt6Core Qt6Gui Qt6Multimedia Qt6Network Qt6Widgets
+To be deployed     : Qt6Core Qt6Gui Qt6Multimedia Qt6Network Qt6Svg Qt6Widgets
+Warning: Cannot find any version of the dxcompiler.dll and dxil.dll. This is not a problem unless Direct3D 12 and certain features are used by the application.
+Updating Qt6Core.dll.
+Updating Qt6Gui.dll.
+Updating Qt6Multimedia.dll.
+Updating Qt6Network.dll.
+Updating Qt6Svg.dll.
+Updating Qt6Widgets.dll.
+Updating opengl32sw.dll.
+Updating D3Dcompiler_47.dll.
+Updating avcodec-61.dll.
+Updating avformat-61.dll.
+Updating avutil-59.dll.
+Updating swresample-5.dll.
+Updating swscale-8.dll.
+Updating libgcc_s_seh-1.dll.
+Updating libstdc++-6.dll.
+Updating libwinpthread-1.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/generic.
+Updating qtuiotouchplugin.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/iconengines.
+Updating qsvgicon.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/imageformats.
+Updating qgif.dll.
+Updating qico.dll.
+Updating qjpeg.dll.
+Updating qsvg.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/multimedia.
+Updating ffmpegmediaplugin.dll.
+Updating windowsmediaplugin.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/networkinformation.
+Updating qnetworklistmanager.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/platforms.
+Updating qwindows.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/styles.
+Updating qmodernwindowsstyle.dll.
+Creating directory D:/AI_Programming/C++/FreeMusicPlayer/build/tls.
+Updating qcertonlybackend.dll.
+Updating qschannelbackend.dll.
+Creating D:\AI_Programming\C++\FreeMusicPlayer\build\translations...
+Creating qt_ar.qm...
+Creating qt_bg.qm...
+Creating qt_ca.qm...
+Creating qt_cs.qm...
+Creating qt_da.qm...
+Creating qt_de.qm...
+Creating qt_en.qm...
+Creating qt_es.qm...
+Creating qt_fa.qm...
+Creating qt_fi.qm...
+Creating qt_fr.qm...
+Creating qt_gd.qm...
+Creating qt_he.qm...
+Creating qt_hr.qm...
+Creating qt_hu.qm...
+Creating qt_it.qm...
+Creating qt_ja.qm...
+Creating qt_ka.qm...
+Creating qt_ko.qm...
+Creating qt_lg.qm...
+Creating qt_lv.qm...
+Creating qt_nl.qm...
+Creating qt_nn.qm...
+Creating qt_pl.qm...
+Creating qt_pt_BR.qm...
+Creating qt_ru.qm...
+Creating qt_sk.qm...
+Creating qt_sv.qm...
+Creating qt_tr.qm...
+Creating qt_uk.qm...
+Creating qt_zh_CN.qm...
+Creating qt_zh_TW.qm...
+[100%] Built target FreeMusicPlayer
+
+Build succeeded: build\FreeMusicPlayer.exe
+(windeployqt runs automatically after each build to copy Qt DLLs next to it.)
+>>>>>>> f851bf01ef9f14c8d6d4d949392d695f9046e503
