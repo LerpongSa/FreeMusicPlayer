@@ -49,7 +49,7 @@
 
 namespace {
 
-const QStringList kAudioExtensions = {"mp3", "wav", "flac", "ogg", "m4a", "aac", "wma", "opus", "aiff", "wv"};
+const QStringList kAudioExtensions = {"mp3", "wav", "flac", "ogg", "m4a", "aac", "wma", "opus", "aiff", "wv", "dsf"};
 
 QString audioFileFilter()
 {
@@ -234,8 +234,8 @@ void MainWindow::setupUi()
     vizHeaderRow->addWidget(vizLabel);
     vizHeaderRow->addStretch(1);
     vizHeaderRow->addWidget(m_vizEnableCheck);
-    vizHeaderRow->addWidget(m_vizColorSchemeCombo);
     vizHeaderRow->addWidget(m_vizStyleCombo);
+    vizHeaderRow->addWidget(m_vizColorSchemeCombo);
 
     m_visualizer = new Visualizer(m_engine, central);
     m_visualizer->setMinimumHeight(180); // doubled from 90 - more room for a prettier display

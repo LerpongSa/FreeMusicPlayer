@@ -50,6 +50,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -111,6 +112,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -129,6 +131,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -147,6 +150,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -188,6 +192,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ar.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ar"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ar.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ar.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ar"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ar.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ar"
@@ -242,6 +249,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ar.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ar"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ar.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ar.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ar"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ar.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ar"
@@ -281,6 +291,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -320,6 +331,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -338,6 +350,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -356,6 +369,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -397,6 +411,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ranlib"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ranlib.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ranlib.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ranlib"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ranlib"
@@ -451,6 +468,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ranlib"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ranlib.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ranlib.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ranlib"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ranlib"
@@ -490,6 +510,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -529,6 +550,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -547,6 +569,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -565,6 +588,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -606,6 +630,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/strip.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/strip.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/strip"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/strip.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/strip.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/strip"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/strip.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/strip.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/strip"
@@ -660,6 +687,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/strip.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/strip.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/strip"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/strip.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/strip.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/strip"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/strip.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/strip.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/strip"
@@ -699,6 +729,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -738,6 +769,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -756,6 +788,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -774,6 +807,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -815,6 +849,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ld.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ld.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ld"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ld.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ld.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ld"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ld.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ld.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ld"
@@ -869,6 +906,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ld.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ld.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/ld"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ld.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ld.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/ld"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ld.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ld.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/ld"
@@ -908,6 +948,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -947,6 +988,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -965,6 +1007,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -983,6 +1026,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1024,6 +1068,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/nm.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/nm.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/nm"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/nm.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/nm.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/nm"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/nm.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/nm.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/nm"
@@ -1078,6 +1125,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/nm.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/nm.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/nm"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/nm.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/nm.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/nm"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/nm.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/nm.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/nm"
@@ -1117,6 +1167,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -1156,6 +1207,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1174,6 +1226,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1192,6 +1245,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1233,6 +1287,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objdump.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objdump.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objdump"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objdump.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objdump.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objdump"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objdump.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objdump.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objdump"
@@ -1287,6 +1344,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objdump.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objdump.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objdump"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objdump.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objdump.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objdump"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objdump.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objdump.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objdump"
@@ -1326,6 +1386,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -1365,6 +1426,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1383,6 +1445,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1401,6 +1464,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1442,6 +1506,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objcopy.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objcopy.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objcopy"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objcopy.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objcopy.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objcopy"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objcopy.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objcopy.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objcopy"
@@ -1496,6 +1563,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objcopy.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objcopy.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/objcopy"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objcopy.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objcopy.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/objcopy"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objcopy.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objcopy.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/objcopy"
@@ -1535,6 +1605,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -1574,6 +1645,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1592,6 +1664,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1610,6 +1683,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1651,6 +1725,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/readelf.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/readelf.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/readelf"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/readelf.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/readelf.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/readelf"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/readelf.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/readelf.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/readelf"
@@ -1705,6 +1782,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/readelf.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/readelf.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/readelf"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/readelf.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/readelf.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/readelf"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/readelf.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/readelf.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/readelf"
@@ -1744,6 +1824,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -1783,6 +1864,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1801,6 +1883,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1819,6 +1902,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -1860,6 +1944,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/dlltool.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/dlltool.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/dlltool"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/dlltool.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/dlltool.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/dlltool"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/dlltool.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/dlltool.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/dlltool"
@@ -1914,6 +2001,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/dlltool.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/dlltool.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/dlltool"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/dlltool.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/dlltool.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/dlltool"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/dlltool.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/dlltool.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/dlltool"
@@ -1953,6 +2043,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -1992,6 +2083,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2010,6 +2102,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2028,6 +2121,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2069,6 +2163,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/addr2line.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/addr2line.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/addr2line"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/addr2line.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/addr2line.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/addr2line"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/addr2line.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/addr2line.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/addr2line"
@@ -2123,6 +2220,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/addr2line.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/addr2line.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/addr2line"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/addr2line.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/addr2line.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/addr2line"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/addr2line.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/addr2line.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/addr2line"
@@ -2162,6 +2262,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -2201,6 +2302,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2219,6 +2321,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2237,6 +2340,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2278,6 +2382,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/tapi.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/tapi.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/tapi"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/tapi.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/tapi.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/tapi"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi"
@@ -2332,6 +2439,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/tapi.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/tapi.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/tapi"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/tapi.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/tapi.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/tapi"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi"
@@ -2386,6 +2496,9 @@ events:
       - "C:/Program Files/CMake/bin/tapi.com"
       - "C:/Program Files/CMake/bin/tapi.exe"
       - "C:/Program Files/CMake/bin/tapi"
+      - "C:/Program Files/Git/cmd/tapi.com"
+      - "C:/Program Files/Git/cmd/tapi.exe"
+      - "C:/Program Files/Git/cmd/tapi"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/tapi"
@@ -2424,6 +2537,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -2466,6 +2580,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2484,6 +2599,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2502,6 +2618,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -2543,6 +2660,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.1"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.1.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.1.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.1"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1"
@@ -2597,6 +2717,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.1"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.1.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.1.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.1"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1"
@@ -2651,6 +2774,9 @@ events:
       - "C:/Program Files/CMake/bin/gcc-ar-13.1.com"
       - "C:/Program Files/CMake/bin/gcc-ar-13.1.exe"
       - "C:/Program Files/CMake/bin/gcc-ar-13.1"
+      - "C:/Program Files/Git/cmd/gcc-ar-13.1.com"
+      - "C:/Program Files/Git/cmd/gcc-ar-13.1.exe"
+      - "C:/Program Files/Git/cmd/gcc-ar-13.1"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.1"
@@ -2705,6 +2831,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13"
@@ -2759,6 +2888,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar-13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar-13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13"
@@ -2813,6 +2945,9 @@ events:
       - "C:/Program Files/CMake/bin/gcc-ar-13.com"
       - "C:/Program Files/CMake/bin/gcc-ar-13.exe"
       - "C:/Program Files/CMake/bin/gcc-ar-13"
+      - "C:/Program Files/Git/cmd/gcc-ar-13.com"
+      - "C:/Program Files/Git/cmd/gcc-ar-13.exe"
+      - "C:/Program Files/Git/cmd/gcc-ar-13"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar-13"
@@ -2867,6 +3002,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13"
@@ -2921,6 +3059,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13"
@@ -2975,6 +3116,9 @@ events:
       - "C:/Program Files/CMake/bin/gcc-ar13.com"
       - "C:/Program Files/CMake/bin/gcc-ar13.exe"
       - "C:/Program Files/CMake/bin/gcc-ar13"
+      - "C:/Program Files/Git/cmd/gcc-ar13.com"
+      - "C:/Program Files/Git/cmd/gcc-ar13.exe"
+      - "C:/Program Files/Git/cmd/gcc-ar13"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar13"
@@ -3029,6 +3173,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar"
@@ -3083,6 +3230,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ar"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ar"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ar"
@@ -3122,6 +3272,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -3164,6 +3315,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -3182,6 +3334,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -3200,6 +3353,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -3241,6 +3395,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.1"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.1.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.1.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.1"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1"
@@ -3295,6 +3452,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.1"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.1.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.1.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.1"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1"
@@ -3349,6 +3509,9 @@ events:
       - "C:/Program Files/CMake/bin/gcc-ranlib-13.1.com"
       - "C:/Program Files/CMake/bin/gcc-ranlib-13.1.exe"
       - "C:/Program Files/CMake/bin/gcc-ranlib-13.1"
+      - "C:/Program Files/Git/cmd/gcc-ranlib-13.1.com"
+      - "C:/Program Files/Git/cmd/gcc-ranlib-13.1.exe"
+      - "C:/Program Files/Git/cmd/gcc-ranlib-13.1"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.1"
@@ -3403,6 +3566,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13"
@@ -3457,6 +3623,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib-13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib-13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13"
@@ -3511,6 +3680,9 @@ events:
       - "C:/Program Files/CMake/bin/gcc-ranlib-13.com"
       - "C:/Program Files/CMake/bin/gcc-ranlib-13.exe"
       - "C:/Program Files/CMake/bin/gcc-ranlib-13"
+      - "C:/Program Files/Git/cmd/gcc-ranlib-13.com"
+      - "C:/Program Files/Git/cmd/gcc-ranlib-13.exe"
+      - "C:/Program Files/Git/cmd/gcc-ranlib-13"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib-13"
@@ -3565,6 +3737,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13"
@@ -3619,6 +3794,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib13.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib13.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib13"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib13.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib13.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib13"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13"
@@ -3673,6 +3851,9 @@ events:
       - "C:/Program Files/CMake/bin/gcc-ranlib13.com"
       - "C:/Program Files/CMake/bin/gcc-ranlib13.exe"
       - "C:/Program Files/CMake/bin/gcc-ranlib13"
+      - "C:/Program Files/Git/cmd/gcc-ranlib13.com"
+      - "C:/Program Files/Git/cmd/gcc-ranlib13.exe"
+      - "C:/Program Files/Git/cmd/gcc-ranlib13"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib13"
@@ -3727,6 +3908,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib"
@@ -3781,6 +3965,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/gcc-ranlib"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/gcc-ranlib"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/gcc-ranlib"
@@ -3820,6 +4007,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -3837,8 +4025,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0"
-      binary: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0"
+      source: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f"
+      binary: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -3855,13 +4043,13 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: false
       stdout: |
-        Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0'
+        Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f'
         
-        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_a23f2/fast
-        C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_a23f2.dir\\build.make CMakeFiles/cmTC_a23f2.dir/build
-        mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0'
-        Building CXX object CMakeFiles/cmTC_a23f2.dir/CMakeCXXCompilerABI.cpp.obj
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe   -v -o CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj -c "C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp"
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_4ba6e/fast
+        C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_4ba6e.dir\\build.make CMakeFiles/cmTC_4ba6e.dir/build
+        mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f'
+        Building CXX object CMakeFiles/cmTC_4ba6e.dir/CMakeCXXCompilerABI.cpp.obj
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe   -v -o CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj -c "C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp"
         Using built-in specs.
         COLLECT_GCC=C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe
         Target: x86_64-w64-mingw32
@@ -3869,8 +4057,8 @@ events:
         Thread model: posix
         Supported LTO compression algorithms: zlib
         gcc version 13.1.0 (x86_64-posix-seh-rev1, Built by MinGW-Builds project) 
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a23f2.dir\\'
-         C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_a23f2.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=core2 -march=nocona -version -o C:\\Users\\MyPC\\AppData\\Local\\Temp\\cclFWmH7.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_4ba6e.dir\\'
+         C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_4ba6e.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=core2 -march=nocona -version -o C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccT3sPlc.s
         GNU C++17 (x86_64-posix-seh-rev1, Built by MinGW-Builds project) version 13.1.0 (x86_64-w64-mingw32)
         	compiled by GNU C version 13.1.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.25-GMP
         
@@ -3893,14 +4081,14 @@ events:
          C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include
         End of search list.
         Compiler executable checksum: b3d236387f35294e2a73c51628039e05
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a23f2.dir\\'
-         C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\MyPC\\AppData\\Local\\Temp\\cclFWmH7.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_4ba6e.dir\\'
+         C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccT3sPlc.s
         GNU assembler version 2.39 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.39
         COMPILER_PATH=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/
         LIBRARY_PATH=C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.'
-        Linking CXX executable cmTC_a23f2.exe
-        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_a23f2.dir\\link.txt --verbose=1
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_4ba6e.exe
+        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_4ba6e.dir\\link.txt --verbose=1
         Using built-in specs.
         COLLECT_GCC=C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe
         COLLECT_LTO_WRAPPER=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe
@@ -3911,16 +4099,16 @@ events:
         gcc version 13.1.0 (x86_64-posix-seh-rev1, Built by MinGW-Builds project) 
         COMPILER_PATH=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/;C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/
         LIBRARY_PATH=C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a23f2.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'cmTC_a23f2.'
-         C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccu7Ux6a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_a23f2.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a23f2.dir/objects.a --no-whole-archive --out-implib libcmTC_a23f2.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4ba6e.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'cmTC_4ba6e.'
+         C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\cc5h3cuz.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_4ba6e.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_4ba6e.dir/objects.a --no-whole-archive --out-implib libcmTC_4ba6e.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
         collect2 version 13.1.0
-        C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccu7Ux6a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_a23f2.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a23f2.dir/objects.a --no-whole-archive --out-implib libcmTC_a23f2.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
+        C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\cc5h3cuz.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_4ba6e.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_4ba6e.dir/objects.a --no-whole-archive --out-implib libcmTC_4ba6e.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o
         GNU ld (GNU Binutils) 2.39
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a23f2.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'cmTC_a23f2.'
-        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E rm -f CMakeFiles\\cmTC_a23f2.dir/objects.a
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\ar.exe qc CMakeFiles\\cmTC_a23f2.dir/objects.a @CMakeFiles\\cmTC_a23f2.dir\\objects1.rsp
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe  -v -Wl,-v -Wl,--whole-archive CMakeFiles\\cmTC_a23f2.dir/objects.a -Wl,--no-whole-archive -o cmTC_a23f2.exe -Wl,--out-implib,libcmTC_a23f2.dll.a -Wl,--major-image-version,0,--minor-image-version,0
-        mingw32-make.exe[1]: Leaving directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0'
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4ba6e.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'cmTC_4ba6e.'
+        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E rm -f CMakeFiles\\cmTC_4ba6e.dir/objects.a
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\ar.exe qc CMakeFiles\\cmTC_4ba6e.dir/objects.a @CMakeFiles\\cmTC_4ba6e.dir\\objects1.rsp
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe  -v -Wl,-v -Wl,--whole-archive CMakeFiles\\cmTC_4ba6e.dir/objects.a -Wl,--no-whole-archive -o cmTC_4ba6e.exe -Wl,--out-implib,libcmTC_4ba6e.dll.a -Wl,--major-image-version,0,--minor-image-version,0
+        mingw32-make.exe[1]: Leaving directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f'
         
       exitCode: 0
   -
@@ -3959,13 +4147,13 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|wild|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|wild))("|,| |$)]
-        ignore line: [Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0']
+        ignore line: [Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f']
         ignore line: []
-        ignore line: [Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_a23f2/fast]
-        ignore line: [C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_a23f2.dir\\build.make CMakeFiles/cmTC_a23f2.dir/build]
-        ignore line: [mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-9998n0']
-        ignore line: [Building CXX object CMakeFiles/cmTC_a23f2.dir/CMakeCXXCompilerABI.cpp.obj]
-        ignore line: [C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe   -v -o CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj -c "C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp"]
+        ignore line: [Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_4ba6e/fast]
+        ignore line: [C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_4ba6e.dir\\build.make CMakeFiles/cmTC_4ba6e.dir/build]
+        ignore line: [mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-tx580f']
+        ignore line: [Building CXX object CMakeFiles/cmTC_4ba6e.dir/CMakeCXXCompilerABI.cpp.obj]
+        ignore line: [C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe   -v -o CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj -c "C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp"]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe]
         ignore line: [Target: x86_64-w64-mingw32]
@@ -3974,8 +4162,8 @@ events:
         ignore line: [Thread model: posix]
         ignore line: [Supported LTO compression algorithms: zlib]
         ignore line: [gcc version 13.1.0 (x86_64-posix-seh-rev1  Built by MinGW-Builds project) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a23f2.dir\\']
-        ignore line: [ C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_a23f2.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=core2 -march=nocona -version -o C:\\Users\\MyPC\\AppData\\Local\\Temp\\cclFWmH7.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_4ba6e.dir\\']
+        ignore line: [ C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/cc1plus.exe -quiet -v -iprefix C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/ -D_REENTRANT C:\\Program Files\\CMake\\share\\cmake-4.4\\Modules\\CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles\\cmTC_4ba6e.dir\\ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=core2 -march=nocona -version -o C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccT3sPlc.s]
         ignore line: [GNU C++17 (x86_64-posix-seh-rev1  Built by MinGW-Builds project) version 13.1.0 (x86_64-w64-mingw32)]
         ignore line: [	compiled by GNU C version 13.1.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.25-GMP]
         ignore line: []
@@ -3998,8 +4186,8 @@ events:
         ignore line: [ C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/include]
         ignore line: [End of search list.]
         ignore line: [Compiler executable checksum: b3d236387f35294e2a73c51628039e05]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a23f2.dir\\']
-        ignore line: [ C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\MyPC\\AppData\\Local\\Temp\\cclFWmH7.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_4ba6e.dir\\']
+        ignore line: [ C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccT3sPlc.s]
         ignore line: [GNU assembler version 2.39 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.39]
         ignore line: [COMPILER_PATH=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/]
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/]
@@ -4010,9 +4198,9 @@ events:
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_a23f2.dir\\CMakeCXXCompilerABI.cpp.']
-        ignore line: [Linking CXX executable cmTC_a23f2.exe]
-        ignore line: ["C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_a23f2.dir\\link.txt --verbose=1]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'CMakeFiles\\cmTC_4ba6e.dir\\CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_4ba6e.exe]
+        ignore line: ["C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_4ba6e.dir\\link.txt --verbose=1]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe]
         ignore line: [COLLECT_LTO_WRAPPER=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe]
@@ -4030,14 +4218,14 @@ events:
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib/]
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a23f2.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'cmTC_a23f2.']
-        link line: [ C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccu7Ux6a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_a23f2.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a23f2.dir/objects.a --no-whole-archive --out-implib libcmTC_a23f2.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o] ==> linker architecture flags [-m;i386pep]
-        link line: [ C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccu7Ux6a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_a23f2.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_a23f2.dir/objects.a --no-whole-archive --out-implib libcmTC_a23f2.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4ba6e.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona' '-dumpdir' 'cmTC_4ba6e.']
+        link line: [ C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\cc5h3cuz.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_4ba6e.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_4ba6e.dir/objects.a --no-whole-archive --out-implib libcmTC_4ba6e.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o] ==> linker architecture flags [-m;i386pep]
+        link line: [ C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe -plugin C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll -plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\cc5h3cuz.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 --sysroot=C:/buildroot/x86_64-1310-posix-seh-msvcrt-rt_v11-rev1/mingw64 -m i386pep -Bdynamic -o cmTC_4ba6e.exe C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0 -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../.. -v --whole-archive CMakeFiles\\cmTC_4ba6e.dir/objects.a --no-whole-archive --out-implib libcmTC_4ba6e.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lkernel32 C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtend.o]
           arg [C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/collect2.exe] ==> ignore
           arg [-plugin] ==> ignore
           arg [C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/liblto_plugin.dll] ==> ignore
           arg [-plugin-opt=C:/Qt/Tools/mingw1310_64/bin/../libexec/gcc/x86_64-w64-mingw32/13.1.0/lto-wrapper.exe] ==> ignore
-          arg [-plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\ccu7Ux6a.res] ==> ignore
+          arg [-plugin-opt=-fresolution=C:\\Users\\MyPC\\AppData\\Local\\Temp\\cc5h3cuz.res] ==> ignore
           arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
@@ -4063,7 +4251,7 @@ events:
           arg [i386pep] ==> ignore
           arg [-Bdynamic] ==> search dynamic
           arg [-o] ==> ignore
-          arg [cmTC_a23f2.exe] ==> ignore
+          arg [cmTC_4ba6e.exe] ==> ignore
           arg [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> obj [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o]
           arg [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o] ==> obj [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/crtbegin.o]
           arg [-LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0] ==> dir [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0]
@@ -4074,10 +4262,10 @@ events:
           arg [-LC:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../..] ==> dir [C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../..]
           arg [-v] ==> ignore
           arg [--whole-archive] ==> ignore
-          arg [CMakeFiles\\cmTC_a23f2.dir/objects.a] ==> ignore
+          arg [CMakeFiles\\cmTC_4ba6e.dir/objects.a] ==> ignore
           arg [--no-whole-archive] ==> ignore
           arg [--out-implib] ==> ignore
-          arg [libcmTC_a23f2.dll.a] ==> ignore
+          arg [libcmTC_4ba6e.dll.a] ==> ignore
           arg [--major-image-version] ==> ignore
           arg [0] ==> ignore
           arg [--minor-image-version] ==> ignore
@@ -4168,8 +4356,8 @@ events:
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-u6bh6g"
-      binary: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-u6bh6g"
+      source: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n0t901"
+      binary: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n0t901"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -4185,19 +4373,19 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-u6bh6g'
+        Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n0t901'
         
-        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_12963/fast
-        C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_12963.dir\\build.make CMakeFiles/cmTC_12963.dir/build
-        mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-u6bh6g'
-        Building CXX object CMakeFiles/cmTC_12963.dir/src.cxx.obj
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu++17 -o CMakeFiles\\cmTC_12963.dir\\src.cxx.obj -c D:\\AI_Programming\\C++\\FreeMusicPlayer\\build\\CMakeFiles\\CMakeScratch\\TryCompile-u6bh6g\\src.cxx
-        Linking CXX executable cmTC_12963.exe
-        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_12963.dir\\link.txt --verbose=1
-        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E rm -f CMakeFiles\\cmTC_12963.dir/objects.a
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\ar.exe qc CMakeFiles\\cmTC_12963.dir/objects.a @CMakeFiles\\cmTC_12963.dir\\objects1.rsp
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -Wl,--whole-archive CMakeFiles\\cmTC_12963.dir/objects.a -Wl,--no-whole-archive -o cmTC_12963.exe -Wl,--out-implib,libcmTC_12963.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_12963.dir\\linkLibs.rsp
-        mingw32-make.exe[1]: Leaving directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-u6bh6g'
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_65f09/fast
+        C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_65f09.dir\\build.make CMakeFiles/cmTC_65f09.dir/build
+        mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n0t901'
+        Building CXX object CMakeFiles/cmTC_65f09.dir/src.cxx.obj
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DCMAKE_HAVE_LIBC_PTHREAD  -std=gnu++17 -o CMakeFiles\\cmTC_65f09.dir\\src.cxx.obj -c D:\\AI_Programming\\C++\\FreeMusicPlayer\\build\\CMakeFiles\\CMakeScratch\\TryCompile-n0t901\\src.cxx
+        Linking CXX executable cmTC_65f09.exe
+        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_65f09.dir\\link.txt --verbose=1
+        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E rm -f CMakeFiles\\cmTC_65f09.dir/objects.a
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\ar.exe qc CMakeFiles\\cmTC_65f09.dir/objects.a @CMakeFiles\\cmTC_65f09.dir\\objects1.rsp
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -Wl,--whole-archive CMakeFiles\\cmTC_65f09.dir/objects.a -Wl,--no-whole-archive -o cmTC_65f09.exe -Wl,--out-implib,libcmTC_65f09.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_65f09.dir\\linkLibs.rsp
+        mingw32-make.exe[1]: Leaving directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n0t901'
         
       exitCode: 0
   -
@@ -4296,6 +4484,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -4406,6 +4595,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -4513,6 +4703,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -4548,8 +4739,8 @@ events:
     checks:
       - "Performing Test HAVE_STDATOMIC"
     directories:
-      source: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n7tlht"
-      binary: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n7tlht"
+      source: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-qsu3hh"
+      binary: "D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-qsu3hh"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -4565,19 +4756,19 @@ events:
       variable: "HAVE_STDATOMIC"
       cached: true
       stdout: |
-        Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n7tlht'
+        Change Dir: 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-qsu3hh'
         
-        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_56870/fast
-        C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_56870.dir\\build.make CMakeFiles/cmTC_56870.dir/build
-        mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n7tlht'
-        Building CXX object CMakeFiles/cmTC_56870.dir/src.cxx.obj
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DHAVE_STDATOMIC  -std=gnu++17 -o CMakeFiles\\cmTC_56870.dir\\src.cxx.obj -c D:\\AI_Programming\\C++\\FreeMusicPlayer\\build\\CMakeFiles\\CMakeScratch\\TryCompile-n7tlht\\src.cxx
-        Linking CXX executable cmTC_56870.exe
-        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_56870.dir\\link.txt --verbose=1
-        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E rm -f CMakeFiles\\cmTC_56870.dir/objects.a
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\ar.exe qc CMakeFiles\\cmTC_56870.dir/objects.a @CMakeFiles\\cmTC_56870.dir\\objects1.rsp
-        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -Wl,--whole-archive CMakeFiles\\cmTC_56870.dir/objects.a -Wl,--no-whole-archive -o cmTC_56870.exe -Wl,--out-implib,libcmTC_56870.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_56870.dir\\linkLibs.rsp
-        mingw32-make.exe[1]: Leaving directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-n7tlht'
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe -f Makefile cmTC_2ef2f/fast
+        C:/Qt/Tools/mingw1310_64/bin/mingw32-make.exe  -f CMakeFiles\\cmTC_2ef2f.dir\\build.make CMakeFiles/cmTC_2ef2f.dir/build
+        mingw32-make.exe[1]: Entering directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-qsu3hh'
+        Building CXX object CMakeFiles/cmTC_2ef2f.dir/src.cxx.obj
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -DHAVE_STDATOMIC  -std=gnu++17 -o CMakeFiles\\cmTC_2ef2f.dir\\src.cxx.obj -c D:\\AI_Programming\\C++\\FreeMusicPlayer\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qsu3hh\\src.cxx
+        Linking CXX executable cmTC_2ef2f.exe
+        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_link_script CMakeFiles\\cmTC_2ef2f.dir\\link.txt --verbose=1
+        "C:\\Program Files\\CMake\\bin\\cmake.exe" -E rm -f CMakeFiles\\cmTC_2ef2f.dir/objects.a
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\ar.exe qc CMakeFiles\\cmTC_2ef2f.dir/objects.a @CMakeFiles\\cmTC_2ef2f.dir\\objects1.rsp
+        C:\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe -Wl,--whole-archive CMakeFiles\\cmTC_2ef2f.dir/objects.a -Wl,--no-whole-archive -o cmTC_2ef2f.exe -Wl,--out-implib,libcmTC_2ef2f.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\\cmTC_2ef2f.dir\\linkLibs.rsp
+        mingw32-make.exe[1]: Leaving directory 'D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/CMakeScratch/TryCompile-qsu3hh'
         
       exitCode: 0
   -
@@ -4664,6 +4855,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -4719,6 +4911,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -4752,6 +4945,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -4785,6 +4979,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -4822,6 +5017,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -4931,6 +5127,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -4986,6 +5183,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5013,6 +5211,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5040,6 +5239,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5068,6 +5268,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/vulkan/vulkan.h"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/vulkan/vulkan.h"
@@ -5095,6 +5296,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/vulkan/vulkan.h"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/vulkan/vulkan.h"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/vulkan/vulkan.h"
@@ -5122,6 +5324,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/vulkan/vulkan.h"
       - "C:/Program Files/nodejs/vulkan/vulkan.h"
       - "C:/Program Files/CMake/bin/vulkan/vulkan.h"
+      - "C:/Program Files/Git/cmd/vulkan/vulkan.h"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/vulkan/vulkan.h"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/vulkan/vulkan.h"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/vulkan/vulkan.h"
@@ -5153,6 +5356,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -5208,6 +5412,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5237,6 +5442,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5266,6 +5472,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5296,6 +5503,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5325,6 +5533,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5354,6 +5563,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5387,6 +5597,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -5447,6 +5658,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5479,6 +5691,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5511,6 +5724,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5570,6 +5784,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslc.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslc.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslc"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslc.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslc.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslc"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc"
@@ -5666,6 +5883,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslc.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslc.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslc"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslc.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslc.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslc"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc"
@@ -5762,6 +5982,9 @@ events:
       - "C:/Program Files/CMake/bin/glslc.com"
       - "C:/Program Files/CMake/bin/glslc.exe"
       - "C:/Program Files/CMake/bin/glslc"
+      - "C:/Program Files/Git/cmd/glslc.com"
+      - "C:/Program Files/Git/cmd/glslc.exe"
+      - "C:/Program Files/Git/cmd/glslc"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslc"
@@ -5835,6 +6058,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -5891,6 +6115,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5923,6 +6148,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -5955,6 +6181,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -6014,6 +6241,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslangValidator.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslangValidator.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslangValidator"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslangValidator.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslangValidator.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslangValidator"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator"
@@ -6110,6 +6340,9 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslangValidator.com"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslangValidator.exe"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/glslangValidator"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslangValidator.com"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslangValidator.exe"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/glslangValidator"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator.com"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator.exe"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator"
@@ -6206,6 +6439,9 @@ events:
       - "C:/Program Files/CMake/bin/glslangValidator.com"
       - "C:/Program Files/CMake/bin/glslangValidator.exe"
       - "C:/Program Files/CMake/bin/glslangValidator"
+      - "C:/Program Files/Git/cmd/glslangValidator.com"
+      - "C:/Program Files/Git/cmd/glslangValidator.exe"
+      - "C:/Program Files/Git/cmd/glslangValidator"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator.com"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator.exe"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/glslangValidator"
@@ -6279,6 +6515,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -6388,6 +6625,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -6489,6 +6727,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -6582,6 +6821,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -6683,6 +6923,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -6808,6 +7049,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -8611,6 +8853,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"
@@ -8662,6 +8905,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -8695,6 +8939,7 @@ events:
       - "C:/Qt/6.11.1/mingw_64/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/nodejs/"
       - "C:/Qt/6.11.1/mingw_64/Program Files/CMake/bin/"
+      - "C:/Qt/6.11.1/mingw_64/Program Files/Git/cmd/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Qt/6.11.1/mingw_64/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -8728,6 +8973,7 @@ events:
       - "C:/Program Files/Java/jdk-23.0.1/bin/"
       - "C:/Program Files/nodejs/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/cmd/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/Scripts/"
       - "C:/Users/MyPC/AppData/Local/Programs/Python/Python313/"
       - "C:/Users/MyPC/AppData/Local/Microsoft/WindowsApps/"
@@ -8765,6 +9011,7 @@ events:
         - "C:\\Program Files\\Java\\jdk-23.0.1\\bin"
         - "C:\\Program Files\\nodejs\\"
         - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Program Files\\Git\\cmd"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Programs\\Python\\Python313\\"
         - "C:\\Users\\MyPC\\AppData\\Local\\Microsoft\\WindowsApps"

@@ -10,6 +10,21 @@
 #include <algorithm>
 #include <cmath>
 
+namespace {
+// Linear-interpolates two colors in RGB space (t clamped to 0..1). Used by
+// the newer render styles (Spectrogram/Spiral/Orbit/Tunnel/Sunburst) to
+// shade a single element by its own magnitude, rather than always drawing
+// flat primary/secondary blocks.
+QColor lerpColor(const QColor &a, const QColor &b, float t)
+{
+    t = std::clamp(t, 0.0f, 1.0f);
+    return QColor(
+        a.red()   + static_cast<int>((b.red()   - a.red())   * t),
+        a.green() + static_cast<int>((b.green() - a.green()) * t),
+        a.blue()  + static_cast<int>((b.blue()  - a.blue())  * t));
+}
+}
+
 QStringList Visualizer::styleNames()
 {
     return {
@@ -22,6 +37,12 @@ QStringList Visualizer::styleNames()
         QStringLiteral("VU Meter"),
         QStringLiteral("Particles"),
         QStringLiteral("Brick Box"),
+        QStringLiteral("Spectrogram"),
+        QStringLiteral("Spiral"),
+        QStringLiteral("Ribbon"),
+        QStringLiteral("Orbit"),
+        QStringLiteral("Tunnel"),
+        QStringLiteral("Sunburst"),
     };
 }
 
@@ -50,6 +71,14 @@ QStringList Visualizer::colorSchemeNames()
         QStringLiteral("Cyan"),
         QStringLiteral("Fire"),
         QStringLiteral("Gold"),
+        QStringLiteral("Emerald"),
+        QStringLiteral("Lavender"),
+        QStringLiteral("Coral"),
+        QStringLiteral("Ice"),
+        QStringLiteral("Crimson"),
+        QStringLiteral("Amber"),
+        QStringLiteral("Midnight"),
+        QStringLiteral("Lime"),
     };
 }
 
@@ -126,6 +155,38 @@ void Visualizer::applyColorScheme()
         m_primaryColor = QColor(0x8a, 0x6a, 0x0e);
         m_secondaryColor = QColor(0xff, 0xd7, 0x66);
         break;
+    case ColorScheme::Emerald:
+        m_primaryColor = QColor(0x0b, 0x6e, 0x4f);
+        m_secondaryColor = QColor(0x2e, 0xcc, 0x9a);
+        break;
+    case ColorScheme::Lavender:
+        m_primaryColor = QColor(0x6a, 0x4c, 0x93);
+        m_secondaryColor = QColor(0xc9, 0xa6, 0xff);
+        break;
+    case ColorScheme::Coral:
+        m_primaryColor = QColor(0xd1, 0x49, 0x5b);
+        m_secondaryColor = QColor(0xff, 0xb4, 0xa2);
+        break;
+    case ColorScheme::Ice:
+        m_primaryColor = QColor(0x1f, 0x6f, 0x8b);
+        m_secondaryColor = QColor(0xb8, 0xf2, 0xff);
+        break;
+    case ColorScheme::Crimson:
+        m_primaryColor = QColor(0x7a, 0x0c, 0x1e);
+        m_secondaryColor = QColor(0xff, 0x33, 0x55);
+        break;
+    case ColorScheme::Amber:
+        m_primaryColor = QColor(0xa8, 0x5c, 0x00);
+        m_secondaryColor = QColor(0xff, 0xc8, 0x57);
+        break;
+    case ColorScheme::Midnight:
+        m_primaryColor = QColor(0x1a, 0x1a, 0x4e);
+        m_secondaryColor = QColor(0x5c, 0x6b, 0xc0);
+        break;
+    case ColorScheme::Lime:
+        m_primaryColor = QColor(0x5c, 0x8a, 0x00);
+        m_secondaryColor = QColor(0xc6, 0xf2, 0x4e);
+        break;
     }
 }
 
@@ -140,6 +201,14 @@ void Visualizer::setActive(bool active)
 void Visualizer::onTick()
 {
     computeSpectrum();
+
+    // Maintained every tick regardless of the currently selected style (not
+    // just when Spectrogram is active) so switching to Spectrogram doesn't
+    // start from an empty/blank history - cheap either way (32 floats/tick).
+    m_spectrogramHistory.push_back(m_bandMagnitudes);
+    while (m_spectrogramHistory.size() > static_cast<size_t>(kSpectrogramColumns))
+        m_spectrogramHistory.pop_front();
+
     update();
 }
 
@@ -187,19 +256,46 @@ void Visualizer::computeSpectrum()
     const double sr = m_engine ? m_engine->sampleRate() : 44100.0;
     const int usableBins = kFftSize / 2;
 
-    std::array<float, kNumBands> raw01{};
-    raw01.fill(0.0f);
+    auto magAtBin = [&](int bin) -> float {
+        bin = std::clamp(bin, 0, usableBins - 1);
+        return std::abs(spectrum[static_cast<size_t>(bin)]) / (kFftSize / 2.0f);
+    };
 
-    for (int bin = 1; bin < usableBins; ++bin) {
-        const double freq = bin * sr / kFftSize;
-        // Find which band this bin belongs to (linear scan over 32 bands is cheap).
-        for (int b = 0; b < kNumBands; ++b) {
-            if (freq >= m_bandEdgesHz[static_cast<size_t>(b)] && freq < m_bandEdgesHz[static_cast<size_t>(b) + 1]) {
-                const float mag = std::abs(spectrum[static_cast<size_t>(bin)]) / (kFftSize / 2.0f);
-                raw01[static_cast<size_t>(b)] = std::max(raw01[static_cast<size_t>(b)], mag);
-                break;
-            }
+    std::array<float, kNumBands> raw01{};
+    for (int b = 0; b < kNumBands; ++b) {
+        const double loF = m_bandEdgesHz[static_cast<size_t>(b)];
+        const double hiF = m_bandEdgesHz[static_cast<size_t>(b) + 1];
+        // Bins whose frequency falls inside this band's [loF, hiF) range.
+        int binLo = std::max(1, static_cast<int>(std::ceil(loF * kFftSize / sr)));
+        int binHi = std::min(usableBins, static_cast<int>(std::ceil(hiF * kFftSize / sr))); // exclusive
+
+        float bandMag = 0.0f;
+        if (binHi > binLo) {
+            // Normal case (most bands, especially the wider high-frequency
+            // ones): take the loudest bin actually inside the range.
+            for (int bin = binLo; bin < binHi; ++bin)
+                bandMag = std::max(bandMag, magAtBin(bin));
+        } else {
+            // This band's Hz range is narrower than one FFT bin's spacing
+            // (~10.8 Hz at kFftSize=4096/44.1kHz) - true for roughly the
+            // first 2 of the 32 log-spaced bands. No bin CENTER falls
+            // inside [loF, hiF), so the loop above would leave this band
+            // silently stuck at 0 almost every frame, regardless of the
+            // audio - reported 2026-08-30 as "the second bar from the
+            // left keeps disappearing" in Dots (equally affects Bars/
+            // LineSpectrum/BrickBox/etc, since they all read
+            // m_bandMagnitudes). Fixed by sampling the continuous
+            // spectrum at this band's own geometric center frequency via
+            // linear interpolation between its two neighboring bins,
+            // instead of requiring a bin to land exactly inside the
+            // band's (too-narrow-to-guarantee-one) range.
+            const double centerF = std::sqrt(loF * hiF);
+            const double binPos = centerF * kFftSize / sr;
+            const int binA = static_cast<int>(std::floor(binPos));
+            const double frac = binPos - binA;
+            bandMag = static_cast<float>(magAtBin(binA) * (1.0 - frac) + magAtBin(binA + 1) * frac);
         }
+        raw01[static_cast<size_t>(b)] = bandMag;
     }
 
     for (int b = 0; b < kNumBands; ++b) {
@@ -245,6 +341,12 @@ void Visualizer::paintEvent(QPaintEvent *)
     case Style::VuMeter:       drawVuMeter(p); break;
     case Style::Particles:     drawParticles(p); break;
     case Style::BrickBox:      drawBrickBox(p); break;
+    case Style::Spectrogram:   drawSpectrogram(p); break;
+    case Style::Spiral:        drawSpiral(p); break;
+    case Style::Ribbon:        drawRibbon(p); break;
+    case Style::Orbit:         drawOrbit(p); break;
+    case Style::Tunnel:        drawTunnel(p); break;
+    case Style::Sunburst:      drawSunburst(p); break;
     }
 }
 
@@ -528,4 +630,250 @@ void Visualizer::drawBrickBox(QPainter &p)
             p.fillRect(QRectF(x, py, brickW, brickH), m_secondaryColor.lighter(170));
         }
     }
+}
+
+void Visualizer::drawSpectrogram(QPainter &p)
+{
+    // Classic scrolling waterfall: x = time (oldest at left, newest at
+    // right), y = frequency band (low at bottom, matching Bars/BrickBox),
+    // color = magnitude (dark background -> primary -> secondary, hottest
+    // bands read brightest). Distinct from every other style here in that
+    // it shows history, not just the current instant.
+    const int w = width();
+    const int h = height();
+    if (m_spectrogramHistory.empty())
+        return;
+
+    const double colW = static_cast<double>(w) / kSpectrogramColumns;
+    const double rowH = static_cast<double>(h) / kNumBands;
+    const int cols = static_cast<int>(m_spectrogramHistory.size());
+    const QColor bg(0x14, 0x15, 0x1f);
+
+    for (int c = 0; c < cols; ++c) {
+        const auto &col = m_spectrogramHistory[static_cast<size_t>(c)];
+        const double x = w - (cols - c) * colW;
+        for (int b = 0; b < kNumBands; ++b) {
+            const float v = col[static_cast<size_t>(b)];
+            QColor cell = (v < 0.5f) ? lerpColor(bg, m_primaryColor, v * 2.0f)
+                                      : lerpColor(m_primaryColor, m_secondaryColor, (v - 0.5f) * 2.0f);
+            const double y = h - (b + 1) * rowH;
+            p.fillRect(QRectF(x, y, colW + 0.75, rowH + 0.75), cell);
+        }
+    }
+}
+
+void Visualizer::drawSpiral(QPainter &p)
+{
+    // A spiral arm (radius grows steadily over ~2.5 turns) additionally
+    // bulges outward per-band by that band's magnitude - reads as a
+    // "coiled" spectrum, distinct from Circular's single-loop spokes.
+    const int w = width();
+    const int h = height();
+    const double cx = w / 2.0;
+    const double cy = h / 2.0;
+    const double maxR = std::min(w, h) * 0.48;
+    const double baseR = maxR * 0.12;
+    const double turns = 2.5;
+
+    QPainterPath path;
+    for (int i = 0; i <= kNumBands; ++i) {
+        const int b = i % kNumBands;
+        const double t = static_cast<double>(i) / kNumBands;
+        const double angle = t * turns * 2.0 * M_PI;
+        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
+        const double r = baseR + t * (maxR - baseR) * 0.6 + v * maxR * 0.35;
+        const double x = cx + std::cos(angle) * r;
+        const double y = cy + std::sin(angle) * r;
+        if (i == 0)
+            path.moveTo(x, y);
+        else
+            path.lineTo(x, y);
+    }
+    p.setPen(QPen(m_primaryColor, 2.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    p.drawPath(path);
+
+    p.setPen(Qt::NoPen);
+    for (int b = 0; b < kNumBands; ++b) {
+        const double t = static_cast<double>(b) / kNumBands;
+        const double angle = t * turns * 2.0 * M_PI;
+        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
+        const double r = baseR + t * (maxR - baseR) * 0.6 + v * maxR * 0.35;
+        const double x = cx + std::cos(angle) * r;
+        const double y = cy + std::sin(angle) * r;
+        p.setBrush(lerpColor(m_primaryColor, m_secondaryColor, static_cast<float>(t)));
+        p.drawEllipse(QPointF(x, y), 2.6, 2.6);
+    }
+}
+
+void Visualizer::drawRibbon(QPainter &p)
+{
+    // A smooth, filled band centered on the vertical midline whose
+    // thickness at each x follows that band's magnitude - a "ribbon"
+    // silhouette of the spectrum, distinct from LineSpectrum's straight-
+    // segment polygon and Wave's raw single-line waveform trace.
+    const int w = width();
+    const int h = height();
+    const double midY = h / 2.0;
+
+    std::vector<QPointF> top;
+    std::vector<QPointF> bottom;
+    top.reserve(kNumBands);
+    bottom.reserve(kNumBands);
+    for (int b = 0; b < kNumBands; ++b) {
+        const double x = (b + 0.5) / kNumBands * w;
+        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
+        const double half = 4.0 + v * h * 0.42;
+        top.emplace_back(x, midY - half);
+        bottom.emplace_back(x, midY + half);
+    }
+
+    auto smoothPath = [](const std::vector<QPointF> &pts) {
+        QPainterPath path;
+        if (pts.empty())
+            return path;
+        path.moveTo(pts.front());
+        for (size_t i = 1; i < pts.size(); ++i) {
+            const QPointF mid((pts[i - 1].x() + pts[i].x()) / 2.0, (pts[i - 1].y() + pts[i].y()) / 2.0);
+            path.quadTo(pts[i - 1], mid);
+        }
+        path.lineTo(pts.back());
+        return path;
+    };
+
+    QPainterPath topPath = smoothPath(top);
+    std::vector<QPointF> bottomRev(bottom.rbegin(), bottom.rend());
+    QPainterPath bottomPath = smoothPath(bottomRev);
+
+    QPainterPath ribbon = topPath;
+    ribbon.connectPath(bottomPath);
+    ribbon.closeSubpath();
+
+    QLinearGradient grad(0, 0, w, 0);
+    grad.setColorAt(0.0, m_primaryColor);
+    grad.setColorAt(1.0, m_secondaryColor);
+    p.fillPath(ribbon, grad);
+
+    p.setPen(QPen(m_secondaryColor.lighter(140), 1.6));
+    p.drawPath(topPath);
+    p.setPen(QPen(m_primaryColor.lighter(140), 1.6));
+    p.drawPath(smoothPath(bottom));
+}
+
+void Visualizer::drawOrbit(QPainter &p)
+{
+    // A ring of glowing dots at fixed angular spacing, slowly rotating;
+    // each dot's own size/glow (not its distance from center) tracks its
+    // band's magnitude - distinct from Circular (radial spokes growing
+    // outward) and Dots (vertical columns, no motion).
+    const int w = width();
+    const int h = height();
+    const double cx = w / 2.0;
+    const double cy = h / 2.0;
+    const double ringR = std::min(w, h) * 0.34;
+
+    m_orbitPhase += 0.01;
+    if (m_orbitPhase > 2.0 * M_PI)
+        m_orbitPhase -= 2.0 * M_PI;
+
+    QPen ringPen(QColor(m_primaryColor.red(), m_primaryColor.green(), m_primaryColor.blue(), 70), 1.0);
+    p.setPen(ringPen);
+    p.setBrush(Qt::NoBrush);
+    p.drawEllipse(QPointF(cx, cy), ringR, ringR);
+
+    p.setPen(Qt::NoPen);
+    for (int b = 0; b < kNumBands; ++b) {
+        const double angle = m_orbitPhase + (2.0 * M_PI * b) / kNumBands;
+        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
+        const double x = cx + std::cos(angle) * ringR;
+        const double y = cy + std::sin(angle) * ringR;
+        const double r = 2.0 + v * 14.0;
+
+        QRadialGradient glow(QPointF(x, y), r * 2.6);
+        QColor glowColor = m_secondaryColor;
+        glowColor.setAlphaF(0.5f);
+        glow.setColorAt(0.0, glowColor);
+        QColor glowEdge = m_secondaryColor;
+        glowEdge.setAlphaF(0.0f);
+        glow.setColorAt(1.0, glowEdge);
+        p.setBrush(glow);
+        p.drawEllipse(QPointF(x, y), r * 2.6, r * 2.6);
+
+        p.setBrush(lerpColor(m_primaryColor, m_secondaryColor, v));
+        p.drawEllipse(QPointF(x, y), r, r);
+    }
+}
+
+void Visualizer::drawTunnel(QPainter &p)
+{
+    // Concentric rings spawn at the center and expand outward, faster and
+    // more often when the bass bands are loud, fading as they grow - a
+    // "flying through a tunnel" pulse effect distinct from every static or
+    // per-band-column style above.
+    const int w = width();
+    const int h = height();
+    const double cx = w / 2.0;
+    const double cy = h / 2.0;
+    const double maxR = std::hypot(w, h) * 0.55;
+
+    float bass = 0.0f;
+    for (int b = 0; b < 4; ++b)
+        bass = std::max(bass, m_bandMagnitudes[static_cast<size_t>(b)]);
+
+    m_tunnelSpawnAccum += 0.06 + bass * 0.5;
+    if (m_tunnelSpawnAccum >= 1.0 && m_tunnelRings.size() < 40) {
+        m_tunnelSpawnAccum = 0.0;
+        m_tunnelRings.push_back({0.0f, 1.0f});
+    }
+
+    for (auto &ring : m_tunnelRings) {
+        ring.radius += static_cast<float>(2.2 + bass * 6.0);
+        ring.life -= 0.012f;
+    }
+    m_tunnelRings.erase(std::remove_if(m_tunnelRings.begin(), m_tunnelRings.end(),
+                                        [](const TunnelRing &r) { return r.life <= 0.0f; }),
+                         m_tunnelRings.end());
+
+    p.setBrush(Qt::NoBrush);
+    for (const auto &ring : m_tunnelRings) {
+        const float t = std::clamp(ring.radius / static_cast<float>(maxR), 0.0f, 1.0f);
+        QColor c = lerpColor(m_secondaryColor, m_primaryColor, t);
+        c.setAlphaF(std::clamp(ring.life, 0.0f, 1.0f) * 0.85f);
+        p.setPen(QPen(c, 2.5 + bass * 4.0));
+        p.drawEllipse(QPointF(cx, cy), static_cast<double>(ring.radius), static_cast<double>(ring.radius));
+    }
+}
+
+void Visualizer::drawSunburst(QPainter &p)
+{
+    // Rays from the center to (near) the widget's edges, one per band -
+    // length, thickness, and brightness all track magnitude. Distinct from
+    // Circular's short spokes confined to an inner ring: these fill the
+    // whole canvas.
+    const int w = width();
+    const int h = height();
+    const double cx = w / 2.0;
+    const double cy = h / 2.0;
+    const double maxLen = std::hypot(w, h) * 0.5;
+
+    for (int b = 0; b < kNumBands; ++b) {
+        const double angle = (2.0 * M_PI * b) / kNumBands;
+        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
+        const double len = maxLen * (0.15 + v * 0.85);
+        const double x1 = cx + std::cos(angle) * len;
+        const double y1 = cy + std::sin(angle) * len;
+
+        QColor c = lerpColor(m_primaryColor, m_secondaryColor, v);
+        c.setAlphaF(0.25f + v * 0.65f);
+        p.setPen(QPen(c, 2.0 + v * 3.0, Qt::SolidLine, Qt::RoundCap));
+        p.drawLine(QPointF(cx, cy), QPointF(x1, y1));
+    }
+
+    QRadialGradient core(QPointF(cx, cy), maxLen * 0.12);
+    core.setColorAt(0.0, m_secondaryColor.lighter(150));
+    QColor edge = m_secondaryColor;
+    edge.setAlphaF(0.0f);
+    core.setColorAt(1.0, edge);
+    p.setPen(Qt::NoPen);
+    p.setBrush(core);
+    p.drawEllipse(QPointF(cx, cy), maxLen * 0.12, maxLen * 0.12);
 }

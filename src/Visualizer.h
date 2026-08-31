@@ -2,9 +2,9 @@
 //
 // Spectrum/waveform visualizer widget. Pulls raw (pre-EQ) mono samples from
 // AudioEngine on a timer, runs a windowed FFT, buckets the magnitude
-// spectrum into log-spaced bands, and paints one of 9 default styles -
-// satisfying "visualizer, default 7-10 items" as a set of selectable
-// presets rather than a fixed look.
+// spectrum into log-spaced bands, and paints one of 15 selectable render
+// styles (9 original + 6 added 2026-08-30) as a set of selectable presets
+// rather than a fixed look.
 //
 // Visualizing pre-EQ audio (not the post-EQ signal actually sent to the
 // speakers) is a deliberate simplification: it avoids running a second
@@ -19,6 +19,7 @@
 #include <QColor>
 
 #include <array>
+#include <deque>
 #include <vector>
 
 class AudioEngine;
@@ -38,17 +39,23 @@ public:
         VuMeter,
         Particles,
         BrickBox,
+        // Added 2026-08-30 (6 more render styles):
+        Spectrogram,
+        Spiral,
+        Ribbon,
+        Orbit,
+        Tunnel,
+        Sunburst,
     };
 
-    static constexpr int kStyleCount = 9;
+    static constexpr int kStyleCount = 15;
 
     static QStringList styleNames();               // display names, in enum order
     static Style styleFromName(const QString &name);
     static QString styleToName(Style s);
 
-    // Color palette, independent of Style - "visualizer, default 7-10
-    // items" applies twice over: 8 render styles above, and 8 color
-    // schemes here, mixed freely (any style x any scheme).
+    // Color palette, independent of Style - 15 render styles above, and 16
+    // color schemes here, mixed freely (any style x any scheme).
     enum class ColorScheme {
         Purple,
         Ocean,
@@ -58,9 +65,18 @@ public:
         Cyan,
         Fire,
         Gold,
+        // Added 2026-08-30 (8 more color schemes):
+        Emerald,
+        Lavender,
+        Coral,
+        Ice,
+        Crimson,
+        Amber,
+        Midnight,
+        Lime,
     };
 
-    static constexpr int kColorSchemeCount = 8;
+    static constexpr int kColorSchemeCount = 16;
 
     static QStringList colorSchemeNames();
     static ColorScheme colorSchemeFromName(const QString &name);
@@ -111,6 +127,12 @@ private:
     void drawVuMeter(QPainter &p);
     void drawParticles(QPainter &p);
     void drawBrickBox(QPainter &p);
+    void drawSpectrogram(QPainter &p);
+    void drawSpiral(QPainter &p);
+    void drawRibbon(QPainter &p);
+    void drawOrbit(QPainter &p);
+    void drawTunnel(QPainter &p);
+    void drawSunburst(QPainter &p);
 
     AudioEngine *m_engine;
     QTimer m_timer;
@@ -125,6 +147,21 @@ private:
 
     struct Particle { float x, y, vx, vy, life; };
     std::vector<Particle> m_particles;
+
+    // Spectrogram: rolling history of band-magnitude columns, newest last.
+    // Capped at kSpectrogramColumns regardless of paint width so the
+    // scroll rate is time-based, not pixel-width-based; drawSpectrogram()
+    // stretches whatever history exists across the current widget width.
+    static constexpr int kSpectrogramColumns = 96;
+    std::deque<std::array<float, kNumBands>> m_spectrogramHistory;
+
+    // Orbit: slow constant rotation, advanced once per tick.
+    double m_orbitPhase = 0.0;
+
+    // Tunnel: outward-expanding rings, spawned faster when bass is louder.
+    struct TunnelRing { float radius, life; };
+    std::vector<TunnelRing> m_tunnelRings;
+    double m_tunnelSpawnAccum = 0.0;
 
     ColorScheme m_colorScheme = ColorScheme::Purple;
     QColor m_primaryColor{0x6c, 0x5c, 0xe7};   // updated by applyColorScheme()

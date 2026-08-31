@@ -393,6 +393,9 @@ CMakeFiles/FreeMusicPlayer.dir/src/Visualizer.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtCore/QString \
  C:/Qt/6.11.1/mingw_64/include/QtCore/QStringList \
  C:/Qt/6.11.1/mingw_64/include/QtGui/QColor \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/deque \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_deque.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/deque.tcc \
  D:\AI_Programming\C++\FreeMusicPlayer\src\AudioEngine.h \
  D:\AI_Programming\C++\FreeMusicPlayer\src\Equalizer.h \
  D:\AI_Programming\C++\FreeMusicPlayer\src\BiquadFilter.h \

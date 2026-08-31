@@ -138,6 +138,35 @@ void AudioEngine::loadFile(const QString &path, bool autoPlay)
 
     setState(State::Loading);
 
+    // DSF (DSD Stream File) decodes through FFmpeg's dsd_lsbf/dsd_msbf
+    // decoder, which demodulates DSD's ~2.8/5.6MHz 1-bit stream down to PCM
+    // by a fixed decimation factor - the result is still an unusually high
+    // PCM rate (e.g. 352.8kHz for ordinary DSD64), well beyond what most
+    // Windows audio devices/drivers can open a WASAPI stream at. When that
+    // happens, QAudioSink::start() doesn't fail or error out - it just never
+    // actually pulls any data, so playback silently does nothing: no sound,
+    // no error dialog, and the position never advances even though the
+    // Play/Pause button flips correctly (confirmed via user report and
+    // screenshot, 2026-08-29 - title/duration/format line all read back
+    // correctly, so decoding itself succeeded; only output failed).
+    // Fixed by asking the decoder itself (via setAudioFormat(), backed by
+    // the already-bundled swresample-5.dll) to resample DSD down to a
+    // conventional high-res PCM rate before we ever construct QAudioSink,
+    // instead of exposing DSD's native decimated rate to the audio device.
+    // A default-constructed (invalid) QAudioFormat means "no preference" -
+    // every other container keeps decoding at its own native rate exactly
+    // as before. This MUST be reset on every load (not just set once for
+    // DSF), since m_decoder is one shared instance reused for every track -
+    // otherwise a forced format from a previous DSF track would silently
+    // carry over and force-resample the next, unrelated track too.
+    QAudioFormat requestedFormat;
+    if (m_containerHint == QLatin1String("DSF")) {
+        requestedFormat.setSampleRate(88200); // exact /32 of DSD64's 2,822,400Hz - safely within every common device's range
+        requestedFormat.setChannelCount(2);
+        requestedFormat.setSampleFormat(QAudioFormat::Float);
+    }
+    m_decoder->setAudioFormat(requestedFormat);
+
     m_decoder->setSource(QUrl::fromLocalFile(path));
     m_decoder->start();
 }
