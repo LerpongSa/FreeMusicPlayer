@@ -16,7 +16,7 @@ Configuring with MinGW Makefiles ...
 -- Performing Test HAVE_STDATOMIC - Success
 -- Found WrapAtomic: TRUE
 -- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
--- Configuring done (3.2s)
+-- Configuring done (5.0s)
 -- Generating done (0.2s)
 -- Build files have been written to: D:/AI_Programming/C++/FreeMusicPlayer/build
 Building ...
@@ -125,11 +125,11 @@ To bypass the license check entirely, set the environment variable QTFRAMEWORK_B
 [ 61%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/CoverArtExtractor.cpp.obj
 [ 66%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TagEditor.cpp.obj
 D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.cpp: In function 'TrackTags {anonymous}::readMp4Tags(QFile&)':
-D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.cpp:755:58: warning: hex escape sequence out of range
-  755 |     t.artist = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9ART");
+D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.cpp:824:58: warning: hex escape sequence out of range
+  824 |     t.artist = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9ART");
       |                                                          ^~~~~~~~~
-D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.cpp:756:57: warning: hex escape sequence out of range
-  756 |     t.album = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9alb");
+D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.cpp:825:57: warning: hex escape sequence out of range
+  825 |     t.album = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9alb");
       |                                                         ^~~~~~~~~
 [ 72%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj
 [ 77%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TextDecoder.cpp.obj

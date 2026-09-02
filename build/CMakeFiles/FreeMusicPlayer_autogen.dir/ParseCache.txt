@@ -1103,6 +1103,8 @@ D:/AI_Programming/C++/FreeMusicPlayer/src/Settings.h
 D:/AI_Programming/C++/FreeMusicPlayer/src/TextDecoder.cpp
 D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditDialog.h
  mmc:Q_OBJECT
+ mdp:C:/Qt/6.11.1/mingw_64/include/QtCore/QByteArray
+ mdp:C:/Qt/6.11.1/mingw_64/include/QtCore/QString
  mdp:C:/Qt/6.11.1/mingw_64/include/QtCore/q17memory.h
  mdp:C:/Qt/6.11.1/mingw_64/include/QtCore/q20bit.h
  mdp:C:/Qt/6.11.1/mingw_64/include/QtCore/q20functional.h
@@ -1479,6 +1481,7 @@ D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditDialog.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:D:/AI_Programming/C++/FreeMusicPlayer/build/FreeMusicPlayer_autogen/moc_predefs.h
  mdp:D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditDialog.h
+ mdp:D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditor.h
 D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditor.h
 D:/AI_Programming/C++/FreeMusicPlayer/src/TextDecoder.h
 D:/AI_Programming/C++/FreeMusicPlayer/src/Theme.h

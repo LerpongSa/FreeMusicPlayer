@@ -1,19 +1,36 @@
 CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditDialog.cpp \
  D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditDialog.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/QDialog \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qdialog.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtguiglobal.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qglobal.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/type_traits \
+ D:\AI_Programming\C++\FreeMusicPlayer\src\TagEditor.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QByteArray \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qbytearray.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qrefcount.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qatomic.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qbasicatomic.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qatomic_cxx11.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qgenericatomic.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qcompilerdetection.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qprocessordetection.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qsystemdetection.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtconfiginclude.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/version \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/cpu_defines.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/pstl_config.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstddef \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stddef.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qconfig.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtcore-config.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/utility \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_relops.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_pair.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/type_traits \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/move.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/utility.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/initializer_list \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtconfigmacros.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtdeprecationdefinitions.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtversionchecks.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/assert.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/crtdefs.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/corecrt.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/_mingw.h \
@@ -21,16 +38,6 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/_mingw_secapi.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/utility \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_relops.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_pair.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/move.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/utility.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/initializer_list \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstdint \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdint.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/assert.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdlib.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstdlib \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdlib.h \
@@ -43,25 +50,29 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/mm_malloc.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/errno.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/std_abs.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdbool.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtcoreglobal.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtversionchecks.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtconfiginclude.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/version \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qconfig.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtcore-config.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtconfigmacros.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtdeprecationdefinitions.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qcompilerdetection.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qprocessordetection.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qsystemdetection.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtypes.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qassert.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtcoreexports.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtdeprecationmarkers.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtclasshelpermacros.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtpreprocessorsupport.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qassert.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtnoop.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qtypes.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstddef \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stddef.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stddef.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstdint \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdint.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdint.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qyieldcpu.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/atomic \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/atomic_base.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/new \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/exception.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/atomic_lockfree_defines.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qnamespace.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qglobal.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdbool.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtcoreglobal.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtpreprocessorsupport.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtversion.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtypeinfo.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qcontainerfwd.h \
@@ -91,19 +102,9 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_heap.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/uniform_int_dist.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tempbuf.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/new \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/exception.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_construct.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_algorithm_defs.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/execution_defs.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qatomic.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qbasicatomic.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qatomic_cxx11.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qgenericatomic.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qyieldcpu.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/atomic \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/atomic_base.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/atomic_lockfree_defines.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qconstructormacros.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qdarwinhelpers.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qexceptionhandling.h \
@@ -152,14 +153,6 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtresource.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qttranslation.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qversiontagging.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtgui-config.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtguiexports.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qtwidgets-config.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qtwidgetsexports.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qwidget.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qwindowdefs.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qobjectdefs.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qnamespace.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qcompare.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qstdlibdetection.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qcomparehelpers.h \
@@ -191,13 +184,18 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/array \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/compare \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtmetamacros.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qobjectdefs_impl.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qfunctionaltools_impl.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/memory \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_raw_storage_iter.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/align.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unique_ptr.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qarraydata.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qpair.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/string.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sec_api/string_s.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qarraydatapointer.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qarraydataops.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qcontainertools_impl.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qxptype_traits.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/q23type_traits.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstring \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iterator \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stream_iterator.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iosfwd \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stringfwd.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/postypes.h \
@@ -208,8 +206,17 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/_mingw_stat64.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/swprintf.inl \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sec_api/wchar_s.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr_base.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/allocated_ptr.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/streambuf_iterator.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/streambuf \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/localefwd.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++locale.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/clocale \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/locale.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdio.h \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cctype \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/ctype.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ios_base.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ext/atomicity.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/gthr.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/gthr-default.h \
@@ -227,40 +234,6 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/pthread_compat.h \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/pthread_unistd.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/atomic_word.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ext/concurrence.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr_atomic.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward/auto_ptr.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_memory_defs.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qwindowdefs_win.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qobject.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qstring.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qchar.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qstringview.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qbytearray.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qrefcount.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qarraydata.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qpair.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/string.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sec_api/string_s.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qarraydatapointer.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qarraydataops.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qcontainertools_impl.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qxptype_traits.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/q23type_traits.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstring \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iterator \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stream_iterator.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/streambuf_iterator.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/streambuf \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/localefwd.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++locale.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/clocale \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/locale.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/stdio.h \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cctype \
- C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/ctype.h \
- C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ios_base.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_classes.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/string \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/char_traits.h \
@@ -279,6 +252,17 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/error_constants.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdexcept \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/streambuf.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/memory \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_raw_storage_iter.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/align.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unique_ptr.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr_base.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/allocated_ptr.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ext/concurrence.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr_atomic.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward/auto_ptr.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_memory_defs.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/q20functional.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/q20memory.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/q17memory.h \
@@ -288,6 +272,10 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qbytearrayview.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qstringfwd.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QString \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qstring.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qchar.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qstringview.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qstringalgorithms.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qlatin1stringview.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qanystringview.h \
@@ -296,6 +284,21 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qstringbuilder.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qstringconverter.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qstringconverter_base.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QDialog \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qdialog.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtguiglobal.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtgui-config.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtguiexports.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qtwidgets-config.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qtwidgetsexports.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qwidget.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qwindowdefs.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qobjectdefs.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qobjectdefs_impl.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qfunctionaltools_impl.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qwindowdefs_win.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qobject.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qlist.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qhashfunctions.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/numeric \
@@ -385,19 +388,55 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qsizepolicy.h \
  C:/Qt/6.11.1/mingw_64/include/QtGui/qcursor.h \
  C:/Qt/6.11.1/mingw_64/include/QtGui/qbitmap.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/QLineEdit \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qlineedit.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qframe.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtextcursor.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtextdocument.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qurl.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtextformat.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qpen.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qtextoption.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/QLabel \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qlabel.h \
- C:/Qt/6.11.1/mingw_64/include/QtGui/qpicture.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QBuffer \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qbuffer.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qiodevice.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QDialogButtonBox \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QFile \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qfile.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qfiledevice.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/filesystem \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_fwd.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_path.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/locale \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cwctype \
+ C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_base.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/ctype_inline.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/time_members.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/messages_members.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/codecvt.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_facets_nonio.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/locale_conv.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iomanip \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/quoted_string.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/sstream \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ios \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/ostream \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/sstream.tcc \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/codecvt \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_dir.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_ops.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QFileDialog \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qfiledialog.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qdir.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qdirlisting.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qdatetime.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qcalendar.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qlocale.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qfileinfo.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qtimezone.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qurl.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QFileInfo \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QFormLayout \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qformlayout.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QLayout \
@@ -405,9 +444,23 @@ CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qlayoutitem.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qboxlayout.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qgridlayout.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/QVBoxLayout \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/QDialogButtonBox \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QHBoxLayout \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/QImage \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QLabel \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qlabel.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qframe.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qpicture.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtextdocument.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QLineEdit \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qlineedit.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtextcursor.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtextformat.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qpen.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/qtextoption.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QMessageBox \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qmessagebox.h \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/QPixmap \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QPushButton \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qpushbutton.h \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/qabstractbutton.h
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qabstractbutton.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QVBoxLayout

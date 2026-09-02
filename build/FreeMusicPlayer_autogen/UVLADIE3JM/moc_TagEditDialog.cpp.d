@@ -1,5 +1,7 @@
 D:/AI_Programming/C++/FreeMusicPlayer/build/FreeMusicPlayer_autogen/UVLADIE3JM/moc_TagEditDialog.cpp: D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditDialog.h \
   D:/AI_Programming/C++/FreeMusicPlayer/build/FreeMusicPlayer_autogen/moc_predefs.h \
+  C:/Qt/6.11.1/mingw_64/include/QtCore/QByteArray \
+  C:/Qt/6.11.1/mingw_64/include/QtCore/QString \
   C:/Qt/6.11.1/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.11.1/mingw_64/include/QtCore/q20bit.h \
   C:/Qt/6.11.1/mingw_64/include/QtCore/q20functional.h \
@@ -373,4 +375,5 @@ D:/AI_Programming/C++/FreeMusicPlayer/build/FreeMusicPlayer_autogen/UVLADIE3JM/m
   C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/sys/types.h \
   C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/time.h \
   C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h \
-  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
+  C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h \
+  D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditor.h

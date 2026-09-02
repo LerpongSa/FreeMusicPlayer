@@ -149,6 +149,37 @@ void Playlist::moveTrack(int from, int to)
     emit itemsChanged();
 }
 
+void Playlist::reorder(const QVector<int> &newOrder)
+{
+    if (newOrder.size() != m_tracks.size())
+        return;
+
+    // Validate it's actually a permutation of [0, count) before touching
+    // anything - a malformed newOrder (stale/duplicate indices) would
+    // otherwise silently corrupt or duplicate tracks.
+    QVector<int> sorted = newOrder;
+    std::sort(sorted.begin(), sorted.end());
+    for (int i = 0; i < sorted.size(); ++i) {
+        if (sorted[i] != i)
+            return;
+    }
+
+    QVector<Track> reordered;
+    reordered.reserve(m_tracks.size());
+    for (int oldIndex : newOrder)
+        reordered.push_back(m_tracks[oldIndex]);
+
+    const int newCurrent = (m_currentIndex >= 0) ? newOrder.indexOf(m_currentIndex) : -1;
+
+    m_tracks = reordered;
+    m_currentIndex = newCurrent;
+    m_shuffleOrder.clear();
+    m_shufflePos = -1;
+
+    emit itemsChanged();
+    emit currentIndexChanged(m_currentIndex);
+}
+
 void Playlist::reshuffle(int avoidFirstIndex)
 {
     m_shuffleOrder.resize(m_tracks.size());

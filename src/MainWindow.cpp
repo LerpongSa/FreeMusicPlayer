@@ -15,6 +15,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QAbstractItemView>
+#include <QAbstractItemModel>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QRadioButton>
@@ -57,6 +58,25 @@ QString audioFileFilter()
     for (const QString &ext : kAudioExtensions)
         patterns << "*." + ext;
     return QStringLiteral("Audio Files (%1);;All Files (*)").arg(patterns.join(' '));
+}
+
+// Recursively collects every audio file under a directory (matched by
+// extension, case-insensitive), sorted for a stable/readable playlist
+// order. Shared by Add Folder and by dropping a folder onto the window -
+// dropping a folder should pull in the tracks inside it, not add the
+// folder's own name as one bogus, unplayable "track".
+QStringList audioFilesUnder(const QString &dir)
+{
+    QStringList paths;
+    QDirIterator it(dir, QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        const QString path = it.next();
+        const QString ext = QFileInfo(path).suffix().toLower();
+        if (kAudioExtensions.contains(ext))
+            paths << path;
+    }
+    paths.sort(Qt::CaseInsensitive);
+    return paths;
 }
 
 // Always HH:MM:SS (unlike MainWindow::formatTime, which drops the hours
@@ -342,6 +362,14 @@ void MainWindow::setupUi()
     m_playlistView = new QListWidget(playlistTab);
     m_playlistView->setContextMenuPolicy(Qt::CustomContextMenu);
     m_playlistView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    // Drag-to-reorder within the list. InternalMove only accepts drags that
+    // originate from this same view, so a file dragged in from Explorer
+    // still falls through (unhandled) to MainWindow::dragEnterEvent/
+    // dropEvent below, which adds it to the playlist as before - this only
+    // adds reordering of tracks already in the list.
+    m_playlistView->setDragEnabled(true);
+    m_playlistView->setDragDropMode(QAbstractItemView::InternalMove);
+    m_playlistView->setDefaultDropAction(Qt::MoveAction);
     playlistLayout->addWidget(m_playlistView, 1);
 
     tabs->addTab(playlistTab, tr("Playlist"));
@@ -516,6 +544,23 @@ void MainWindow::setupConnections()
     connect(m_playlistView, &QListWidget::customContextMenuRequested, this,
             &MainWindow::onPlaylistContextMenuRequested);
 
+    // Sync a drag-and-drop reorder back into m_playlist. rowsMoved fires
+    // while QAbstractItemView::dropEvent is still on the stack - rebuilding
+    // m_playlistView synchronously from here (which Playlist::reorder()'s
+    // itemsChanged signal would do, via refreshPlaylistWidget) would replace
+    // the very items the view is still mid-drop with, so the actual sync is
+    // deferred to the next event-loop turn.
+    connect(m_playlistView->model(), &QAbstractItemModel::rowsMoved, this,
+            [this](const QModelIndex &, int, int, const QModelIndex &, int) {
+                QTimer::singleShot(0, this, [this]() {
+                    QVector<int> newOrder;
+                    newOrder.reserve(m_playlistView->count());
+                    for (int i = 0; i < m_playlistView->count(); ++i)
+                        newOrder << m_playlistView->item(i)->data(Qt::UserRole).toInt();
+                    m_playlist->reorder(newOrder);
+                });
+            });
+
     connect(m_playlist, &Playlist::itemsChanged, this, &MainWindow::onPlaylistItemsChanged);
     connect(m_playlist, &Playlist::currentIndexChanged, this, &MainWindow::onPlaylistCurrentIndexChanged);
 
@@ -650,17 +695,7 @@ void MainWindow::onAddFolderClicked()
     const QString dir = QFileDialog::getExistingDirectory(this, tr("Add Folder"));
     if (dir.isEmpty())
         return;
-
-    QStringList paths;
-    QDirIterator it(dir, QDir::Files, QDirIterator::Subdirectories);
-    while (it.hasNext()) {
-        const QString path = it.next();
-        const QString ext = QFileInfo(path).suffix().toLower();
-        if (kAudioExtensions.contains(ext))
-            paths << path;
-    }
-    paths.sort(Qt::CaseInsensitive);
-    addFilesToPlaylist(paths);
+    addFilesToPlaylist(audioFilesUnder(dir));
 }
 
 void MainWindow::onLoadPlaylistClicked()
@@ -1073,8 +1108,17 @@ void MainWindow::onEditTagClicked()
     if (current.artist.isEmpty())
         current.artist = m_artistLabel->text();
 
+    // Whatever is currently shown as the cover (embedded art, or
+    // CoverArtExtractor's folder-image fallback) - the dialog just displays
+    // it and lets the user replace/remove it; the fallback case means
+    // there's nothing embedded to remove yet, but picking a new image still
+    // correctly adds one.
+    const CoverArt currentCover = CoverArtExtractor::extract(path);
+
     const bool canWrite = TagEditor::writeSupported(path);
-    TagEditDialog dialog(current.title, current.artist, current.album, canWrite, this);
+    TagEditDialog dialog(current.title, current.artist, current.album,
+                          currentCover.valid ? currentCover.imageData : QByteArray(),
+                          currentCover.mimeType, canWrite, this);
     if (dialog.exec() != QDialog::Accepted)
         return;
 
@@ -1082,6 +1126,9 @@ void MainWindow::onEditTagClicked()
     updated.title = dialog.title();
     updated.artist = dialog.artist();
     updated.album = dialog.album();
+    updated.coverArtAction = dialog.coverArtAction();
+    updated.newCoverData = dialog.newCoverData();
+    updated.newCoverMimeType = dialog.newCoverMimeType();
 
     QString errorMessage;
     if (!TagEditor::writeTags(path, updated, &errorMessage)) {
@@ -1090,6 +1137,8 @@ void MainWindow::onEditTagClicked()
     }
 
     refreshTrackInfoLabels(path);
+    if (updated.coverArtAction != TrackTags::CoverArtAction::Keep)
+        updateCoverArt(path); // reflect the new/removed embedded picture in the header immediately
     statusBar()->showMessage(tr("Tag saved."), 3000);
 }
 
@@ -1128,8 +1177,15 @@ void MainWindow::refreshPlaylistWidget()
 {
     m_playlistView->blockSignals(true);
     m_playlistView->clear();
-    for (int i = 0; i < m_playlist->count(); ++i)
-        m_playlistView->addItem(m_playlist->at(i).displayName);
+    for (int i = 0; i < m_playlist->count(); ++i) {
+        auto *item = new QListWidgetItem(m_playlist->at(i).displayName);
+        // Stamps each item with its current model index. Qt's internal-move
+        // drag/drop preserves per-item data (not just display text) across
+        // the reorder, so after a drop this value is how the rowsMoved
+        // handler above reads back the new order and maps it onto Playlist.
+        item->setData(Qt::UserRole, i);
+        m_playlistView->addItem(item);
+    }
     if (m_playlist->currentIndex() >= 0 && m_playlist->currentIndex() < m_playlistView->count())
         m_playlistView->setCurrentRow(m_playlist->currentIndex());
     m_playlistView->blockSignals(false);
@@ -1352,8 +1408,21 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
     QStringList paths;
     for (const QUrl &url : event->mimeData()->urls()) {
-        if (url.isLocalFile())
-            paths << url.toLocalFile();
+        if (!url.isLocalFile())
+            continue;
+        const QString localPath = url.toLocalFile();
+        const QFileInfo info(localPath);
+        if (info.isDir()) {
+            // A dropped folder contributes the audio files found inside it
+            // (recursively), not the folder path itself as a bogus track.
+            paths << audioFilesUnder(localPath);
+        } else if (kAudioExtensions.contains(info.suffix().toLower())) {
+            // Filtered by extension, same as Add Files/Add Folder - a
+            // dropped non-audio file (e.g. a stray .jpg/.txt from the same
+            // Explorer selection) is silently skipped rather than added as
+            // an unplayable entry.
+            paths << localPath;
+        }
     }
     addFilesToPlaylist(paths);
 }

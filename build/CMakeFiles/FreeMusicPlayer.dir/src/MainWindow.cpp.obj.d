@@ -478,6 +478,7 @@ CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qrubberband.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QListWidgetItem \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QAbstractItemView \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QAbstractItemModel \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QComboBox \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qcombobox.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QCheckBox \

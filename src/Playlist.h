@@ -48,6 +48,15 @@ public:
 
     void moveTrack(int from, int to);
 
+    // Reorders tracks in one shot: reordered[i] = the OLD track that was at
+    // index newOrder[i]. Used to sync a drag-and-drop reorder performed in
+    // the playlist view back into this model - the view just hands back its
+    // final item order (see MainWindow::refreshPlaylistWidget /
+    // setupConnections) rather than us trying to replay Qt's internal-move
+    // row math one step at a time. No-op if newOrder isn't a valid
+    // permutation of the current indices.
+    void reorder(const QVector<int> &newOrder);
+
     bool setShuffle(bool on);
     bool shuffle() const { return m_shuffle; }
 

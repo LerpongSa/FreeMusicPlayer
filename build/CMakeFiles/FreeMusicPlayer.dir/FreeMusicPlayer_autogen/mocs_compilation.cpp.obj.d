@@ -440,6 +440,7 @@ CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/mocs_compilation.cpp.obj:
  D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer_autogen\UVLADIE3JM/moc_Playlist.cpp \
  D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer_autogen\UVLADIE3JM/moc_TagEditDialog.cpp \
  D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditDialog.h \
+ D:/AI_Programming/C++/FreeMusicPlayer/src/TagEditor.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QDialog \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qdialog.h \
  D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer_autogen\UVLADIE3JM/moc_Visualizer.cpp

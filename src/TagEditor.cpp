@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include <QFileInfo>
+#include <QImage>
 #include <QSaveFile>
 #include <QVector>
 #include <QPair>
@@ -137,6 +138,26 @@ QByteArray encodeId3Text(const QString &text)
         out.append(char((u >> 8) & 0xFF));
     }
     return out;
+}
+
+// Builds an APIC (attached picture) frame body: encoding byte (0 =
+// ISO-8859-1, used here since the description is always left empty),
+// null-terminated ASCII MIME type, picture-type byte (3 = "Cover (front)",
+// the conventional choice every player looks for first), an empty
+// description (its terminator width depends on the encoding byte - 1 byte
+// for encoding 0, which is what's used here), then the raw image bytes.
+// Mirrors exactly what CoverArtExtractor::parseApicBody() expects to read
+// back (see CoverArtExtractor.cpp) - the two are kept in lockstep.
+QByteArray encodeApicFrame(const QString &mimeType, const QByteArray &imageData)
+{
+    QByteArray body;
+    body.append(char(0));            // text encoding: ISO-8859-1
+    body.append(mimeType.toLatin1());
+    body.append(char(0));            // MIME type null terminator
+    body.append(char(3));            // picture type: Cover (front)
+    body.append(char(0));            // empty description + its 1-byte terminator
+    body.append(imageData);
+    return body;
 }
 
 // ---- reading Title/Artist/Album out of a full ID3v2 tag (header+frames) --
@@ -285,9 +306,13 @@ QByteArray rebuildId3Tag(const QByteArray &existingTag, const TrackTags &tags)
 {
     QVector<RawFrame> kept;
     parseId3FramesForRewrite(existingTag, kept);
+    const bool touchCover = tags.coverArtAction != TrackTags::CoverArtAction::Keep;
     for (int i = kept.size() - 1; i >= 0; --i) {
-        if (kept.at(i).id == "TIT2" || kept.at(i).id == "TPE1" || kept.at(i).id == "TALB")
+        const QByteArray &id = kept.at(i).id;
+        if (id == "TIT2" || id == "TPE1" || id == "TALB")
             kept.removeAt(i);
+        else if (touchCover && id == "APIC")
+            kept.removeAt(i); // Keep leaves any existing APIC(s) exactly as they were
     }
 
     auto addIfNonEmpty = [&](const char *id, const QString &value) {
@@ -301,6 +326,13 @@ QByteArray rebuildId3Tag(const QByteArray &existingTag, const TrackTags &tags)
     addIfNonEmpty("TIT2", tags.title);
     addIfNonEmpty("TPE1", tags.artist);
     addIfNonEmpty("TALB", tags.album);
+
+    if (tags.coverArtAction == TrackTags::CoverArtAction::Replace) {
+        RawFrame f;
+        f.id = "APIC";
+        f.body = encodeApicFrame(tags.newCoverMimeType, tags.newCoverData);
+        kept.append(f);
+    }
 
     return buildId3Tag(kept);
 }
@@ -550,6 +582,38 @@ QByteArray buildVorbisComment(const QByteArray &vendor, const QVector<QPair<QStr
     return out;
 }
 
+// Builds a METADATA_BLOCK_PICTURE body (FLAC block type 6): 4-byte
+// big-endian picture type (3 = "Cover (front)"), 4-byte mime length + mime
+// bytes, 4-byte description length + description bytes (left empty here),
+// then width/height/color-depth/indexed-colors (4 bytes each - decoded from
+// the image itself when possible, since the spec allows but doesn't require
+// 0/unknown), and finally a 4-byte image length + the raw image bytes.
+// Mirrors exactly what CoverArtExtractor::parseFlacPicture() expects to
+// read back (see CoverArtExtractor.cpp) - the two are kept in lockstep.
+QByteArray buildFlacPictureBlock(const QByteArray &imageData, const QString &mimeType)
+{
+    QImage img;
+    img.loadFromData(imageData);
+    const quint32 width = img.isNull() ? 0 : quint32(img.width());
+    const quint32 height = img.isNull() ? 0 : quint32(img.height());
+    const quint32 depth = img.isNull() ? 0 : quint32(img.depth());
+    const quint32 indexedColors = (!img.isNull() && img.colorCount() > 0) ? quint32(img.colorCount()) : 0;
+    const QByteArray mimeBytes = mimeType.toLatin1();
+
+    QByteArray out;
+    out.append(beBytes(3, 4)); // picture type: Cover (front)
+    out.append(beBytes(quint32(mimeBytes.size()), 4));
+    out.append(mimeBytes);
+    out.append(beBytes(0, 4)); // description length: empty
+    out.append(beBytes(width, 4));
+    out.append(beBytes(height, 4));
+    out.append(beBytes(depth, 4));
+    out.append(beBytes(indexedColors, 4));
+    out.append(beBytes(quint32(imageData.size()), 4));
+    out.append(imageData);
+    return out;
+}
+
 TrackTags readFlacTags(QFile &file)
 {
     TrackTags t;
@@ -635,10 +699,13 @@ bool writeFlacTags(const QString &filePath, const TrackTags &tags, QString *erro
 
     QByteArray vendor = "FreeMusicPlayer 1.0.0";
     QVector<QPair<QString, QString>> otherComments;
+    const bool touchCover = tags.coverArtAction != TrackTags::CoverArtAction::Keep;
     for (int idx = 1; idx < blocks.size();) {
         if (blocks.at(idx).type == 4) {
             extractVorbisFields(blocks.at(idx).body, vendor, otherComments);
             blocks.removeAt(idx);
+        } else if (touchCover && blocks.at(idx).type == 6) {
+            blocks.removeAt(idx); // Keep leaves any existing PICTURE block(s) exactly as they were
         } else {
             ++idx;
         }
@@ -647,6 +714,8 @@ bool writeFlacTags(const QString &filePath, const TrackTags &tags, QString *erro
     QVector<Block> finalBlocks;
     finalBlocks.append(blocks.first()); // STREAMINFO must stay first
     finalBlocks.append({4, buildVorbisComment(vendor, otherComments, tags)});
+    if (tags.coverArtAction == TrackTags::CoverArtAction::Replace)
+        finalBlocks.append({6, buildFlacPictureBlock(tags.newCoverData, tags.newCoverMimeType)});
     for (int idx = 1; idx < blocks.size(); ++idx)
         finalBlocks.append(blocks.at(idx));
 
