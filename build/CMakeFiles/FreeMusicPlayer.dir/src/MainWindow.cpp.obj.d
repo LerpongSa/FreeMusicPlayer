@@ -489,6 +489,7 @@ CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qspinbox.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/QLocale \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QTabWidget \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QTabBar \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QFrame \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QMenu \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qmenu.h \
@@ -532,6 +533,8 @@ CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qfile.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qfileinfo.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qtimezone.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QColorDialog \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qcolordialog.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QMessageBox \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qmessagebox.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
@@ -579,4 +582,5 @@ CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QApplication \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qapplication.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QStyleOptionSlider \
- C:/Qt/6.11.1/mingw_64/include/QtWidgets/QStyle
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QStyle \
+ C:/Qt/6.11.1/mingw_64/include/QtGui/QMouseEvent

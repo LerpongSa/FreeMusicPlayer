@@ -6,6 +6,14 @@
 // child popups/dialogs but not *background*, so each separate window needs
 // its own complete stylesheet rather than relying on inheritance.
 //
+// The kXxx constants below are the DEFAULT palette, kept as literal hex
+// strings so "Reset to Default" (see resetToDefaultPalette()) always lands
+// on exactly these values, not a re-derived approximation. Everything that
+// actually paints the UI - appStyleSheet() and the accessor functions below
+// it - reads from current(), the live/possibly-user-customized palette, not
+// from these constants directly.
+//
+#include <QColor>
 #include <QString>
 
 namespace Theme {
@@ -21,10 +29,124 @@ constexpr const char *kAccent     = "#6c5ce7";
 constexpr const char *kAccentHi   = "#8578f0";
 constexpr const char *kDanger     = "#e55b6c";
 
+struct Palette {
+    QColor bg0, bg1, bg2, bg3, border, text, textDim, accent, accentHi, danger;
+};
+
+// Nudges a color's HSL lightness by deltaL (in -1.0..1.0), keeping hue and
+// saturation. Used to derive the panel/border/hover shades and the "hi"
+// accent variant from just the two colors the Theme tab actually exposes
+// (background + accent), the same way the hand-picked default palette's
+// shades relate to kBg0/kAccent.
+inline QColor adjustLightness(const QColor &c, double deltaL)
+{
+    // QColor::getHslF() takes float* (not qreal*/double*) in this Qt build -
+    // float* and double* don't implicitly convert to each other (unlike a
+    // plain float/double value, which does), so these MUST be float here
+    // even though the rest of this function does its math in double.
+    float h = 0.0f, s = 0.0f, l = 0.0f, a = 1.0f;
+    c.getHslF(&h, &s, &l, &a);
+    if (h < 0.0f)
+        h = 0.0f; // achromatic (gray) colors report h=-1; setHslF wants 0..1
+    l = static_cast<float>(qBound(0.0, static_cast<double>(l) + deltaL, 1.0));
+    QColor out;
+    out.setHslF(h, s, l, a);
+    return out;
+}
+
+inline Palette defaultPalette()
+{
+    Palette p;
+    p.bg0 = QColor(kBg0);
+    p.bg1 = QColor(kBg1);
+    p.bg2 = QColor(kBg2);
+    p.bg3 = QColor(kBg3);
+    p.border = QColor(kBorder);
+    p.text = QColor(kText);
+    p.textDim = QColor(kTextDim);
+    p.accent = QColor(kAccent);
+    p.accentHi = QColor(kAccentHi);
+    p.danger = QColor(kDanger);
+    return p;
+}
+
+// Derives a full palette from just a background and an accent color - the
+// two things the Theme tab lets the user pick. The lightness deltas below
+// were reverse-engineered from the default palette itself (e.g. kBg3 is
+// ~0.115 lighter than kBg0 in HSL), so a custom theme keeps the same "steps"
+// between window/panel/control/hover shades that the hand-tuned default has.
+inline Palette derivePalette(const QColor &backgroundColor, const QColor &accentColor)
+{
+    Palette p;
+    p.bg0 = backgroundColor;
+    p.bg1 = adjustLightness(backgroundColor, 0.035);
+    p.bg2 = adjustLightness(backgroundColor, 0.075);
+    p.bg3 = adjustLightness(backgroundColor, 0.115);
+    p.border = adjustLightness(backgroundColor, 0.14);
+
+    float h = 0.0f, s = 0.0f, l = 0.0f, a = 1.0f; // see adjustLightness() above re: float* here
+    backgroundColor.getHslF(&h, &s, &l, &a);
+    const bool darkBg = l < 0.5f;
+    p.text = darkBg ? QColor("#f0f0f5") : QColor("#1a1a22");
+    p.textDim = adjustLightness(p.text, darkBg ? -0.35 : 0.35);
+
+    p.accent = accentColor;
+    p.accentHi = adjustLightness(accentColor, 0.075);
+    p.danger = QColor(kDanger);
+    return p;
+}
+
+// The palette actually in effect - defaultPalette() until setCustomPalette()
+// is called, or resetToDefaultPalette() afterwards. A function-local static
+// in an inline function is guaranteed to be the single shared instance
+// across every translation unit that includes this header, so this works as
+// a plain global without needing a Theme.cpp.
+inline Palette &currentPaletteRef()
+{
+    static Palette p = defaultPalette();
+    return p;
+}
+
+inline const Palette &current()
+{
+    return currentPaletteRef();
+}
+
+inline void setCustomPalette(const QColor &backgroundColor, const QColor &accentColor)
+{
+    currentPaletteRef() = derivePalette(backgroundColor, accentColor);
+}
+
+inline void resetToDefaultPalette()
+{
+    currentPaletteRef() = defaultPalette();
+}
+
+// Whether the live palette differs from the hand-picked default - lets
+// callers (e.g. the Theme tab's own swatch buttons on startup) tell a
+// restored custom theme apart from "nothing was ever customized".
+inline bool isCustomPalette()
+{
+    const Palette &p = current();
+    return p.bg0 != QColor(kBg0) || p.accent != QColor(kAccent);
+}
+
+// Convenience QColor accessors for code that paints its own widgets
+// (QPainter-drawn icons/handles/placeholders) instead of going through the
+// QSS stylesheet below, so that custom-painted UI stays in sync with the
+// live/user-chosen palette too, not just stylesheet-driven widgets.
+inline QColor bg3Color()      { return current().bg3; }
+inline QColor borderColor()   { return current().border; }
+inline QColor textColor()     { return current().text; }
+inline QColor textDimColor()  { return current().textDim; }
+inline QColor accentColor()   { return current().accent; }
+inline QColor accentHiColor() { return current().accentHi; }
+
 // Applied once on QApplication - covers MainWindow and every plain QWidget
 // child (buttons, sliders, list widgets, etc).
 inline QString appStyleSheet()
 {
+    const Palette &p = current();
     return QString(R"(
         QWidget {
             background-color: %1;
@@ -34,6 +156,37 @@ inline QString appStyleSheet()
         }
         QMainWindow, QDialog {
             background-color: %1;
+        }
+        QTabWidget::pane {
+            border: 1px solid %5;
+            border-radius: 8px;
+            top: -1px;
+            background-color: %1;
+        }
+        QTabWidget {
+            background-color: %1;
+        }
+        QTabBar {
+            background-color: %1;
+            border: none;
+        }
+        QTabBar::tab {
+            background-color: %6;
+            color: %2;
+            padding: 8px 18px;
+            border: 1px solid %5;
+            border-bottom: none;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            margin-right: 2px;
+        }
+        QTabBar::tab:selected {
+            background-color: %7;
+            color: #ffffff;
+            border-color: %7;
+        }
+        QTabBar::tab:!selected:hover {
+            background-color: %8;
         }
         QLabel { background: transparent; }
         QLabel#TrackTitle {
@@ -227,7 +380,8 @@ inline QString appStyleSheet()
             padding: 4px;
         }
     )")
-        .arg(kBg0, kText, kTextDim, kBg2, kBorder, kBg3, kAccent, kAccentHi);
+        .arg(p.bg0.name(), p.text.name(), p.textDim.name(), p.bg2.name(), p.border.name(),
+             p.bg3.name(), p.accent.name(), p.accentHi.name());
 }
 
 } // namespace Theme

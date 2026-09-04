@@ -78,6 +78,9 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "onShutdownStartClicked",
         "onShutdownCancelClicked",
         "onShutdownTimerTick",
+        "onThemeBackgroundColorClicked",
+        "onThemeAccentColorClicked",
+        "onThemeResetClicked",
         "onEngineStateChanged",
         "AudioEngine::State",
         "state",
@@ -178,31 +181,37 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void()>(38, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onShutdownTimerTick'
         QtMocHelpers::SlotData<void()>(39, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onThemeBackgroundColorClicked'
+        QtMocHelpers::SlotData<void()>(40, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onThemeAccentColorClicked'
+        QtMocHelpers::SlotData<void()>(41, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onThemeResetClicked'
+        QtMocHelpers::SlotData<void()>(42, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onEngineStateChanged'
-        QtMocHelpers::SlotData<void(AudioEngine::State)>(40, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 41, 42 },
+        QtMocHelpers::SlotData<void(AudioEngine::State)>(43, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 44, 45 },
         }}),
         // Slot 'onEngineTrackLoaded'
-        QtMocHelpers::SlotData<void(qint64)>(43, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::LongLong, 44 },
-        }}),
-        // Slot 'onEngineDurationChanged'
-        QtMocHelpers::SlotData<void(qint64)>(45, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::LongLong, 44 },
-        }}),
-        // Slot 'onEnginePositionChanged'
         QtMocHelpers::SlotData<void(qint64)>(46, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::LongLong, 47 },
         }}),
+        // Slot 'onEngineDurationChanged'
+        QtMocHelpers::SlotData<void(qint64)>(48, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::LongLong, 47 },
+        }}),
+        // Slot 'onEnginePositionChanged'
+        QtMocHelpers::SlotData<void(qint64)>(49, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::LongLong, 50 },
+        }}),
         // Slot 'onEnginePlaybackFinished'
-        QtMocHelpers::SlotData<void()>(48, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(51, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onEngineError'
-        QtMocHelpers::SlotData<void(const QString &)>(49, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 50 },
+        QtMocHelpers::SlotData<void(const QString &)>(52, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 53 },
         }}),
         // Slot 'onEngineFormatDescriptionChanged'
-        QtMocHelpers::SlotData<void(const QString &)>(51, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 52 },
+        QtMocHelpers::SlotData<void(const QString &)>(54, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 55 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -257,13 +266,16 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 27: _t->onShutdownStartClicked(); break;
         case 28: _t->onShutdownCancelClicked(); break;
         case 29: _t->onShutdownTimerTick(); break;
-        case 30: _t->onEngineStateChanged((*reinterpret_cast<std::add_pointer_t<AudioEngine::State>>(_a[1]))); break;
-        case 31: _t->onEngineTrackLoaded((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
-        case 32: _t->onEngineDurationChanged((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
-        case 33: _t->onEnginePositionChanged((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
-        case 34: _t->onEnginePlaybackFinished(); break;
-        case 35: _t->onEngineError((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 36: _t->onEngineFormatDescriptionChanged((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 30: _t->onThemeBackgroundColorClicked(); break;
+        case 31: _t->onThemeAccentColorClicked(); break;
+        case 32: _t->onThemeResetClicked(); break;
+        case 33: _t->onEngineStateChanged((*reinterpret_cast<std::add_pointer_t<AudioEngine::State>>(_a[1]))); break;
+        case 34: _t->onEngineTrackLoaded((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
+        case 35: _t->onEngineDurationChanged((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
+        case 36: _t->onEnginePositionChanged((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
+        case 37: _t->onEnginePlaybackFinished(); break;
+        case 38: _t->onEngineError((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
+        case 39: _t->onEngineFormatDescriptionChanged((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     }
@@ -288,14 +300,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 37)
+        if (_id < 40)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 37;
+        _id -= 40;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 37)
+        if (_id < 40)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 37;
+        _id -= 40;
     }
     return _id;
 }

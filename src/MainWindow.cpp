@@ -24,11 +24,13 @@
 #include <QDateTime>
 #include <QLocale>
 #include <QTabWidget>
+#include <QTabBar>
 #include <QFrame>
 #include <QMenu>
 #include <QAction>
 #include <QFont>
 #include <QFileDialog>
+#include <QColorDialog>
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QFileInfo>
@@ -45,6 +47,7 @@
 #include <QApplication>
 #include <QStyleOptionSlider>
 #include <QStyle>
+#include <QMouseEvent>
 
 #include <algorithm>
 
@@ -95,6 +98,27 @@ QString formatCountdown(qint64 totalSeconds)
         .arg(s, 2, 10, QChar('0'));
 }
 
+// QColorDialog's own Hue/Sat/Val/Red/Green/Blue fields are plain QSpinBoxes
+// that - like the Shutdown tab's h/m/s spin boxes - inherit the system
+// locale by default, so on this user's Thai-with-native-digits Windows
+// setup they render as ๐-๙ instead of 0-9 (same project-wide gotcha
+// documented for every other numeric input in this app). We don't build
+// QColorDialog's internals ourselves, so instead of setLocale() at
+// construction time (not possible here), find its spin boxes after the
+// fact and pin each one to QLocale::c(). DontUseNativeDialog is forced so
+// this is always Qt's own cross-platform dialog (with real QSpinBox
+// children to find), not the OS picker.
+QColor pickColorWithLatinDigits(const QColor &initial, QWidget *parent, const QString &title)
+{
+    QColorDialog dialog(initial, parent);
+    dialog.setWindowTitle(title);
+    dialog.setOption(QColorDialog::DontUseNativeDialog, true);
+    const QList<QSpinBox *> spinBoxes = dialog.findChildren<QSpinBox *>();
+    for (QSpinBox *sb : spinBoxes)
+        sb->setLocale(QLocale::c());
+    return dialog.exec() == QDialog::Accepted ? dialog.currentColor() : QColor();
+}
+
 // Bipolar EQ band slider. A plain QSlider's QSS sub-page/add-page can only
 // color the track from one END to the handle, which looks wrong for a
 // value that swings above AND below zero: at 0 dB (handle dead center) it
@@ -138,7 +162,7 @@ protected:
         const QRect track(cx - trackW / 2, grooveRect.top(), trackW, grooveRect.height());
 
         p.setPen(Qt::NoPen);
-        p.setBrush(QColor(Theme::kBorder));
+        p.setBrush(Theme::borderColor());
         p.drawRoundedRect(track, trackW / 2.0, trackW / 2.0);
 
         const int centerY = centerRect.center().y();
@@ -147,7 +171,7 @@ protected:
         const int bottom = std::max(centerY, handleY);
         if (bottom > top) {
             const QRect highlight(cx - trackW / 2, top, trackW, bottom - top);
-            p.setBrush(QColor(Theme::kAccent));
+            p.setBrush(Theme::accentColor());
             p.drawRoundedRect(highlight, trackW / 2.0, trackW / 2.0);
         }
 
@@ -157,8 +181,72 @@ protected:
         p.drawLine(track.left() - 3, centerY, track.right() + 3, centerY);
 
         p.setPen(Qt::NoPen);
-        p.setBrush(QColor(Theme::kText));
+        p.setBrush(Theme::textColor());
         p.drawEllipse(handleRect);
+    }
+};
+
+// Lets a tab be reordered by holding the RIGHT mouse button on it and
+// dragging over another tab, which swaps it into that tab's place. Left
+// button is left completely alone (falls through to QTabBar's own
+// handling), so ordinary left-click still just switches the active tab -
+// this only adds a second, non-conflicting gesture for reordering.
+class SwappableTabBar : public QTabBar
+{
+public:
+    explicit SwappableTabBar(QWidget *parent = nullptr) : QTabBar(parent) {}
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        if (event->button() == Qt::RightButton) {
+            const int idx = tabAt(event->pos());
+            if (idx >= 0) {
+                m_dragIndex = idx;
+                event->accept();
+                return;
+            }
+        }
+        QTabBar::mousePressEvent(event);
+    }
+
+    void mouseMoveEvent(QMouseEvent *event) override
+    {
+        if (m_dragIndex >= 0 && (event->buttons() & Qt::RightButton)) {
+            const int overIdx = tabAt(event->pos());
+            if (overIdx >= 0 && overIdx != m_dragIndex) {
+                moveTab(m_dragIndex, overIdx);
+                m_dragIndex = overIdx;
+            }
+            event->accept();
+            return;
+        }
+        QTabBar::mouseMoveEvent(event);
+    }
+
+    void mouseReleaseEvent(QMouseEvent *event) override
+    {
+        if (event->button() == Qt::RightButton && m_dragIndex >= 0) {
+            m_dragIndex = -1;
+            event->accept();
+            return;
+        }
+        QTabBar::mouseReleaseEvent(event);
+    }
+
+private:
+    int m_dragIndex = -1;
+};
+
+// QTabWidget::setTabBar() is protected (only a subclass may call it), so a
+// tiny subclass is needed just to swap in SwappableTabBar above in place of
+// the default QTabBar - everything else about QTabWidget is untouched.
+class TabWidgetWithSwappableBar : public QTabWidget
+{
+public:
+    explicit TabWidgetWithSwappableBar(QWidget *parent = nullptr) : QTabWidget(parent)
+    {
+        setTabBar(new SwappableTabBar(this));
     }
 };
 
@@ -168,6 +256,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     m_engine = new AudioEngine(this);
     m_playlist = new Playlist(this);
+
+    // Restore a saved custom theme (Theme tab) before building any UI, so
+    // the very first paint already reflects it instead of flashing the
+    // default palette and then jumping to the custom one a frame later.
+    {
+        const QColor bg(m_settings.themeBackgroundColor());
+        const QColor accent(m_settings.themeAccentColor());
+        if (bg.isValid() && accent.isValid())
+            Theme::setCustomPalette(bg, accent);
+    }
 
     setupUi();
     setupConnections();
@@ -275,7 +373,7 @@ void MainWindow::setupUi()
     seekLayout->addWidget(m_durationLabel);
 
     m_muteBtn = new QToolButton(central);
-    m_muteBtn->setIcon(IconFactory::make(IconFactory::Glyph::VolumeHigh, Theme::kText));
+    m_muteBtn->setIcon(IconFactory::make(IconFactory::Glyph::VolumeHigh, Theme::textColor()));
     m_volumeSlider = new QSlider(Qt::Horizontal, central);
     m_volumeSlider->setRange(0, 100);
     m_volumeSlider->setValue(70);
@@ -288,7 +386,7 @@ void MainWindow::setupUi()
     auto *transportLayout = new QHBoxLayout();
     transportLayout->setSpacing(8);
 
-    const QColor iconColor(Theme::kText);
+    const QColor iconColor = Theme::textColor();
 
     m_shuffleBtn = new QPushButton(central);
     m_shuffleBtn->setObjectName("TransportButton");
@@ -334,29 +432,64 @@ void MainWindow::setupUi()
     // wide the volume control is.
 
     // ---- Tabs: Playlist / Equalizer ----
-    auto *tabs = new QTabWidget(central);
+    // TabWidgetWithSwappableBar so tabs can ALSO be reordered by right-
+    // click-dragging one over another (see SwappableTabBar above). Plus
+    // Qt's own built-in movable-tabs support (setMovable(true), LEFT-
+    // button press-and-HOLD-drag) as a second, independently-working way
+    // to reorder - the user reported the right-click gesture doing nothing
+    // at all after rebuilding, and this native mechanism is Qt's own
+    // well-tested code (no custom mouse-event logic that could have a
+    // subtle bug), so it's the reliable fallback while the right-click
+    // path gets diagnosed further. The two don't conflict: setMovable's
+    // internal handling only ever triggers on Qt::LeftButton, so it never
+    // sees the right-button events SwappableTabBar handles, and a plain
+    // left CLICK (press+release with no real movement) still just
+    // switches tabs as always - only an actual left-button DRAG reorders.
+    m_tabs = new TabWidgetWithSwappableBar(central);
+    m_tabs->tabBar()->setMovable(true);
+    // Confirmed working (left-drag reorders tabs), but it exposed a thin
+    // white sliver above the tabs - Qt's QTabBar draws a connecting "base"
+    // frame between the tab row and the pane below it (QTabBar::drawBase(),
+    // on by default) using PE_FrameTabBarBase, which on Fusion paints with
+    // the native palette rather than this app's dark theme, regardless of
+    // the QTabBar/QTabWidget::pane background-color rules in Theme.h's QSS
+    // (a separate primitive from those, not covered by them). The QSS
+    // already draws the equivalent connecting look via QTabWidget::pane's
+    // own "border: 1px solid %5; top: -1px;", so the native base line is
+    // pure redundant (and wrongly-colored) decoration - turning it off
+    // removes the artifact with no visual gap left behind.
+    m_tabs->tabBar()->setDrawBase(false);
 
     // Playlist tab
-    auto *playlistTab = new QWidget(tabs);
+    auto *playlistTab = new QWidget(m_tabs);
+    // Stable, non-translated identifiers (independent of tr()'s translated
+    // tab text) so Settings::tabOrder() - saved whenever the user reorders
+    // tabs, restored on next launch via restoreTabOrder() - always matches
+    // these tabs up correctly regardless of UI language.
+    playlistTab->setObjectName(QStringLiteral("Playlist"));
     auto *playlistLayout = new QVBoxLayout(playlistTab);
     auto *playlistToolbar = new QHBoxLayout();
-    auto *addFilesBtn = new QPushButton(tr("Add Files"), playlistTab);
-    addFilesBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, iconColor, 16));
-    auto *addFolderBtn = new QPushButton(tr("Add Folder"), playlistTab);
-    addFolderBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, iconColor, 16));
-    auto *loadBtn = new QPushButton(tr("Load Playlist"), playlistTab);
-    loadBtn->setIcon(IconFactory::make(IconFactory::Glyph::ListMusic, iconColor, 16));
-    auto *saveBtn = new QPushButton(tr("Save Playlist"), playlistTab);
-    saveBtn->setIcon(IconFactory::make(IconFactory::Glyph::Save, iconColor, 16));
-    auto *clearBtn = new QPushButton(tr("Clear"), playlistTab);
-    clearBtn->setIcon(IconFactory::make(IconFactory::Glyph::Clear, iconColor, 16));
+    // Stored as members (not locals) so refreshStaticIcons() can recolor
+    // them after a Theme tab change - they don't have their own dynamic
+    // update*Icon() function the way shuffle/repeat/mute do, since their
+    // icon never changes for any reason other than a theme swap.
+    m_addFilesBtn = new QPushButton(tr("Add Files"), playlistTab);
+    m_addFilesBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, iconColor, 16));
+    m_addFolderBtn = new QPushButton(tr("Add Folder"), playlistTab);
+    m_addFolderBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, iconColor, 16));
+    m_loadPlaylistBtn = new QPushButton(tr("Load Playlist"), playlistTab);
+    m_loadPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::ListMusic, iconColor, 16));
+    m_savePlaylistBtn = new QPushButton(tr("Save Playlist"), playlistTab);
+    m_savePlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Save, iconColor, 16));
+    m_clearPlaylistBtn = new QPushButton(tr("Clear"), playlistTab);
+    m_clearPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Clear, iconColor, 16));
 
-    playlistToolbar->addWidget(addFilesBtn);
-    playlistToolbar->addWidget(addFolderBtn);
-    playlistToolbar->addWidget(loadBtn);
-    playlistToolbar->addWidget(saveBtn);
+    playlistToolbar->addWidget(m_addFilesBtn);
+    playlistToolbar->addWidget(m_addFolderBtn);
+    playlistToolbar->addWidget(m_loadPlaylistBtn);
+    playlistToolbar->addWidget(m_savePlaylistBtn);
     playlistToolbar->addStretch(1);
-    playlistToolbar->addWidget(clearBtn);
+    playlistToolbar->addWidget(m_clearPlaylistBtn);
     playlistLayout->addLayout(playlistToolbar);
 
     m_playlistView = new QListWidget(playlistTab);
@@ -372,16 +505,17 @@ void MainWindow::setupUi()
     m_playlistView->setDefaultDropAction(Qt::MoveAction);
     playlistLayout->addWidget(m_playlistView, 1);
 
-    tabs->addTab(playlistTab, tr("Playlist"));
+    m_tabs->addTab(playlistTab, tr("Playlist"));
 
-    connect(addFilesBtn, &QPushButton::clicked, this, &MainWindow::onAddFilesClicked);
-    connect(addFolderBtn, &QPushButton::clicked, this, &MainWindow::onAddFolderClicked);
-    connect(loadBtn, &QPushButton::clicked, this, &MainWindow::onLoadPlaylistClicked);
-    connect(saveBtn, &QPushButton::clicked, this, &MainWindow::onSavePlaylistClicked);
-    connect(clearBtn, &QPushButton::clicked, this, &MainWindow::onClearPlaylistClicked);
+    connect(m_addFilesBtn, &QPushButton::clicked, this, &MainWindow::onAddFilesClicked);
+    connect(m_addFolderBtn, &QPushButton::clicked, this, &MainWindow::onAddFolderClicked);
+    connect(m_loadPlaylistBtn, &QPushButton::clicked, this, &MainWindow::onLoadPlaylistClicked);
+    connect(m_savePlaylistBtn, &QPushButton::clicked, this, &MainWindow::onSavePlaylistClicked);
+    connect(m_clearPlaylistBtn, &QPushButton::clicked, this, &MainWindow::onClearPlaylistClicked);
 
     // Equalizer tab
-    auto *eqTab = new QWidget(tabs);
+    auto *eqTab = new QWidget(m_tabs);
+    eqTab->setObjectName(QStringLiteral("Equalizer"));
     auto *eqLayout = new QVBoxLayout(eqTab);
     auto *eqHeaderRow = new QHBoxLayout();
     m_eqEnableCheck = new QCheckBox(tr("Enable Equalizer"), eqTab);
@@ -423,11 +557,12 @@ void MainWindow::setupUi()
     }
     eqLayout->addLayout(bandsLayout, 1);
 
-    tabs->addTab(eqTab, tr("Equalizer"));
+    m_tabs->addTab(eqTab, tr("Equalizer"));
 
     // Shutdown tab: a sleep-timer that either just closes the app, or
     // closes the app and shuts the whole PC down, after a countdown.
-    auto *shutdownTab = new QWidget(tabs);
+    auto *shutdownTab = new QWidget(m_tabs);
+    shutdownTab->setObjectName(QStringLiteral("Shutdown"));
     auto *shutdownLayout = new QVBoxLayout(shutdownTab);
     shutdownLayout->setSpacing(14);
 
@@ -499,10 +634,77 @@ void MainWindow::setupUi()
 
     shutdownLayout->addStretch(1);
 
-    tabs->addTab(shutdownTab, tr("Shutdown"));
+    m_tabs->addTab(shutdownTab, tr("Shutdown"));
 
     connect(m_shutdownStartBtn, &QPushButton::clicked, this, &MainWindow::onShutdownStartClicked);
     connect(m_shutdownCancelBtn, &QPushButton::clicked, this, &MainWindow::onShutdownCancelClicked);
+
+    // Theme tab: lets the user recolor the app instead of editing Theme.h.
+    // Only Background and Accent are exposed - every other shade (panels,
+    // borders, hover states, the lighter "accent hi") is derived from just
+    // those two via Theme::derivePalette(), the same way the hand-picked
+    // default palette's shades relate to its own bg0/accent.
+    auto *themeTab = new QWidget(m_tabs);
+    themeTab->setObjectName(QStringLiteral("Theme"));
+    auto *themeLayout = new QVBoxLayout(themeTab);
+    themeLayout->setSpacing(14);
+
+    auto *themeColorsLabel = new QLabel(tr("COLORS"), themeTab);
+    themeColorsLabel->setObjectName("SectionHeader");
+    themeLayout->addWidget(themeColorsLabel);
+
+    auto *themeBgRow = new QHBoxLayout();
+    themeBgRow->addWidget(new QLabel(tr("Background"), themeTab));
+    themeBgRow->addStretch(1);
+    m_themeBackgroundColorBtn = new QPushButton(themeTab);
+    m_themeBackgroundColorBtn->setFixedWidth(130);
+    m_themeBackgroundColorBtn->setToolTip(tr("Click to choose the app's background color"));
+    themeBgRow->addWidget(m_themeBackgroundColorBtn);
+    themeLayout->addLayout(themeBgRow);
+
+    auto *themeAccentRow = new QHBoxLayout();
+    themeAccentRow->addWidget(new QLabel(tr("Accent"), themeTab));
+    themeAccentRow->addStretch(1);
+    m_themeAccentColorBtn = new QPushButton(themeTab);
+    m_themeAccentColorBtn->setFixedWidth(130);
+    m_themeAccentColorBtn->setToolTip(tr("Click to choose the highlight/accent color"));
+    themeAccentRow->addWidget(m_themeAccentColorBtn);
+    themeLayout->addLayout(themeAccentRow);
+
+    auto *themeHint = new QLabel(
+        tr("Every other shade (panels, borders, hover highlights) is generated from these two "
+           "colors. Changes apply immediately."),
+        themeTab);
+    themeHint->setObjectName("TrackArtist");
+    themeHint->setWordWrap(true);
+    themeLayout->addWidget(themeHint);
+
+    auto *themeResetRow = new QHBoxLayout();
+    m_themeResetBtn = new QPushButton(tr("Reset to Default"), themeTab);
+    themeResetRow->addWidget(m_themeResetBtn);
+    themeResetRow->addStretch(1);
+    themeLayout->addLayout(themeResetRow);
+
+    themeLayout->addStretch(1);
+
+    m_tabs->addTab(themeTab, tr("Theme"));
+
+    connect(m_themeBackgroundColorBtn, &QPushButton::clicked, this, &MainWindow::onThemeBackgroundColorClicked);
+    connect(m_themeAccentColorBtn, &QPushButton::clicked, this, &MainWindow::onThemeAccentColorClicked);
+    connect(m_themeResetBtn, &QPushButton::clicked, this, &MainWindow::onThemeResetClicked);
+
+    updateThemeTabSwatches(); // paint the two buttons with whatever palette is current at this point
+
+    // Default tab order is Playlist/Equalizer/Theme/Shutdown, but each tab's
+    // UI is built above in Playlist/Equalizer/Shutdown/Theme order (so this
+    // reorders where Shutdown and Theme land in the bar without moving any
+    // of that construction code around). tabAt()-based indexOf() lookups
+    // (not hardcoded 2/3) so this keeps working correctly if a tab is ever
+    // added/removed/reordered above in the future. This is only the
+    // FIRST-RUN/fallback default - restoreSettings() -> restoreTabOrder()
+    // below overrides it with whatever order the user last left the tabs in,
+    // once anything has actually been saved.
+    m_tabs->tabBar()->moveTab(m_tabs->indexOf(shutdownTab), m_tabs->indexOf(themeTab));
 
     // Top row: cover + track details pinned top-left, Playlist/Equalizer
     // filling the rest of the width as the main content area. Visualizer
@@ -510,7 +712,7 @@ void MainWindow::setupUi()
     auto *topRowLayout = new QHBoxLayout();
     topRowLayout->setSpacing(14);
     topRowLayout->addWidget(leftPanel);
-    topRowLayout->addWidget(tabs, 1);
+    topRowLayout->addWidget(m_tabs, 1);
 
     rootLayout->addLayout(topRowLayout, 1);
     rootLayout->addLayout(vizHeaderRow);
@@ -575,6 +777,26 @@ void MainWindow::setupConnections()
     connect(m_vizStyleCombo, &QComboBox::currentTextChanged, this, &MainWindow::onVizStyleChanged);
     connect(m_vizColorSchemeCombo, &QComboBox::currentTextChanged, this, &MainWindow::onVizColorSchemeChanged);
     connect(m_vizEnableCheck, &QCheckBox::toggled, this, &MainWindow::onVizEnabledToggled);
+
+    // Persist the tab bar's order as soon as it changes, so whatever order
+    // the user leaves it in (via right-click-drag or the built-in left-
+    // click-drag reordering) becomes the default on next launch.
+    // QTabBar::moveTab() always emits tabMoved - both SwappableTabBar's own
+    // right-click gesture and Qt's internal setMovable(true) left-drag
+    // handling go through moveTab() under the hood, so this one connection
+    // covers both mechanisms. Skipped while m_restoringState is true so
+    // restoreTabOrder() rearranging tabs back to a previously-saved order on
+    // startup doesn't immediately re-save a half-applied intermediate order.
+    connect(m_tabs->tabBar(), &QTabBar::tabMoved, this, [this](int, int) {
+        if (m_restoringState)
+            return;
+        QStringList order;
+        order.reserve(m_tabs->count());
+        for (int i = 0; i < m_tabs->count(); ++i)
+            order << m_tabs->widget(i)->objectName();
+        m_settings.setTabOrder(order);
+        m_settings.sync();
+    });
 
     connect(m_engine, &AudioEngine::stateChanged, this, &MainWindow::onEngineStateChanged);
     connect(m_engine, &AudioEngine::trackLoaded, this, &MainWindow::onEngineTrackLoaded);
@@ -904,7 +1126,7 @@ void MainWindow::onShutdownStartClicked()
     m_shutdownStatusLabel->setText(alsoShutdownComputer
                                         ? tr("The program will close and the computer will shut down when this reaches zero.")
                                         : tr("The program will close when this reaches zero."));
-    m_shutdownCountdownLabel->setStyleSheet(QStringLiteral("color: %1;").arg(Theme::kAccentHi));
+    m_shutdownCountdownLabel->setStyleSheet(QStringLiteral("color: %1;").arg(Theme::accentHiColor().name()));
 
     if (!m_shutdownTimer) {
         m_shutdownTimer = new QTimer(this);
@@ -946,6 +1168,119 @@ void MainWindow::onShutdownTimerTick()
         return;
     }
     m_shutdownCountdownLabel->setText(formatCountdown(remainingSecs));
+}
+
+// ---------------------------------------------------------------------------
+// Theme
+// ---------------------------------------------------------------------------
+
+void MainWindow::onThemeBackgroundColorClicked()
+{
+    const QColor chosen = pickColorWithLatinDigits(Theme::current().bg0, this, tr("Choose Background Color"));
+    if (!chosen.isValid())
+        return; // user hit Cancel
+    Theme::setCustomPalette(chosen, Theme::current().accent);
+    applyThemePalette();
+}
+
+void MainWindow::onThemeAccentColorClicked()
+{
+    const QColor chosen = pickColorWithLatinDigits(Theme::current().accent, this, tr("Choose Accent Color"));
+    if (!chosen.isValid())
+        return;
+    Theme::setCustomPalette(Theme::current().bg0, chosen);
+    applyThemePalette();
+}
+
+void MainWindow::onThemeResetClicked()
+{
+    Theme::resetToDefaultPalette();
+    applyThemePalette();
+}
+
+// Repaints every part of the UI that isn't automatically covered by the QSS
+// stylesheet (setStyleSheet() only reaches stylesheet-driven widgets - hand
+// -painted icons/handles/placeholders need to be explicitly rebuilt so they
+// don't stay frozen on whatever palette was current when they were drawn),
+// then persists the new palette so it survives a restart.
+void MainWindow::applyThemePalette()
+{
+    setStyleSheet(Theme::appStyleSheet());
+    updateThemeTabSwatches();
+    refreshStaticIcons();
+    updateShuffleIcon();
+    updateRepeatIcon();
+    updateVolumeIcon();
+    for (QSlider *slider : m_eqSliders)
+        slider->update(); // EqSlider::paintEvent reads Theme::borderColor()/accentColor()/textColor() live
+
+    if (!m_playlist->isEmpty())
+        updateCoverArt(m_playlist->currentFilePath()); // repaints the "no artwork" placeholder, if that's showing
+
+    m_settings.setThemeBackgroundColor(Theme::current().bg0.name());
+    m_settings.setThemeAccentColor(Theme::current().accent.name());
+}
+
+void MainWindow::updateThemeTabSwatches()
+{
+    auto styleSwatch = [](QPushButton *btn, const QColor &color) {
+        // Pick a readable label color for whatever swatch color the user
+        // lands on, rather than always using the app's own text color (which
+        // may itself be light-on-light or dark-on-dark against this swatch).
+        const double luminance = 0.299 * color.redF() + 0.587 * color.greenF() + 0.114 * color.blueF();
+        const QString labelColor = luminance > 0.5 ? QStringLiteral("#000000") : QStringLiteral("#ffffff");
+        btn->setText(color.name().toUpper());
+        btn->setStyleSheet(QStringLiteral("background-color: %1; color: %2; border: 1px solid %3;")
+                                .arg(color.name(), labelColor, Theme::borderColor().name()));
+    };
+    styleSwatch(m_themeBackgroundColorBtn, Theme::current().bg0);
+    styleSwatch(m_themeAccentColorBtn, Theme::current().accent);
+}
+
+// Re-icons every button whose glyph color was baked in at setupUi() time
+// (prev/stop/next transport buttons, playlist toolbar buttons) and never
+// gets touched again outside of a theme change - shuffle/repeat/mute have
+// their own update*Icon() functions instead because their icon also changes
+// with playback state, not just theme.
+void MainWindow::refreshStaticIcons()
+{
+    const QColor c = Theme::textColor();
+    m_prevBtn->setIcon(IconFactory::make(IconFactory::Glyph::Previous, c));
+    m_stopBtn->setIcon(IconFactory::make(IconFactory::Glyph::Stop, c));
+    m_nextBtn->setIcon(IconFactory::make(IconFactory::Glyph::Next, c));
+    m_addFilesBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, c, 16));
+    m_addFolderBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, c, 16));
+    m_loadPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::ListMusic, c, 16));
+    m_savePlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Save, c, 16));
+    m_clearPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Clear, c, 16));
+}
+
+// Rearranges the tab bar to match Settings::tabOrder(), if a custom order
+// was ever saved (empty list = never saved = keep setupUi()'s own built-in
+// Playlist/Equalizer/Theme/Shutdown default untouched). For each saved
+// position left-to-right, finds the tab whose page objectName matches
+// (set in setupUi(): "Playlist"/"Equalizer"/"Shutdown"/"Theme") and moves
+// it there - same repeated-moveTab() approach as Playlist::reorder(),
+// works for an arbitrary permutation. A name in the saved list that no
+// longer matches any tab (e.g. a future removed tab) is simply skipped; a
+// tab not mentioned in an older saved list (e.g. a future new tab) just
+// keeps whatever position it lands in after the covered ones are placed.
+void MainWindow::restoreTabOrder()
+{
+    const QStringList saved = m_settings.tabOrder();
+    if (saved.isEmpty())
+        return;
+    for (int target = 0; target < saved.size(); ++target) {
+        int current = -1;
+        for (int i = 0; i < m_tabs->count(); ++i) {
+            if (m_tabs->widget(i)->objectName() == saved[target]) {
+                current = i;
+                break;
+            }
+        }
+        if (current >= 0 && current != target)
+            m_tabs->tabBar()->moveTab(current, target);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -1040,7 +1375,7 @@ void MainWindow::updatePlayPauseIcon(bool playing)
 
 void MainWindow::updateShuffleIcon()
 {
-    const QColor color = m_playlist->shuffle() ? QColor(Qt::white) : QColor(Theme::kText);
+    const QColor color = m_playlist->shuffle() ? QColor(Qt::white) : Theme::textColor();
     m_shuffleBtn->setIcon(IconFactory::make(IconFactory::Glyph::Shuffle, color));
     m_shuffleBtn->setChecked(m_playlist->shuffle());
 }
@@ -1061,7 +1396,7 @@ void MainWindow::updateRepeatIcon()
     // is broken". Giving each mode its own icon color removes the ambiguity.
     QColor color;
     if (mode == RM::Off)
-        color = QColor(Theme::kText);
+        color = Theme::textColor();
     else if (mode == RM::All)
         color = QColor(Qt::white);
     else // One
@@ -1075,7 +1410,7 @@ void MainWindow::updateRepeatIcon()
 
 void MainWindow::updateVolumeIcon()
 {
-    const QColor color(Theme::kText);
+    const QColor color = Theme::textColor();
     IconFactory::Glyph glyph;
     if (m_engine->isMuted() || m_volumeSlider->value() == 0)
         glyph = IconFactory::Glyph::VolumeMute;
@@ -1162,9 +1497,9 @@ void MainWindow::updateCoverArt(const QString &filePath)
     QPainter p(&placeholder);
     p.setRenderHint(QPainter::Antialiasing, true);
     p.setPen(Qt::NoPen);
-    p.setBrush(QColor(Theme::kBg3));
+    p.setBrush(Theme::bg3Color());
     p.drawRoundedRect(placeholder.rect(), 10, 10);
-    p.setPen(QColor(Theme::kTextDim));
+    p.setPen(Theme::textDimColor());
     QFont f = p.font();
     f.setPointSize(28);
     p.setFont(f);
@@ -1251,6 +1586,7 @@ void MainWindow::restoreSettings()
     m_restoringState = true;
 
     restoreGeometry(m_settings.windowGeometry());
+    restoreTabOrder();
 
     const QStringList saved = m_settings.playlistFiles();
     QStringList existing;

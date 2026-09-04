@@ -21,6 +21,7 @@ class QCheckBox;
 class QRadioButton;
 class QSpinBox;
 class QTimer;
+class QTabWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -80,6 +81,11 @@ private slots:
     void onShutdownCancelClicked();
     void onShutdownTimerTick();
 
+    // Theme
+    void onThemeBackgroundColorClicked();
+    void onThemeAccentColorClicked();
+    void onThemeResetClicked();
+
     // AudioEngine
     void onEngineStateChanged(AudioEngine::State state);
     void onEngineTrackLoaded(qint64 durationMs);
@@ -107,10 +113,18 @@ private:
     void performScheduledShutdown(bool alsoShutdownComputer);
     static QString formatTime(qint64 ms);
 
+    void applyThemePalette();     // pushes Theme::current() into the stylesheet + every hand-painted widget, then saves it
+    void updateThemeTabSwatches();// repaints the two Theme-tab color buttons to match Theme::current()
+    void refreshStaticIcons();    // re-icons buttons with no update*Icon() of their own (see call site for the list)
+    void restoreTabOrder();       // reorders the tab bar to match Settings::tabOrder(), if a custom order was saved
+
     AudioEngine *m_engine = nullptr;
     Playlist *m_playlist = nullptr;
     Settings m_settings;
     Visualizer *m_visualizer = nullptr;
+
+    // Tabs
+    QTabWidget *m_tabs = nullptr; // actually a TabWidgetWithSwappableBar (MainWindow.cpp anonymous namespace) - stored as the QTabWidget base since the subclass is private to that .cpp file
 
     // Header
     QLabel *m_coverLabel = nullptr;
@@ -137,6 +151,11 @@ private:
 
     // Playlist
     QListWidget *m_playlistView = nullptr;
+    QPushButton *m_addFilesBtn = nullptr;
+    QPushButton *m_addFolderBtn = nullptr;
+    QPushButton *m_loadPlaylistBtn = nullptr;
+    QPushButton *m_savePlaylistBtn = nullptr;
+    QPushButton *m_clearPlaylistBtn = nullptr;
 
     // Equalizer
     QCheckBox *m_eqEnableCheck = nullptr;
@@ -162,6 +181,11 @@ private:
     QTimer *m_shutdownTimer = nullptr;
     QDateTime m_shutdownTargetTime;
     bool m_shutdownExitInProgress = false; // set right before an auto-close triggered by the shutdown timer, so closeEvent() skips the "Are you sure?" prompt
+
+    // Theme
+    QPushButton *m_themeBackgroundColorBtn = nullptr;
+    QPushButton *m_themeAccentColorBtn = nullptr;
+    QPushButton *m_themeResetBtn = nullptr;
 
     bool m_restoringState = false;
 };

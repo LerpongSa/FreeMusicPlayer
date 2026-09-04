@@ -146,7 +146,10 @@ void Settings::setEqCustomGains(const QVector<double> &gains)
 
 QString Settings::visualizerStyle() const
 {
-    return m_settings->value("visualizer/style", "Bars").toString();
+    // "Brick Box"/"Neon Green" (below) are only the FIRST-RUN defaults - once
+    // any value has actually been saved (including by the user just picking
+    // something in the UI), that saved value always wins over these.
+    return m_settings->value("visualizer/style", "Brick Box").toString();
 }
 void Settings::setVisualizerStyle(const QString &style)
 {
@@ -155,7 +158,7 @@ void Settings::setVisualizerStyle(const QString &style)
 
 QString Settings::visualizerColorScheme() const
 {
-    return m_settings->value("visualizer/colorScheme", "Purple").toString();
+    return m_settings->value("visualizer/colorScheme", "Neon Green").toString();
 }
 void Settings::setVisualizerColorScheme(const QString &scheme)
 {
@@ -169,6 +172,33 @@ bool Settings::visualizerEnabled() const
 void Settings::setVisualizerEnabled(bool on)
 {
     m_settings->setValue("visualizer/enabled", on);
+}
+
+QString Settings::themeBackgroundColor() const
+{
+    return m_settings->value("theme/backgroundColor").toString();
+}
+void Settings::setThemeBackgroundColor(const QString &hexColor)
+{
+    m_settings->setValue("theme/backgroundColor", hexColor);
+}
+
+QString Settings::themeAccentColor() const
+{
+    return m_settings->value("theme/accentColor").toString();
+}
+void Settings::setThemeAccentColor(const QString &hexColor)
+{
+    m_settings->setValue("theme/accentColor", hexColor);
+}
+
+QStringList Settings::tabOrder() const
+{
+    return m_settings->value("ui/tabOrder").toStringList();
+}
+void Settings::setTabOrder(const QStringList &order)
+{
+    m_settings->setValue("ui/tabOrder", order);
 }
 
 QByteArray Settings::windowGeometry() const

@@ -69,6 +69,24 @@ public:
     bool visualizerEnabled() const;
     void setVisualizerEnabled(bool on);
 
+    // --- Theme --------------------------------------------------------
+    // Empty strings mean "no custom theme saved" - Theme.h's built-in
+    // default palette is used. Stored as "#rrggbb" (QColor::name()).
+    QString themeBackgroundColor() const;
+    void setThemeBackgroundColor(const QString &hexColor);
+
+    QString themeAccentColor() const;
+    void setThemeAccentColor(const QString &hexColor);
+
+    // --- Tab bar ------------------------------------------------------
+    // Object-name identifiers ("Playlist"/"Equalizer"/"Shutdown"/"Theme"),
+    // left-to-right, for whatever order the tab bar was last left in
+    // (via right-click-drag or left-click-drag reordering). An empty list
+    // means "nothing saved yet" - MainWindow::setupUi()'s own built-in
+    // default order (Playlist/Equalizer/Theme/Shutdown) is used instead.
+    QStringList tabOrder() const;
+    void setTabOrder(const QStringList &order);
+
     // --- Window -----------------------------------------------------
     QByteArray windowGeometry() const;
     void setWindowGeometry(const QByteArray &geometry);
