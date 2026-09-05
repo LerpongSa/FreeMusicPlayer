@@ -583,4 +583,8 @@ CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qapplication.h \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QStyleOptionSlider \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QStyle \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QProxyStyle \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qproxystyle.h \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/QCommonStyle \
+ C:/Qt/6.11.1/mingw_64/include/QtWidgets/qcommonstyle.h \
  C:/Qt/6.11.1/mingw_64/include/QtGui/QMouseEvent

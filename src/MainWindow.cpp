@@ -47,6 +47,7 @@
 #include <QApplication>
 #include <QStyleOptionSlider>
 #include <QStyle>
+#include <QProxyStyle>
 #include <QMouseEvent>
 
 #include <algorithm>
@@ -118,6 +119,27 @@ QColor pickColorWithLatinDigits(const QColor &initial, QWidget *parent, const QS
         sb->setLocale(QLocale::c());
     return dialog.exec() == QDialog::Accepted ? dialog.currentColor() : QColor();
 }
+
+// Makes a left-click anywhere on a slider's groove jump the handle straight
+// to that point (and start dragging from there), instead of QSlider's
+// default "nudge by one page step towards the click". Used for the seek bar
+// so you can click any spot in the track to play from there. Everything else
+// (handle drag, arrow keys, sliderPressed/Moved/Released signals) is the
+// base QSlider's own behaviour - this only flips one style hint.
+class AbsoluteSetSliderStyle : public QProxyStyle
+{
+public:
+    using QProxyStyle::QProxyStyle;
+
+    int styleHint(StyleHint hint, const QStyleOption *option = nullptr,
+                  const QWidget *widget = nullptr,
+                  QStyleHintReturn *returnData = nullptr) const override
+    {
+        if (hint == QStyle::SH_Slider_AbsoluteSetButtons)
+            return Qt::LeftButton;
+        return QProxyStyle::styleHint(hint, option, widget, returnData);
+    }
+};
 
 // Bipolar EQ band slider. A plain QSlider's QSS sub-page/add-page can only
 // color the track from one END to the handle, which looks wrong for a
@@ -368,6 +390,14 @@ void MainWindow::setupUi()
     m_seekSlider = new QSlider(Qt::Horizontal, central);
     m_seekSlider->setRange(0, 0);
     m_seekSlider->setEnabled(false);
+    // Click anywhere on the track to seek there, not just drag the handle.
+    // The proxy style is parented to the slider so it lives/dies with it
+    // (QWidget::setStyle does not take ownership).
+    {
+        auto *absStyle = new AbsoluteSetSliderStyle;
+        absStyle->setParent(m_seekSlider);
+        m_seekSlider->setStyle(absStyle);
+    }
     seekLayout->addWidget(m_positionLabel);
     seekLayout->addWidget(m_seekSlider, 1);
     seekLayout->addWidget(m_durationLabel);
