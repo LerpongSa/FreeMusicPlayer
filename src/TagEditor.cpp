@@ -818,11 +818,17 @@ TrackTags readMp4Tags(QFile &file)
     if (!findChildAtom(file, metaStart, metaEnd, "ilst", ilstStart, ilstEnd))
         return t;
 
-    // "\xA9nam"/"\xA9ART"/"\xA9alb": the leading byte is the raw 0xA9 (copyright
-    // sign) byte iTunes uses for these atom names, not a printable character.
-    t.title = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9nam");
-    t.artist = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9ART");
-    t.album = readMp4TextAtom(file, ilstStart, ilstEnd, "\xA9alb");
+    // "\251nam"/"\251ART"/"\251alb": the leading byte is the raw 0xA9 (copyright
+    // sign, 0251 octal) that iTunes uses for these atom names, not a printable
+    // character. It MUST be written as an octal escape, not "\xA9nam" - a hex
+    // escape is greedy and consumes every following hex digit, so "\xA9ART"
+    // parses as the single (out-of-range, then truncated) char 0xA9A followed
+    // by "RT", i.e. the wrong 3-byte name 0x9A 'R' 'T'. "\xA9nam" happens to
+    // survive only because 'n' isn't a hex digit; 'A'/'a' in ART/alb are, which
+    // is why those two silently never matched before.
+    t.title = readMp4TextAtom(file, ilstStart, ilstEnd, "\251nam");
+    t.artist = readMp4TextAtom(file, ilstStart, ilstEnd, "\251ART");
+    t.album = readMp4TextAtom(file, ilstStart, ilstEnd, "\251alb");
     return t;
 }
 
