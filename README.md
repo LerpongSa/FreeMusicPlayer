@@ -1,8 +1,10 @@
 # FreeMusicPlayer
 
 Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Widgets + Qt Multimedia)
-รองรับ MP3 / WAV / FLAC / M4A(AAC) / OGG / Opus / WMA / AIFF / WavPack (`.wv`) /
-DSD (`.dsf`) และไฟล์เสียงอื่น ๆ ที่ backend FFmpeg ของ Qt Multimedia ถอดรหัสได้
+รองรับ MP3 / WAV / FLAC / M4A (AAC และ ALAC/Apple Lossless) / `.m4b` / `.alac` /
+`.caf` / OGG / Opus / WMA / AIFF / WavPack (`.wv`) / DSD (`.dsf`) และไฟล์เสียง
+อื่น ๆ ที่ backend FFmpeg ของ Qt Multimedia ถอดรหัสได้ ไฟล์ ALAC ในกล่อง MP4/CAF
+ตรวจจับ codec จริงในคอนเทนเนอร์ จึงแสดงบรรทัดฟอร์แมตเป็น `ALAC` ไม่ใช่ `M4A` ลอย ๆ
 
 ## ฟีเจอร์
 
@@ -30,10 +32,11 @@ DSD (`.dsf`) และไฟล์เสียงอื่น ๆ ที่ back
 - **Sound Visualizer** — วิเคราะห์สเปกตรัมด้วย FFT แบบ log-spaced band เปิด/ปิด
   ได้ มีรูปแบบการวาดให้เลือก **15 แบบ**: Bars, Mirrored Bars, Wave,
   Line Spectrum, Circular, Dots, VU Meter, Particles, Brick Box, Spectrogram,
-  Spiral, Ribbon, Orbit, Tunnel, Sunburst — จับคู่กับชุดสีได้ **16 ชุด**:
+  Spiral, Ribbon, Orbit, Tunnel, Sunburst — จับคู่กับชุดสีได้ **17 ชุด**:
   Purple, Ocean, Sunset, Neon Green, Hot Pink, Cyan, Fire, Gold, Emerald,
-  Lavender, Coral, Ice, Crimson, Amber, Midnight, Lime (เลือกรูปแบบ × ชุดสี
-  อิสระต่อกัน)
+  Lavender, Coral, Ice, Crimson, Amber, Midnight, Lime และ **Rainbow**
+  (ไล่เฉดสีรุ้งทีละ band แดง→ม่วง แทนคู่สีหลัก/รอง) — เลือกรูปแบบ × ชุดสี
+  อิสระต่อกัน
 - **Equalizer** — 10-band graphic EQ (31Hz–16kHz) เปิด/ปิดได้ พร้อมพรีเซ็ต
   สำเร็จรูป **8 แบบ**: Flat, Pop, Rock, Jazz, Classical, Bass Boost,
   Treble Boost, Vocal Boost และปรับเองได้ (จะกลายเป็น "Custom" อัตโนมัติ)
@@ -63,7 +66,7 @@ FreeMusicPlayer/
 │   ├── AudioEngine.*        เพลย์แบ็กเอนจิน (ดูหัวข้อสถาปัตยกรรมด้านล่าง)
 │   ├── Equalizer.*          10-band EQ + พรีเซ็ต
 │   ├── BiquadFilter.h        RBJ peaking biquad filter (ต่อแบนด์ต่อแชนแนล)
-│   ├── Visualizer.*          widget วาดสเปกตรัม/คลื่นเสียง (15 รูปแบบ × 16 ชุดสี)
+│   ├── Visualizer.*          widget วาดสเปกตรัม/คลื่นเสียง (15 รูปแบบ × 17 ชุดสี)
 │   ├── FFT.h                 radix-2 FFT แบบ in-place
 │   ├── Playlist.*            โมเดล playlist + shuffle/repeat state machine
 │   ├── CoverArtExtractor.*   parser ปกเพลงของแต่ละ container (อ่านอย่างเดียว)

@@ -6,9 +6,11 @@
 #include <QPainterPath>
 #include <QtMath>
 #include <QRandomGenerator>
+#include <QFont>
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 namespace {
 // Linear-interpolates two colors in RGB space (t clamped to 0..1). Used by
@@ -22,6 +24,29 @@ QColor lerpColor(const QColor &a, const QColor &b, float t)
         a.red()   + static_cast<int>((b.red()   - a.red())   * t),
         a.green() + static_cast<int>((b.green() - a.green()) * t),
         a.blue()  + static_cast<int>((b.blue()  - a.blue())  * t));
+}
+
+// Catmull-Rom sample of a band array at a continuous position `pos` in
+// 0..1. Lets Bars / Mirrored Bars / Ribbon render many more elements than
+// there are real analysis bands (kNumBands) with a smooth envelope through
+// the band values, instead of 32 visibly coarse steps. Result clamped to
+// 0..1 (the spline can overshoot slightly on steep edges).
+float sampleBandCurve(const float *bands, int n, float pos)
+{
+    if (n <= 1)
+        return n == 1 ? std::clamp(bands[0], 0.0f, 1.0f) : 0.0f;
+    const float fp = std::clamp(pos, 0.0f, 1.0f) * (n - 1);
+    const int i1 = std::min(static_cast<int>(fp), n - 1);
+    const int i0 = std::max(i1 - 1, 0);
+    const int i2 = std::min(i1 + 1, n - 1);
+    const int i3 = std::min(i1 + 2, n - 1);
+    const float t = fp - i1;
+    const float p0 = bands[i0], p1 = bands[i1], p2 = bands[i2], p3 = bands[i3];
+    const float a = -0.5f * p0 + 1.5f * p1 - 1.5f * p2 + 0.5f * p3;
+    const float b =        p0 - 2.5f * p1 + 2.0f * p2 - 0.5f * p3;
+    const float c = -0.5f * p0 + 0.5f * p2;
+    const float v = ((a * t + b) * t + c) * t + p1;
+    return std::clamp(v, 0.0f, 1.0f);
 }
 }
 
@@ -79,6 +104,7 @@ QStringList Visualizer::colorSchemeNames()
         QStringLiteral("Amber"),
         QStringLiteral("Midnight"),
         QStringLiteral("Lime"),
+        QStringLiteral("Rainbow"),
     };
 }
 
@@ -122,6 +148,13 @@ void Visualizer::setColorScheme(ColorScheme s)
 
 void Visualizer::applyColorScheme()
 {
+    // Rainbow has no fixed pair; bandColor() generates a hue per band. The
+    // primary/secondary values below are still set to a red->violet pair so
+    // the few styles that draw a single flat gradient rather than per-band
+    // colors (e.g. the Wave trace) still look like a rainbow rather than
+    // falling back to stale Purple.
+    m_rainbow = (m_colorScheme == ColorScheme::Rainbow);
+
     switch (m_colorScheme) {
     case ColorScheme::Purple:
         m_primaryColor = QColor(0x6c, 0x5c, 0xe7);
@@ -187,7 +220,23 @@ void Visualizer::applyColorScheme()
         m_primaryColor = QColor(0x5c, 0x8a, 0x00);
         m_secondaryColor = QColor(0xc6, 0xf2, 0x4e);
         break;
+    case ColorScheme::Rainbow:
+        m_primaryColor = QColor(0xff, 0x3b, 0x30);   // red (low end)
+        m_secondaryColor = QColor(0xb0, 0x50, 0xff); // violet (high end)
+        break;
     }
+}
+
+QColor Visualizer::bandColor(float t) const
+{
+    t = std::clamp(t, 0.0f, 1.0f);
+    if (m_rainbow) {
+        // Hue 0 (red) at the low bands up to ~0.82 (violet) at the high
+        // bands - stop short of a full 1.0 turn so the top doesn't wrap
+        // back around to red and collide with the bottom.
+        return QColor::fromHsvF(0.82f * t, 0.72f, 0.98f);
+    }
+    return lerpColor(m_primaryColor, m_secondaryColor, t);
 }
 
 void Visualizer::setActive(bool active)
@@ -354,32 +403,90 @@ void Visualizer::drawBars(QPainter &p, bool mirrored)
 {
     const int w = width();
     const int h = height();
-    const double barW = static_cast<double>(w) / kNumBands;
+    if (w < 8 || h < 8)
+        return;
 
-    for (int b = 0; b < kNumBands; ++b) {
-        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
-        const double barH = v * (mirrored ? h * 0.48 : h * 0.95);
-        const double x = b * barW + barW * 0.15;
-        const double bw = barW * 0.7;
+    // Render far more bars than there are analysis bands (kNumBands = 32),
+    // sampled through a Catmull-Rom curve so the spectrum envelope reads as
+    // a smooth, finely-stepped shape instead of 32 chunky blocks. Density
+    // scales with width and is capped so bars never go sub-pixel.
+    const int count = std::clamp(static_cast<int>(w / 5.0), 12, mirrored ? 60 : 80);
+    const double slot = static_cast<double>(w) / count;
+    const double gap = std::clamp(slot * 0.18, 0.75, 3.5);
+    const double bw = std::max(1.0, slot - gap);
+    const double rad = std::min(bw * 0.5, 3.0);
 
-        QLinearGradient grad(0, h, 0, 0);
-        grad.setColorAt(0.0, m_primaryColor);
-        grad.setColorAt(1.0, m_secondaryColor);
+    const double midY = h / 2.0;
+    const double maxUp = mirrored ? h * 0.44 : h * 0.94;
+
+    p.setPen(Qt::NoPen);
+    for (int i = 0; i < count; ++i) {
+        const float pos = count > 1 ? static_cast<float>(i) / (count - 1) : 0.0f;
+        const float v = sampleBandCurve(m_bandMagnitudes.data(), kNumBands, pos);
+        const float pk = sampleBandCurve(m_bandPeaks.data(), kNumBands, pos);
+        const double x = i * slot + (slot - bw) / 2.0;
+        const double barH = v * maxUp;
+
+        // Per-bar colours: Rainbow gives every bar its own hue; other
+        // schemes shade dark(base) -> primary -> secondary(tip).
+        QColor cBase, cMid, cTip;
+        if (m_rainbow) {
+            const QColor hue = bandColor(pos);
+            cBase = hue.darker(210);
+            cMid  = hue;
+            cTip  = hue.lighter(138);
+        } else {
+            cBase = m_primaryColor.darker(150);
+            cMid  = m_primaryColor;
+            cTip  = m_secondaryColor;
+        }
 
         if (mirrored) {
-            const double midY = h / 2.0;
-            p.fillRect(QRectF(x, midY - barH, bw, barH), grad);
-            p.fillRect(QRectF(x, midY, bw, barH), grad);
+            // Symmetric shading: bright at the centre line, fading to the tips.
+            QLinearGradient g(0, midY - maxUp, 0, midY + maxUp);
+            g.setColorAt(0.0, cBase);
+            g.setColorAt(0.5, cTip);
+            g.setColorAt(1.0, cBase);
+            if (barH >= 0.75) {
+                QPainterPath path;
+                path.addRoundedRect(QRectF(x, midY - barH, bw, barH), rad, rad);
+                path.addRoundedRect(QRectF(x, midY, bw, barH), rad, rad);
+                p.fillPath(path, g);
+            }
+            if (pk > 0.02f) {
+                const double pkY = pk * maxUp;
+                QColor cap = cTip;
+                cap.setAlpha(235);
+                p.fillRect(QRectF(x, midY - pkY - 2.0, bw, 2.0), cap);
+                p.fillRect(QRectF(x, midY + pkY, bw, 2.0), cap);
+            }
         } else {
-            const QRectF barRect(x, h - barH, bw, barH);
-            p.fillRect(barRect, grad);
-            // Soft highlight cap for a glassier look.
-            if (barH > 3.0) {
-                QColor cap = m_secondaryColor;
-                cap.setAlpha(200);
-                p.fillRect(QRectF(x, h - barH, bw, 2.0), cap);
+            QLinearGradient g(0, h, 0, 0);
+            g.setColorAt(0.0, cBase);
+            g.setColorAt(0.55, cMid);
+            g.setColorAt(1.0, cTip);
+            if (barH >= 0.75) {
+                QPainterPath path;
+                path.addRoundedRect(QRectF(x, h - barH, bw, barH), rad, rad);
+                p.fillPath(path, g);
+            }
+            // Faint floor glow so the baseline reads even when a bar is flat.
+            QColor floorC = cMid;
+            floorC.setAlpha(55);
+            p.fillRect(QRectF(x, h - 2.0, bw, 2.0), floorC);
+            // Falling peak-hold cap (uses the same slow-decay peaks BrickBox does).
+            if (pk > 0.02f) {
+                QColor cap = cTip;
+                cap.setAlpha(235);
+                p.fillRect(QRectF(x, h - pk * maxUp - 2.0, bw, 2.0), cap);
             }
         }
+    }
+
+    if (mirrored) {
+        QColor centre = m_rainbow ? bandColor(0.5f) : m_secondaryColor;
+        centre.setAlpha(70);
+        p.fillRect(QRectF(0, midY - 0.5, w, 1.0), centre);
     }
 }
 
@@ -401,8 +508,14 @@ void Visualizer::drawWave(QPainter &p)
             path.lineTo(x, y);
     }
 
-    QPen pen(m_secondaryColor, 2.2);
-    p.setPen(pen);
+    if (m_rainbow) {
+        QLinearGradient g(0, 0, w, 0);
+        for (int i = 0; i <= 12; ++i)
+            g.setColorAt(i / 12.0, bandColor(i / 12.0f));
+        p.setPen(QPen(QBrush(g), 2.2));
+    } else {
+        p.setPen(QPen(m_secondaryColor, 2.2));
+    }
     p.drawPath(path);
 }
 
@@ -425,6 +538,23 @@ void Visualizer::drawLineSpectrum(QPainter &p)
     fillPath.lineTo(w, h);
     fillPath.lineTo(0, h);
     fillPath.closeSubpath();
+
+    if (m_rainbow) {
+        // Horizontal hue wash under the curve, plus a hue-swept stroke.
+        QLinearGradient fill(0, 0, w, 0);
+        QLinearGradient stroke(0, 0, w, 0);
+        for (int i = 0; i <= 12; ++i) {
+            const float t = i / 12.0f;
+            QColor c = bandColor(t);
+            stroke.setColorAt(t, c);
+            c.setAlpha(90);
+            fill.setColorAt(t, c);
+        }
+        p.fillPath(fillPath, fill);
+        p.setPen(QPen(QBrush(stroke), 2.2));
+        p.drawPath(path);
+        return;
+    }
 
     QLinearGradient grad(0, 0, 0, h);
     grad.setColorAt(0.0, QColor(m_primaryColor.red(), m_primaryColor.green(), m_primaryColor.blue(), 140));
@@ -456,15 +586,19 @@ void Visualizer::drawCircular(QPainter &p)
         const double x1 = std::cos(angle) * r1;
         const double y1 = std::sin(angle) * r1;
 
+        const float t = static_cast<float>(b) / kNumBands;
+        const QColor inner = m_rainbow ? bandColor(t).darker(160) : m_primaryColor;
+        const QColor outer = m_rainbow ? bandColor(t) : m_secondaryColor;
+
         QLinearGradient lineGrad(x0, y0, x1, y1);
-        lineGrad.setColorAt(0.0, m_primaryColor);
-        lineGrad.setColorAt(1.0, m_secondaryColor);
+        lineGrad.setColorAt(0.0, inner);
+        lineGrad.setColorAt(1.0, outer);
         QPen pen(QBrush(lineGrad), 3.0, Qt::SolidLine, Qt::RoundCap);
         p.setPen(pen);
         p.drawLine(QPointF(x0, y0), QPointF(x1, y1));
 
         p.setPen(Qt::NoPen);
-        p.setBrush(m_secondaryColor);
+        p.setBrush(outer);
         p.drawEllipse(QPointF(x1, y1), 2.2, 2.2);
     }
     p.resetTransform();
@@ -484,10 +618,15 @@ void Visualizer::drawDots(QPainter &p)
         const float v = m_bandMagnitudes[static_cast<size_t>(b)];
         const int lit = static_cast<int>(v * maxDots + 0.5f);
         const double cx = (b + 0.5) * colW;
+        const QColor bandHue = bandColor((b + 0.5f) / kNumBands); // only used when m_rainbow
         for (int d = 0; d < lit; ++d) {
             const double cy = h - 6 - d * dotSpacing;
             const double t = static_cast<double>(d) / maxDots;
-            QColor c = (t > 0.8) ? QColor(0xe5, 0x5b, 0x6c) : (t > 0.55 ? m_secondaryColor : m_primaryColor);
+            QColor c;
+            if (m_rainbow)
+                c = (d >= lit - 1) ? bandHue.lighter(135) : bandHue; // brighten the top dot
+            else
+                c = (t > 0.8) ? QColor(0xe5, 0x5b, 0x6c) : (t > 0.55 ? m_secondaryColor : m_primaryColor);
             p.setBrush(c);
             p.drawEllipse(QPointF(cx, cy), dotR, dotR);
         }
@@ -498,26 +637,126 @@ void Visualizer::drawVuMeter(QPainter &p)
 {
     const int w = width();
     const int h = height();
+    if (w < 24 || h < 14)
+        return;
 
-    float peak = 0.0f;
-    for (float s : m_waveform)
-        peak = std::max(peak, std::abs(s));
+    // ---- measure the current frame -------------------------------------
+    float peakLin = 0.0f;
+    double sumSq = 0.0;
+    for (float s : m_waveform) {
+        peakLin = std::max(peakLin, std::fabs(s));
+        sumSq += static_cast<double>(s) * s;
+    }
+    const float rmsLin = m_waveform.empty()
+        ? 0.0f
+        : static_cast<float>(std::sqrt(sumSq / static_cast<double>(m_waveform.size())));
+
+    float specAvg = 0.0f;
     for (float v : m_bandMagnitudes)
-        peak = std::max(peak, v * 0.6f); // blend a little spectral energy in
+        specAvg += v;
+    specAvg /= kNumBands;
 
-    const int segments = 24;
-    const double gap = 3.0;
-    const double segW = (w - gap * (segments - 1)) / segments;
-    const int lit = static_cast<int>(peak * segments + 0.5f);
+    // ---- ballistics (advanced once per painted frame, ~30 fps) --------
+    // Slow "VU" bar: single-pole ease toward an RMS-derived target (the
+    // 1.6x lifts typical RMS into the meter's usable upper range).
+    const float vuTarget = std::max(rmsLin * 1.6f, specAvg * 0.45f);
+    m_vuRms += (vuTarget - m_vuRms) * 0.20f;
+    // Fast "PEAK" bar: jump up instantly, fall back slowly.
+    const float pkTarget = std::max(peakLin, specAvg * 0.7f);
+    m_vuPeak = (pkTarget > m_vuPeak) ? pkTarget : m_vuPeak + (pkTarget - m_vuPeak) * 0.12f;
+    // Peak-hold marker: latches the max, then drifts down on its own.
+    m_vuPeakHold = (m_vuPeak >= m_vuPeakHold) ? m_vuPeak
+                                              : std::max(0.0f, m_vuPeakHold - 0.006f);
+    // Clip latch.
+    m_vuClip = (peakLin >= 0.985f) ? 1.0f : std::max(0.0f, m_vuClip - 0.03f);
 
-    for (int i = 0; i < segments; ++i) {
-        const double x = i * (segW + gap);
-        QColor c(0x33, 0x34, 0x4a);
-        if (i < lit) {
-            const double t = static_cast<double>(i) / segments;
-            c = (t > 0.85) ? QColor(0xe5, 0x5b, 0x6c) : (t > 0.6 ? QColor(0xf0, 0xb4, 0x29) : m_primaryColor);
+    // Linear amplitude -> 0..1 across a -54..0 dB window (dB-spaced, like a
+    // real meter, so the busy top end gets most of the scale).
+    auto toMeter = [](float lin) {
+        const float db = 20.0f * std::log10(std::max(lin, 1e-5f));
+        return std::clamp((db + 54.0f) / 54.0f, 0.0f, 1.0f);
+    };
+
+    // ---- layout ------------------------------------------------------------
+    const bool showScale = h >= 68;
+    const bool showLabels = w >= 230;
+    const double labelW = showLabels ? 38.0 : 0.0;
+    const double scaleH = showScale ? 12.0 : 0.0;
+    const double padY = std::min(6.0, h * 0.12);
+    const double areaX = labelW + (showLabels ? 6.0 : 2.0);
+    const double areaW = w - areaX - 8.0;
+    const double areaTop = padY;
+    const double areaH = h - padY * 2.0 - scaleH;
+    if (areaW < 16.0 || areaH < 8.0)
+        return;
+
+    const double rowGap = std::min(6.0, areaH * 0.12);
+    const double rowH = (areaH - rowGap) / 2.0;
+    const double peakRowY = areaTop;
+    const double vuRowY = areaTop + rowH + rowGap;
+
+    const int segs = std::clamp(static_cast<int>(areaW / 6.0), 16, 120);
+    const double segGap = std::clamp(areaW / segs * 0.22, 1.0, 2.5);
+    const double segW = std::max(1.0, (areaW - segGap * (segs - 1)) / segs);
+
+    const QColor off(0x2b, 0x2c, 0x3c);
+    const QColor green = m_rainbow ? QColor(0x2f, 0xd0, 0x6e) : m_primaryColor;
+    const QColor amber(0xf0, 0xb4, 0x29);
+    const QColor red(0xe5, 0x4b, 0x5c);
+
+    auto drawRow = [&](double y, float value, float holdVal) {
+        const int lit = static_cast<int>(std::ceil(toMeter(value) * segs));
+        for (int i = 0; i < segs; ++i) {
+            const double x = areaX + i * (segW + segGap);
+            const float segDb = (i + 0.5f) / segs * 54.0f - 54.0f;
+            QColor c = off;
+            if (i < lit)
+                c = (segDb >= -3.0f) ? red : (segDb >= -9.0f ? amber : green);
+            p.fillRect(QRectF(x, y, segW, rowH), c);
         }
-        p.fillRect(QRectF(x, h * 0.15, segW, h * 0.7), c);
+        if (holdVal > 0.02f) {
+            const int hi = std::clamp(
+                static_cast<int>(std::ceil(toMeter(holdVal) * segs)) - 1, 0, segs - 1);
+            const double x = areaX + hi * (segW + segGap);
+            p.fillRect(QRectF(x, y - 1.0, segW, rowH + 2.0), QColor(0xff, 0xff, 0xff, 210));
+        }
+    };
+
+    if (showLabels) {
+        p.setPen(QColor(0x9a, 0x9c, 0xb5));
+        QFont f = p.font();
+        f.setPointSizeF(7.5);
+        f.setBold(true);
+        p.setFont(f);
+        p.drawText(QRectF(0, peakRowY, labelW, rowH),
+                   Qt::AlignVCenter | Qt::AlignRight, QStringLiteral("PEAK"));
+        p.drawText(QRectF(0, vuRowY, labelW, rowH),
+                   Qt::AlignVCenter | Qt::AlignRight, QStringLiteral("VU"));
+    }
+
+    drawRow(peakRowY, m_vuPeak, m_vuPeakHold);
+    drawRow(vuRowY, m_vuRms, 0.0f);
+
+    if (showScale) {
+        p.setPen(QColor(0x7c, 0x7e, 0x96));
+        QFont f = p.font();
+        f.setPointSizeF(6.5);
+        f.setBold(false);
+        p.setFont(f);
+        const double ty = areaTop + areaH + 1.0;
+        for (int mdb : {-48, -36, -24, -18, -12, -9, -6, -3, 0}) {
+            const double x = areaX + toMeter(std::pow(10.0f, mdb / 20.0f)) * areaW;
+            p.fillRect(QRectF(x, ty, 1.0, 3.0), QColor(0x7c, 0x7e, 0x96));
+            p.drawText(QRectF(x - 12.0, ty + 3.0, 24.0, scaleH - 3.0),
+                       Qt::AlignHCenter | Qt::AlignTop,
+                       mdb == 0 ? QStringLiteral("0") : QString::number(mdb));
+        }
+    }
+
+    if (m_vuClip > 0.01f) {
+        QColor cc = red;
+        cc.setAlphaF(std::clamp(m_vuClip, 0.0f, 1.0f));
+        p.fillRect(QRectF(areaX + areaW + 2.0, areaTop, 5.0, areaH), cc);
     }
 }
 
@@ -556,19 +795,23 @@ void Visualizer::drawParticles(QPainter &p)
         const float alpha = std::clamp(particle.life, 0.0f, 1.0f);
         const double r = 2.2 + energy * 4.0;
 
+        // Rainbow: hue from the particle's horizontal position, so the
+        // fountain fans out through the spectrum left-to-right.
+        const QColor tint = m_rainbow ? bandColor(w > 0 ? particle.x / w : 0.0f) : m_secondaryColor;
+
         // Soft radial glow behind the solid core for a prettier, less
         // "bare dot" look.
         QRadialGradient glow(QPointF(particle.x, particle.y), r * 3.0);
-        QColor glowColor = m_secondaryColor;
+        QColor glowColor = tint;
         glowColor.setAlphaF(alpha * 0.35f);
         glow.setColorAt(0.0, glowColor);
-        QColor glowEdge = m_secondaryColor;
+        QColor glowEdge = tint;
         glowEdge.setAlphaF(0.0f);
         glow.setColorAt(1.0, glowEdge);
         p.setBrush(glow);
         p.drawEllipse(QPointF(particle.x, particle.y), r * 3.0, r * 3.0);
 
-        QColor core = m_secondaryColor;
+        QColor core = tint;
         core.setAlphaF(alpha);
         p.setBrush(core);
         p.drawEllipse(QPointF(particle.x, particle.y), r, r);
@@ -609,6 +852,7 @@ void Visualizer::drawBrickBox(QPainter &p)
         const int peakRow = std::clamp(static_cast<int>(peak * rows), 0, rows - 1);
 
         const double x = b * colW + colGap * 0.5;
+        const QColor bandHue = bandColor((b + 0.5f) / kNumBands); // only used when m_rainbow
 
         for (int r = 0; r < rows; ++r) {
             const double y = h - marginBottom - (r + 1) * brickH - r * rowGap;
@@ -616,8 +860,11 @@ void Visualizer::drawBrickBox(QPainter &p)
 
             QColor c;
             if (r < lit) {
-                c = (t > 0.82) ? QColor(0xe5, 0x5b, 0x6c)
-                                : (t > 0.5 ? m_secondaryColor : m_primaryColor);
+                if (m_rainbow)
+                    c = bandHue.darker(static_cast<int>(150 - t * 60)); // slightly brighter toward the top
+                else
+                    c = (t > 0.82) ? QColor(0xe5, 0x5b, 0x6c)
+                                    : (t > 0.5 ? m_secondaryColor : m_primaryColor);
             } else {
                 c = QColor(0x2c, 0x2d, 0x3d); // unlit brick, dim well
             }
@@ -627,7 +874,8 @@ void Visualizer::drawBrickBox(QPainter &p)
         // Falling peak-hold brick, drawn brighter than any lit brick below it.
         if (peakRow >= lit && peak > 0.01f) {
             const double py = h - marginBottom - (peakRow + 1) * brickH - peakRow * rowGap;
-            p.fillRect(QRectF(x, py, brickW, brickH), m_secondaryColor.lighter(170));
+            const QColor peakC = m_rainbow ? bandHue.lighter(150) : m_secondaryColor.lighter(170);
+            p.fillRect(QRectF(x, py, brickW, brickH), peakC);
         }
     }
 }
@@ -654,8 +902,16 @@ void Visualizer::drawSpectrogram(QPainter &p)
         const double x = w - (cols - c) * colW;
         for (int b = 0; b < kNumBands; ++b) {
             const float v = col[static_cast<size_t>(b)];
-            QColor cell = (v < 0.5f) ? lerpColor(bg, m_primaryColor, v * 2.0f)
-                                      : lerpColor(m_primaryColor, m_secondaryColor, (v - 0.5f) * 2.0f);
+            QColor cell;
+            if (m_rainbow) {
+                // Each frequency row keeps its own hue; magnitude only
+                // controls how far it lifts out of the dark background.
+                const QColor hue = bandColor((b + 0.5f) / kNumBands);
+                cell = (v < 0.6f) ? lerpColor(bg, hue, v / 0.6f) : hue.lighter(100 + static_cast<int>((v - 0.6f) * 120));
+            } else {
+                cell = (v < 0.5f) ? lerpColor(bg, m_primaryColor, v * 2.0f)
+                                  : lerpColor(m_primaryColor, m_secondaryColor, (v - 0.5f) * 2.0f);
+            }
             const double y = h - (b + 1) * rowH;
             p.fillRect(QRectF(x, y, colW + 0.75, rowH + 0.75), cell);
         }
@@ -689,7 +945,7 @@ void Visualizer::drawSpiral(QPainter &p)
         else
             path.lineTo(x, y);
     }
-    p.setPen(QPen(m_primaryColor, 2.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    p.setPen(QPen(m_rainbow ? bandColor(0.5f) : m_primaryColor, 2.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     p.drawPath(path);
 
     p.setPen(Qt::NoPen);
@@ -700,63 +956,107 @@ void Visualizer::drawSpiral(QPainter &p)
         const double r = baseR + t * (maxR - baseR) * 0.6 + v * maxR * 0.35;
         const double x = cx + std::cos(angle) * r;
         const double y = cy + std::sin(angle) * r;
-        p.setBrush(lerpColor(m_primaryColor, m_secondaryColor, static_cast<float>(t)));
-        p.drawEllipse(QPointF(x, y), 2.6, 2.6);
+        p.setBrush(bandColor(static_cast<float>(t)));
+        p.drawEllipse(QPointF(x, y), m_rainbow ? 3.4 : 2.6, m_rainbow ? 3.4 : 2.6);
     }
 }
 
 void Visualizer::drawRibbon(QPainter &p)
 {
     // A smooth, filled band centered on the vertical midline whose
-    // thickness at each x follows that band's magnitude - a "ribbon"
-    // silhouette of the spectrum, distinct from LineSpectrum's straight-
-    // segment polygon and Wave's raw single-line waveform trace.
+    // thickness at each x follows the spectrum envelope - a "ribbon"
+    // silhouette, distinct from LineSpectrum's straight-segment polygon and
+    // Wave's raw single-line waveform trace. Sampled at many more points
+    // than there are analysis bands, through a Catmull-Rom curve, so the
+    // outline is silky rather than 32 visible facets; backed by a faint
+    // wider "echo" ribbon and a bright centre seam for depth.
     const int w = width();
     const int h = height();
+    if (w < 8 || h < 8)
+        return;
     const double midY = h / 2.0;
 
-    std::vector<QPointF> top;
-    std::vector<QPointF> bottom;
-    top.reserve(kNumBands);
-    bottom.reserve(kNumBands);
-    for (int b = 0; b < kNumBands; ++b) {
-        const double x = (b + 0.5) / kNumBands * w;
-        const float v = m_bandMagnitudes[static_cast<size_t>(b)];
-        const double half = 4.0 + v * h * 0.42;
-        top.emplace_back(x, midY - half);
-        bottom.emplace_back(x, midY + half);
+    const int n = std::clamp(static_cast<int>(w / 6.0), 24, 110);
+
+    std::vector<QPointF> top(n), bottom(n), echoTop(n), echoBottom(n);
+    for (int i = 0; i < n; ++i) {
+        const float pos = static_cast<float>(i) / (n - 1);
+        const float v = sampleBandCurve(m_bandMagnitudes.data(), kNumBands, pos);
+        const double x = pos * w;
+        const double half = 3.0 + v * h * 0.42;
+        const double echoHalf = 6.0 + v * h * 0.50;
+        top[i]         = {x, midY - half};
+        bottom[i]      = {x, midY + half};
+        echoTop[i]     = {x, midY - echoHalf};
+        echoBottom[i]  = {x, midY + echoHalf};
     }
 
-    auto smoothPath = [](const std::vector<QPointF> &pts) {
+    // Catmull-Rom through the points -> cubic Bezier path (C1-continuous,
+    // no cusps at the control points like the old midpoint-quad hack).
+    auto spline = [](const std::vector<QPointF> &pts) {
         QPainterPath path;
-        if (pts.empty())
+        if (pts.size() < 2) {
+            if (!pts.empty())
+                path.moveTo(pts.front());
             return path;
-        path.moveTo(pts.front());
-        for (size_t i = 1; i < pts.size(); ++i) {
-            const QPointF mid((pts[i - 1].x() + pts[i].x()) / 2.0, (pts[i - 1].y() + pts[i].y()) / 2.0);
-            path.quadTo(pts[i - 1], mid);
         }
-        path.lineTo(pts.back());
+        path.moveTo(pts.front());
+        const int m = static_cast<int>(pts.size());
+        for (int i = 0; i < m - 1; ++i) {
+            const QPointF p0 = pts[i > 0 ? i - 1 : 0];
+            const QPointF p1 = pts[i];
+            const QPointF p2 = pts[i + 1];
+            const QPointF p3 = pts[i + 2 < m ? i + 2 : m - 1];
+            const QPointF c1 = p1 + (p2 - p0) / 6.0;
+            const QPointF c2 = p2 - (p3 - p1) / 6.0;
+            path.cubicTo(c1, c2, p2);
+        }
         return path;
     };
 
-    QPainterPath topPath = smoothPath(top);
-    std::vector<QPointF> bottomRev(bottom.rbegin(), bottom.rend());
-    QPainterPath bottomPath = smoothPath(bottomRev);
+    auto closedBand = [&](const std::vector<QPointF> &t, const std::vector<QPointF> &b) {
+        std::vector<QPointF> bRev(b.rbegin(), b.rend());
+        QPainterPath path = spline(t);
+        path.connectPath(spline(bRev));
+        path.closeSubpath();
+        return path;
+    };
 
-    QPainterPath ribbon = topPath;
-    ribbon.connectPath(bottomPath);
-    ribbon.closeSubpath();
+    // Faint echo behind the main ribbon.
+    {
+        QColor echoC = m_rainbow ? bandColor(0.5f) : m_secondaryColor;
+        echoC.setAlpha(40);
+        p.fillPath(closedBand(echoTop, echoBottom), echoC);
+    }
 
+    const QPainterPath ribbon = closedBand(top, bottom);
+
+    // Main fill: horizontal scheme/hue gradient (bandColor(0)=primary,
+    // bandColor(1)=secondary for normal schemes, so this stays a smooth
+    // primary->secondary wash there and a full spectrum under Rainbow).
     QLinearGradient grad(0, 0, w, 0);
-    grad.setColorAt(0.0, m_primaryColor);
-    grad.setColorAt(1.0, m_secondaryColor);
+    for (int i = 0; i <= 10; ++i)
+        grad.setColorAt(i / 10.0, bandColor(i / 10.0f));
     p.fillPath(ribbon, grad);
 
-    p.setPen(QPen(m_secondaryColor.lighter(140), 1.6));
-    p.drawPath(topPath);
-    p.setPen(QPen(m_primaryColor.lighter(140), 1.6));
-    p.drawPath(smoothPath(bottom));
+    // Soft vertical sheen for a rounded, glassy body.
+    QLinearGradient sheen(0, midY - h * 0.5, 0, midY + h * 0.5);
+    sheen.setColorAt(0.0, QColor(255, 255, 255, 28));
+    sheen.setColorAt(0.5, QColor(255, 255, 255, 0));
+    sheen.setColorAt(1.0, QColor(0, 0, 0, 34));
+    p.fillPath(ribbon, sheen);
+
+    // Crisp edges.
+    p.setPen(QPen((m_rainbow ? bandColor(0.85f) : m_secondaryColor).lighter(150), 1.6));
+    p.drawPath(spline(top));
+    p.setPen(QPen((m_rainbow ? bandColor(0.15f) : m_primaryColor).lighter(140), 1.6));
+    p.drawPath(spline(bottom));
+
+    // Bright centre seam.
+    QColor seam = m_rainbow ? bandColor(0.5f) : m_secondaryColor.lighter(160);
+    seam.setAlpha(120);
+    p.setPen(QPen(seam, 1.0));
+    p.drawLine(QPointF(0, midY), QPointF(w, midY));
 }
 
 void Visualizer::drawOrbit(QPainter &p)
@@ -788,17 +1088,22 @@ void Visualizer::drawOrbit(QPainter &p)
         const double y = cy + std::sin(angle) * ringR;
         const double r = 2.0 + v * 14.0;
 
+        // Rainbow: fixed per-band hue around the ring. Otherwise the old
+        // magnitude-driven primary<->secondary blend.
+        const QColor dotColor = m_rainbow ? bandColor(static_cast<float>(b) / kNumBands)
+                                          : lerpColor(m_primaryColor, m_secondaryColor, v);
+
         QRadialGradient glow(QPointF(x, y), r * 2.6);
-        QColor glowColor = m_secondaryColor;
+        QColor glowColor = dotColor;
         glowColor.setAlphaF(0.5f);
         glow.setColorAt(0.0, glowColor);
-        QColor glowEdge = m_secondaryColor;
+        QColor glowEdge = dotColor;
         glowEdge.setAlphaF(0.0f);
         glow.setColorAt(1.0, glowEdge);
         p.setBrush(glow);
         p.drawEllipse(QPointF(x, y), r * 2.6, r * 2.6);
 
-        p.setBrush(lerpColor(m_primaryColor, m_secondaryColor, v));
+        p.setBrush(dotColor);
         p.drawEllipse(QPointF(x, y), r, r);
     }
 }
@@ -836,7 +1141,9 @@ void Visualizer::drawTunnel(QPainter &p)
     p.setBrush(Qt::NoBrush);
     for (const auto &ring : m_tunnelRings) {
         const float t = std::clamp(ring.radius / static_cast<float>(maxR), 0.0f, 1.0f);
-        QColor c = lerpColor(m_secondaryColor, m_primaryColor, t);
+        // Rainbow: hue by how far the ring has expanded, so the tunnel
+        // cycles red (center) out to violet (edge).
+        QColor c = m_rainbow ? bandColor(t) : lerpColor(m_secondaryColor, m_primaryColor, t);
         c.setAlphaF(std::clamp(ring.life, 0.0f, 1.0f) * 0.85f);
         p.setPen(QPen(c, 2.5 + bass * 4.0));
         p.drawEllipse(QPointF(cx, cy), static_cast<double>(ring.radius), static_cast<double>(ring.radius));
@@ -862,15 +1169,17 @@ void Visualizer::drawSunburst(QPainter &p)
         const double x1 = cx + std::cos(angle) * len;
         const double y1 = cy + std::sin(angle) * len;
 
-        QColor c = lerpColor(m_primaryColor, m_secondaryColor, v);
+        QColor c = m_rainbow ? bandColor(static_cast<float>(b) / kNumBands)
+                             : lerpColor(m_primaryColor, m_secondaryColor, v);
         c.setAlphaF(0.25f + v * 0.65f);
         p.setPen(QPen(c, 2.0 + v * 3.0, Qt::SolidLine, Qt::RoundCap));
         p.drawLine(QPointF(cx, cy), QPointF(x1, y1));
     }
 
+    const QColor coreColor = m_rainbow ? bandColor(0.5f) : m_secondaryColor;
     QRadialGradient core(QPointF(cx, cy), maxLen * 0.12);
-    core.setColorAt(0.0, m_secondaryColor.lighter(150));
-    QColor edge = m_secondaryColor;
+    core.setColorAt(0.0, coreColor.lighter(150));
+    QColor edge = coreColor;
     edge.setAlphaF(0.0f);
     core.setColorAt(1.0, edge);
     p.setPen(Qt::NoPen);

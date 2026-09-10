@@ -4,6 +4,7 @@
 #include <QAudioDevice>
 #include <QAudioFormat>
 #include <QMediaDevices>
+#include <QFile>
 #include <QFileInfo>
 #include <QStringList>
 #include <QUrl>
@@ -78,6 +79,118 @@ int bytesPerSample(QAudioFormat::SampleFormat fmt)
     }
 }
 
+// ---------------------------------------------------------------------------
+// ALAC (Apple Lossless) container sniffing.
+//
+// ALAC audio is carried inside an MP4/M4A wrapper - the exact same
+// container, and usually the exact same ".m4a" extension, that lossy AAC
+// uses - so the file extension alone can't tell the two apart. Playback
+// needs nothing extra (Qt Multimedia's FFmpeg backend already decodes
+// ALAC); this sniff exists purely so the on-screen format line can say
+// "ALAC" instead of a generic "M4A", which matters for a player whose
+// point is lossless audio. Detection walks straight to the codec's
+// four-char id in the container's sample-description table and never
+// touches the audio data.
+// ---------------------------------------------------------------------------
+
+quint32 beUint32(const uchar *p)
+{
+    return (quint32(p[0]) << 24) | (quint32(p[1]) << 16) | (quint32(p[2]) << 8) | quint32(p[3]);
+}
+
+// Locates a direct child box named `name` within the byte range
+// [start, end) of an open MP4 file, returning its payload range. Copes
+// with the 64-bit extended-size header (32-bit size field == 1) and with
+// the "to end of parent" form (size field == 0) so a large 'mdat' laid
+// out before 'moov' doesn't throw the walk off.
+bool findMp4Child(QFile &f, qint64 start, qint64 end, const char *name,
+                  qint64 &payloadStart, qint64 &payloadEnd)
+{
+    qint64 pos = start;
+    while (pos + 8 <= end) {
+        if (!f.seek(pos))
+            return false;
+        const QByteArray header = f.read(8);
+        if (header.size() < 8)
+            return false;
+        const uchar *h = reinterpret_cast<const uchar *>(header.constData());
+        qint64 boxSize = beUint32(h);
+        qint64 headerLen = 8;
+        if (boxSize == 1) {
+            const QByteArray ext = f.read(8);
+            if (ext.size() < 8)
+                return false;
+            const uchar *e = reinterpret_cast<const uchar *>(ext.constData());
+            boxSize = (static_cast<qint64>(beUint32(e)) << 32) | beUint32(e + 4);
+            headerLen = 16;
+        } else if (boxSize == 0) {
+            boxSize = end - pos;
+        }
+        if (boxSize < headerLen || pos + boxSize > end)
+            return false;
+        if (std::memcmp(header.constData() + 4, name, 4) == 0) {
+            payloadStart = pos + headerLen;
+            payloadEnd = pos + boxSize;
+            return true;
+        }
+        pos += boxSize;
+    }
+    return false;
+}
+
+bool mp4ContainsAlac(const QString &path)
+{
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return false;
+    const qint64 fileSize = f.size();
+
+    qint64 s = 0, e = fileSize;
+    // moov > trak > mdia > minf > stbl > stsd, then an 'alac' sample entry.
+    for (const char *box : {"moov", "trak", "mdia", "minf", "stbl", "stsd"}) {
+        if (!findMp4Child(f, s, e, box, s, e))
+            return false;
+    }
+    // 'stsd' payload is a 4-byte version/flags word + 4-byte entry count
+    // before the sample-entry boxes begin.
+    qint64 entryStart = 0, entryEnd = 0;
+    return findMp4Child(f, s + 8, e, "alac", entryStart, entryEnd);
+}
+
+// Core Audio Format: an 8-byte file header ("caff" + version/flags) then
+// chunks of a 4-byte type + 8-byte big-endian int64 size. The 'desc'
+// chunk's mFormatID (4 bytes at offset 8, past the 8-byte mSampleRate
+// double) is 'alac' for an Apple Lossless stream.
+bool cafContainsAlac(const QString &path)
+{
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return false;
+    if (f.read(4) != QByteArrayLiteral("caff"))
+        return false;
+
+    qint64 pos = 8;
+    const qint64 fileSize = f.size();
+    while (pos + 12 <= fileSize) {
+        if (!f.seek(pos))
+            return false;
+        const QByteArray header = f.read(12);
+        if (header.size() < 12)
+            return false;
+        const uchar *sz = reinterpret_cast<const uchar *>(header.constData()) + 4;
+        const qint64 chunkSize = (static_cast<qint64>(beUint32(sz)) << 32) | beUint32(sz + 4);
+        if (chunkSize < 0)
+            return false;
+        if (std::memcmp(header.constData(), "desc", 4) == 0) {
+            if (!f.seek(pos + 12 + 8))
+                return false;
+            return f.read(4) == QByteArrayLiteral("alac");
+        }
+        pos += 12 + chunkSize;
+    }
+    return false;
+}
+
 } // namespace
 
 AudioEngine::AudioEngine(QObject *parent)
@@ -135,6 +248,19 @@ void AudioEngine::loadFile(const QString &path, bool autoPlay)
     m_pendingAutoPlay = autoPlay;
     m_fileSizeBytes = QFileInfo(path).size();
     m_containerHint = QFileInfo(path).suffix().toUpper();
+
+    // ".m4a"/".m4b"/".alac" all mean "MP4 wrapper" and could hold either
+    // lossless ALAC or lossy AAC; ".caf" likewise. Peek at the container's
+    // codec id so the format line reflects what's actually inside. Nothing
+    // about decoding changes - QAudioDecoder handles ALAC either way.
+    if (m_containerHint == QLatin1String("M4A") || m_containerHint == QLatin1String("M4B")
+        || m_containerHint == QLatin1String("MP4") || m_containerHint == QLatin1String("ALAC")) {
+        if (mp4ContainsAlac(path))
+            m_containerHint = QStringLiteral("ALAC");
+    } else if (m_containerHint == QLatin1String("CAF")) {
+        if (cafContainsAlac(path))
+            m_containerHint = QStringLiteral("ALAC");
+    }
 
     setState(State::Loading);
 

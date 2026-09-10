@@ -862,8 +862,9 @@ Container detectContainer(const QString &filePath)
         return Container::Wav;
     if (ext == QLatin1String("flac"))
         return Container::Flac;
-    if (ext == QLatin1String("m4a") || ext == QLatin1String("mp4") || ext == QLatin1String("aac"))
-        return Container::Mp4;
+    if (ext == QLatin1String("m4a") || ext == QLatin1String("mp4") || ext == QLatin1String("aac")
+        || ext == QLatin1String("m4b") || ext == QLatin1String("alac"))
+        return Container::Mp4; // ALAC/audiobook streams use the same MP4 atom layout
     return Container::Unknown;
 }
 

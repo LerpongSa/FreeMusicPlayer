@@ -54,7 +54,14 @@
 
 namespace {
 
-const QStringList kAudioExtensions = {"mp3", "wav", "flac", "ogg", "m4a", "aac", "wma", "opus", "aiff", "wv", "dsf"};
+// ".m4a" already covers the common case of ALAC (Apple Lossless), which is
+// almost always carried in an MP4/M4A container - the same extension AAC
+// uses. ".m4b" (MP4 audiobook), ".caf" (Core Audio Format) and a bare
+// ".alac" are the other wrappers ALAC turns up in; all decode through the
+// same Qt Multimedia FFmpeg backend. ".mp4" is deliberately left out so
+// folder scans don't pull in video files.
+const QStringList kAudioExtensions = {"mp3", "wav", "flac", "ogg", "m4a", "m4b", "aac", "alac",
+                                      "caf", "wma", "opus", "aiff", "wv", "dsf"};
 
 QString audioFileFilter()
 {

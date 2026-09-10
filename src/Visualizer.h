@@ -54,7 +54,7 @@ public:
     static Style styleFromName(const QString &name);
     static QString styleToName(Style s);
 
-    // Color palette, independent of Style - 15 render styles above, and 16
+    // Color palette, independent of Style - 15 render styles above, and 17
     // color schemes here, mixed freely (any style x any scheme).
     enum class ColorScheme {
         Purple,
@@ -74,9 +74,15 @@ public:
         Amber,
         Midnight,
         Lime,
+        // Added 2026-09-10: not a primary/secondary pair like every scheme
+        // above but a full hue sweep - each band gets its own color across
+        // the spectrum. applyColorScheme() sets m_rainbow for it; the
+        // per-band draw code routes through bandColor() which returns an
+        // HSV hue instead of a primary/secondary blend when it's set.
+        Rainbow,
     };
 
-    static constexpr int kColorSchemeCount = 16;
+    static constexpr int kColorSchemeCount = 17;
 
     static QStringList colorSchemeNames();
     static ColorScheme colorSchemeFromName(const QString &name);
@@ -119,6 +125,13 @@ private:
     void ensureBandEdges();
     void applyColorScheme();
 
+    // Base color for a spectrum position t in 0..1 (usually band/kNumBands).
+    // Normal schemes: the primary->secondary blend at t. Rainbow scheme
+    // (m_rainbow): a hue sweep, red at the low end to violet at the high
+    // end, so every band paints a different color. Every style's per-band
+    // color goes through here so one branch covers all 15.
+    QColor bandColor(float t) const;
+
     void drawBars(QPainter &p, bool mirrored);
     void drawWave(QPainter &p);
     void drawLineSpectrum(QPainter &p);
@@ -139,11 +152,20 @@ private:
     Style m_style = Style::Bars;
 
     std::array<float, kNumBands> m_bandMagnitudes{};   // smoothed, 0..1
-    std::array<float, kNumBands> m_bandPeaks{};        // slow-falling peak-hold caps, for BrickBox
+    std::array<float, kNumBands> m_bandPeaks{};        // slow-falling peak-hold caps, for BrickBox / Bars
     std::array<float, kNumBands + 1> m_bandEdgesHz{};  // log-spaced, computed once per sample rate
     double m_bandEdgesForSampleRate = 0.0;
 
     std::vector<float> m_waveform; // most recent raw samples, for Wave/VU styles
+
+    // VU Meter ballistics (a real analog VU integrates over ~300 ms and has
+    // a separate fast peak needle). Advanced once per painted frame from
+    // m_waveform's RMS and peak. Persisted so the meter eases instead of
+    // snapping, and so the peak-hold marker can fall slowly on its own.
+    float m_vuRms = 0.0f;       // slow "VU" bar, 0..1 linear
+    float m_vuPeak = 0.0f;      // fast "PEAK" bar, instant attack / slow release
+    float m_vuPeakHold = 0.0f;  // highest recent m_vuPeak, decays gradually
+    float m_vuClip = 0.0f;      // 1.0 when the frame clipped, decays to 0
 
     struct Particle { float x, y, vx, vy, life; };
     std::vector<Particle> m_particles;
@@ -166,4 +188,5 @@ private:
     ColorScheme m_colorScheme = ColorScheme::Purple;
     QColor m_primaryColor{0x6c, 0x5c, 0xe7};   // updated by applyColorScheme()
     QColor m_secondaryColor{0x85, 0x78, 0xf0}; // updated by applyColorScheme()
+    bool m_rainbow = false;                    // ColorScheme::Rainbow; set by applyColorScheme()
 };

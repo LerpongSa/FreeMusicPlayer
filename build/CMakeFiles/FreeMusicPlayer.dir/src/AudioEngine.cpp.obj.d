@@ -361,8 +361,7 @@ CMakeFiles/FreeMusicPlayer.dir/src/AudioEngine.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtMultimedia/QAudioDevice \
  C:/Qt/6.11.1/mingw_64/include/QtMultimedia/QMediaDevices \
  C:/Qt/6.11.1/mingw_64/include/QtMultimedia/qmediadevices.h \
- C:/Qt/6.11.1/mingw_64/include/QtCore/QFileInfo \
- C:/Qt/6.11.1/mingw_64/include/QtCore/qfileinfo.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QFile \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qfile.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qfiledevice.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/filesystem \
@@ -395,6 +394,8 @@ CMakeFiles/FreeMusicPlayer.dir/src/AudioEngine.cpp.obj: \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/codecvt \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_dir.h \
  C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/fs_ops.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QFileInfo \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qfileinfo.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qdatetime.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qcalendar.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qlocale.h \
