@@ -1330,6 +1330,24 @@ void MainWindow::onEngineStateChanged(AudioEngine::State state)
     updatePlayPauseIcon(playing);
     m_visualizer->setActive(playing && m_vizEnableCheck->isChecked());
     m_seekSlider->setEnabled(state != AudioEngine::State::Loading);
+
+    // Busy cursor for exactly the Loading span (AudioEngine decodes the
+    // whole track into memory before anything is playable - see
+    // AudioEngine.h - so this is the one state where clicking around does
+    // nothing yet). setState() only emits when the state actually changes,
+    // so back-to-back loadFile() calls that never leave Loading (e.g.
+    // mashing Next while the previous track is still decoding) fire this
+    // at most once per span - m_loadingCursorActive still guards it so a
+    // set is never pushed or restored on QApplication's override-cursor
+    // stack more than once for the same span.
+    const bool loading = (state == AudioEngine::State::Loading);
+    if (loading && !m_loadingCursorActive) {
+        QApplication::setOverrideCursor(Qt::BusyCursor);
+        m_loadingCursorActive = true;
+    } else if (!loading && m_loadingCursorActive) {
+        QApplication::restoreOverrideCursor();
+        m_loadingCursorActive = false;
+    }
 }
 
 void MainWindow::onEngineTrackLoaded(qint64 durationMs)

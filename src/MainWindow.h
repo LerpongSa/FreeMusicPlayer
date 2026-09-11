@@ -139,6 +139,16 @@ private:
     QLabel *m_durationLabel = nullptr;
     bool m_seekSliderDragging = false;
 
+    // Set for exactly as long as AudioEngine::State::Loading lasts (decode
+    // of the whole track into memory - see AudioEngine.h), so the app-wide
+    // cursor shows a busy spinner instead of leaving the pointer looking
+    // idle/clickable while nothing is actually playable yet. Tracked with
+    // our own flag rather than trusting stateChanged's Loading->Loading
+    // no-op (setState() only emits on an actual change) to be paired 1:1,
+    // so onEngineStateChanged() can't push QApplication's override-cursor
+    // stack twice for one Loading span or restore one that was never set.
+    bool m_loadingCursorActive = false;
+
     // Transport
     QPushButton *m_shuffleBtn = nullptr;
     QPushButton *m_prevBtn = nullptr;
