@@ -121,6 +121,32 @@ private:
     std::unique_ptr<PcmIODevice> m_ioDevice;
     QTimer m_positionTimer;
 
+    // Fires the deferred auto-play once decoding finishes (see
+    // onDecoderFinished() / kPlaybackSettleDelayMs below). A dedicated
+    // single-shot member timer rather than a bare QTimer::singleShot(...)
+    // call so resetForNewTrack() can stop() it: a bare singleShot has no
+    // handle to cancel, so a stale one left over from a track the user
+    // already skipped past (Next/Prev clicked again during the delay)
+    // would still fire play() later - m_ready would usually be false by
+    // then (making it a harmless no-op that just pre-arms
+    // m_pendingAutoPlay), but not always, and either way it's not the
+    // track the user is now looking at.
+    QTimer m_pendingPlayTimer;
+
+    // DSF/FLAC/WAV specifically (as opposed to every other lossy/lossless
+    // container this app plays) tend to be the ones that push the output
+    // device into a different sample rate/bit depth than whatever was
+    // playing before - WASAPI (and the DAC behind it, in exclusive-ish
+    // shared mode) can take a beat to relock at the new rate, clipping the
+    // first moment of audio if playback starts the instant decoding does.
+    // Requested by the user (2026-09-17): pad an extra settle delay in
+    // onDecoderFinished() before starting playback for just these three
+    // container types, instead of the immediate next-tick start every
+    // other format gets. Checked against m_containerHint, which is set
+    // from the file extension in loadFile().
+    static constexpr int kPlaybackSettleDelayMs = 5000;
+    bool m_needsPlaybackSettleDelay = false;
+
     Equalizer m_equalizer;
 
     // Decoded PCM. Grown only during decode (main thread); read-only once

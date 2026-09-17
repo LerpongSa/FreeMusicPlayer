@@ -540,6 +540,11 @@ void MainWindow::setupUi()
     m_playlistView->setDragEnabled(true);
     m_playlistView->setDragDropMode(QAbstractItemView::InternalMove);
     m_playlistView->setDefaultDropAction(Qt::MoveAction);
+    // Fixed, compact size for the now-playing speaker icon set by
+    // updateNowPlayingIcon() - left at the Qt default, item rows would
+    // resize themselves (taller/shorter) whenever a row gained or lost its
+    // icon, which visibly jumped the whole list on every track change.
+    m_playlistView->setIconSize(QSize(14, 14));
     playlistLayout->addWidget(m_playlistView, 1);
 
     m_tabs->addTab(playlistTab, tr("Playlist"));
@@ -1057,6 +1062,7 @@ void MainWindow::onPlaylistCurrentIndexChanged(int index)
 {
     if (index >= 0 && index < m_playlistView->count())
         m_playlistView->setCurrentRow(index);
+    updateNowPlayingIcon();
 }
 
 // ---------------------------------------------------------------------------
@@ -1248,6 +1254,7 @@ void MainWindow::applyThemePalette()
     updateShuffleIcon();
     updateRepeatIcon();
     updateVolumeIcon();
+    updateNowPlayingIcon(); // the speaker glyph is painted in Theme::accentColor() too
     for (QSlider *slider : m_eqSliders)
         slider->update(); // EqSlider::paintEvent reads Theme::borderColor()/accentColor()/textColor() live
 
@@ -1579,6 +1586,24 @@ void MainWindow::refreshPlaylistWidget()
     if (m_playlist->currentIndex() >= 0 && m_playlist->currentIndex() < m_playlistView->count())
         m_playlistView->setCurrentRow(m_playlist->currentIndex());
     m_playlistView->blockSignals(false);
+    updateNowPlayingIcon();
+}
+
+// Speaker icon in front of the loaded/playing track's row - the row
+// selection highlight alone can't stand in for this: single-clicking a
+// different row moves Qt's "current row" (selection) without touching
+// Playlist::currentIndex() (only actually loading a track, via playIndex(),
+// does that), so a user browsing the list would otherwise lose any visual
+// sense of which track is actually loaded. Driven off Playlist::currentIndex()
+// directly rather than AudioEngine's play/pause state, so the icon marks
+// "this is the loaded track" and stays put through pause/seek/loading - not
+// just "audio is audibly coming out right now".
+void MainWindow::updateNowPlayingIcon()
+{
+    const int current = m_playlist->currentIndex();
+    const QIcon speaker = IconFactory::make(IconFactory::Glyph::VolumeHigh, Theme::accentColor(), 14);
+    for (int i = 0; i < m_playlistView->count(); ++i)
+        m_playlistView->item(i)->setIcon(i == current ? speaker : QIcon());
 }
 
 void MainWindow::addFilesToPlaylist(const QStringList &paths)

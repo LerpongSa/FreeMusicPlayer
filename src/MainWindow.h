@@ -109,6 +109,7 @@ private:
     void updateCoverArt(const QString &filePath);
     void refreshTrackInfoLabels(const QString &filePath); // reads real tags via TagEditor, falls back to filename/folder
     void refreshPlaylistWidget();
+    void updateNowPlayingIcon(); // stamps a speaker glyph on m_playlist->currentIndex()'s row, clears every other row's
     void addFilesToPlaylist(const QStringList &paths);
     void performScheduledShutdown(bool alsoShutdownComputer);
     static QString formatTime(qint64 ms);

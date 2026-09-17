@@ -209,6 +209,9 @@ AudioEngine::AudioEngine(QObject *parent)
 
     m_positionTimer.setInterval(100);
     connect(&m_positionTimer, &QTimer::timeout, this, &AudioEngine::emitPositionTick);
+
+    m_pendingPlayTimer.setSingleShot(true);
+    connect(&m_pendingPlayTimer, &QTimer::timeout, this, &AudioEngine::play);
 }
 
 AudioEngine::~AudioEngine()
@@ -238,6 +241,7 @@ void AudioEngine::resetForNewTrack()
     m_durationMs = 0;
     m_equalizer.resetState();
     m_positionTimer.stop();
+    m_pendingPlayTimer.stop(); // cancel any settle-delay play() still pending for the track we're leaving
 }
 
 void AudioEngine::loadFile(const QString &path, bool autoPlay)
@@ -248,6 +252,12 @@ void AudioEngine::loadFile(const QString &path, bool autoPlay)
     m_pendingAutoPlay = autoPlay;
     m_fileSizeBytes = QFileInfo(path).size();
     m_containerHint = QFileInfo(path).suffix().toUpper();
+
+    // See kPlaybackSettleDelayMs in AudioEngine.h - only these three
+    // extensions get the extra pre-playback pause.
+    m_needsPlaybackSettleDelay = (m_containerHint == QLatin1String("DSF")
+                                   || m_containerHint == QLatin1String("FLAC")
+                                   || m_containerHint == QLatin1String("WAV"));
 
     // ".m4a"/".m4b"/".alac" all mean "MP4 wrapper" and could hold either
     // lossless ALAC or lossy AAC; ".caf" likewise. Peek at the container's
@@ -426,12 +436,12 @@ void AudioEngine::onDecoderFinished()
 
     if (m_pendingAutoPlay) {
         m_pendingAutoPlay = false;
-        // Defer the actual start-playing call by one event-loop turn instead
-        // of calling play() synchronously right here. Confirmed via user
-        // report (2026-08-22): calling play() - which calls
-        // m_sink->start(m_ioDevice.get()) - immediately within the same call
-        // stack as the sink's own construction a few lines above in
-        // startPlaybackDevice() reliably left the track "loaded" (title,
+        // Defer the actual start-playing call by at least one event-loop
+        // turn instead of calling play() synchronously right here.
+        // Confirmed via user report (2026-08-22): calling play() - which
+        // calls m_sink->start(m_ioDevice.get()) - immediately within the
+        // same call stack as the sink's own construction a few lines above
+        // in startPlaybackDevice() reliably left the track "loaded" (title,
         // duration and the 0:00 position all showed up correctly) but never
         // actually audible - the transport stayed on the Play icon and
         // position never advanced, both for every auto-advance to the next
@@ -439,14 +449,27 @@ void AudioEngine::onDecoderFinished()
         // this same loadFile(path, true) -> onDecoderFinished() path).
         // Pressing Play manually afterward always worked instantly, because
         // by then the sink had already been alive for at least one full
-        // event-loop turn. QTimer::singleShot(0, ...) buys exactly that one
-        // turn - the same "let the event loop breathe" pattern already used
-        // by onDecoderBufferReady()'s drain loop above. Safe against a fast
-        // double-advance in the meantime: play() re-checks m_ready and
-        // m_sink, so if a newer loadFile() already reset both by the time
-        // this fires, it correctly no-ops (or re-arms m_pendingAutoPlay)
-        // instead of resuming stale state.
-        QTimer::singleShot(0, this, &AudioEngine::play);
+        // event-loop turn. Zero delay buys exactly that one turn - the same
+        // "let the event loop breathe" pattern already used by
+        // onDecoderBufferReady()'s drain loop above.
+        //
+        // DSF/FLAC/WAV get a longer, deliberate kPlaybackSettleDelayMs
+        // pause instead (requested by the user 2026-09-17): time for the
+        // output device to relock at whatever sample rate/bit depth this
+        // track needs before audio actually starts, so the very first
+        // moment isn't clipped or glitched. m_state stays Loading for the
+        // whole wait (setState(Playing) only happens once play() actually
+        // runs), so the busy cursor and disabled seek bar from
+        // onEngineStateChanged() naturally cover it too.
+        //
+        // Either way, safe against a fast double-advance in the meantime:
+        // play() re-checks m_ready and m_sink, so if a newer loadFile()
+        // already reset both by the time this fires, it correctly no-ops
+        // (or re-arms m_pendingAutoPlay) instead of resuming stale state -
+        // and resetForNewTrack() stops this same m_pendingPlayTimer, so a
+        // track skipped past during the delay never has its stale timer
+        // fire at all.
+        m_pendingPlayTimer.start(m_needsPlaybackSettleDelay ? kPlaybackSettleDelayMs : 0);
     } else {
         setState(State::Paused);
     }
@@ -558,6 +581,16 @@ void AudioEngine::play()
         return;
     }
     if (!m_sink)
+        return;
+
+    // Already playing - most likely the user pressed Play manually (state
+    // is Loading right up until this runs, so togglePlayPause() treats it
+    // as "not playing" and calls straight through to here) while a
+    // DSF/FLAC/WAV settle-delay play() from onDecoderFinished() was still
+    // pending in m_pendingPlayTimer. Without this, that timer firing later
+    // would call m_sink->start() a second time on an already-running sink -
+    // harmless but a needless little restart glitch.
+    if (m_state == State::Playing)
         return;
 
     if (m_state == State::Stopped && m_frameCursor.load() >= m_totalFrames) {
