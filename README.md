@@ -215,6 +215,23 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
     จึง set ไอคอน Pause ไว้ล่วงหน้าทันทีเมื่อ `autoPlay=true` — ถ้าถอดรหัส
     ล้มเหลว (state กลับไป `Stopped`) หรือเป็นการโหลดแบบไม่ auto-play ไอคอนก็ยัง
     ถูกคืนกลับเป็น Play ให้ถูกต้องผ่าน `onEngineStateChanged()` ตามปกติ
+  - **แก้บั๊ก: ไอคอนกระพริบ Play → Pause → Play → Pause ก่อนเพลงจะเล่นจริง**
+    (พบตอน double-click ไฟล์ DSF/FLAC/WAV เพราะ 3 นามสกุลนี้มี settle delay
+    ยาว 5 วินาทีให้เห็นบั๊กชัด) ต้นเหตุคือ `QAudioDecoder::finished()` ยิง
+    signal ซ้อนกัน 2 ครั้งต่อการถอดรหัส 1 รอบ (ยืนยันด้วย debug log) — สาเหตุคือ
+    `AudioEngine::onDecoderFinished()` เดิมเรียก `m_decoder->setSource(QUrl())`
+    (คืน handle ไฟล์ให้ TagEditor แก้ tag ได้) ตั้งแต่ต้นฟังก์ชัน ซึ่งการ set
+    source เป็นค่าว่างขณะ decoder อยู่ใน state "finished" ทำให้ Qt ยิง
+    `finished()` ซ้ำแบบ synchronous กลับเข้ามาเรียก `onDecoderFinished()` ซ้อน
+    ตัวเองอีกรอบก่อนที่ call แรกจะ return — รอบที่ซ้อนเข้ามานี้ดันไปกิน
+    `m_pendingAutoPlay` ทิ้งก่อน (set เป็น false, ตั้ง timer settle delay)
+    พอ call แรกกลับมาทำงานต่อแล้วมาเช็ค `m_pendingAutoPlay` ก็เจอค่า false
+    ที่ถูกกินไปแล้ว เลยตกไปที่ branch `else setState(Paused)` ทำให้ไอคอนเด้ง
+    กลับเป็น Play ค้างอยู่จนกว่า timer settle delay จะยิง `play()` จริง ๆ ตอน
+    5 วินาทีผ่านไป — แก้โดยย้าย `setSource(QUrl())` ไปไว้ท้ายสุดของฟังก์ชัน
+    (หลังจาก `m_ready = true` แล้ว) พร้อม guard `if (m_ready) return;` ที่ต้น
+    ฟังก์ชัน ทำให้ call ที่ซ้อนเข้ามาจาก `setSource()` เจอ guard แล้ว no-op
+    ทันทีแทนที่จะรันทับซ้อนอีกรอบ
 - **ใช้หน่วยความจำ ~10MB ต่อเพลง 1 นาที** (float 32-bit, stereo) แลกกับการ
   **seek ได้ทันที** ไม่มีดีเลย์ เพราะ `QAudioDecoder` เองไม่รองรับการ seek
 - **Visualizer แสดงสัญญาณเสียงต้นฉบับ (ก่อนปรับ EQ)** ไม่ใช่เสียงหลัง EQ ที่

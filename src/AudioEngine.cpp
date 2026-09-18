@@ -403,23 +403,33 @@ void AudioEngine::onDecoderBufferReady()
 
 void AudioEngine::onDecoderFinished()
 {
+    // Guards against re-entrancy: setSource(QUrl()) below was confirmed
+    // (via temporary debug logging, 2026-09-18) to synchronously re-emit
+    // finished() itself - same-thread signal/slot here is a direct call, so
+    // that re-emission re-enters this very function before the outer call
+    // has returned. Placing setSource(QUrl()) at the END of this function,
+    // after m_ready is set true, means that re-entrant call hits this guard
+    // and no-ops. It used to run BEFORE m_ready was set, so the re-entrant
+    // call executed the entire body a second time - including consuming
+    // m_pendingAutoPlay itself, so by the time the outer call resumed and
+    // reached its own "if (m_pendingAutoPlay)" check, the flag was already
+    // false and it wrongly fell into "else setState(Paused)", flipping the
+    // Play/Pause button back to Play for the rest of the settle delay. That
+    // was the "Play -> Pause -> Play -> Pause" a user double-clicking a
+    // playlist row would see before this fix.
+    if (m_ready)
+        return;
+
     // Drain anything left.
     while (m_decoder->bufferAvailable()) {
         QAudioBuffer buffer = m_decoder->read();
         appendDecodedBuffer(buffer);
     }
 
-    // Release the decoder's hold on the file now that everything has been
-    // copied into m_pcm - playback from here on reads only from that
-    // in-memory buffer via QAudioSink, never from the decoder again. On
-    // Windows, the Media Foundation backend otherwise keeps an exclusive-ish
-    // read handle open on the source for as long as it stays set, which
-    // blocks anything else (e.g. saving an edited tag, see TagEditor) from
-    // opening the "currently loaded" file for writing - "Access is denied"
-    // even though decoding itself finished long ago.
-    m_decoder->setSource(QUrl());
-
     if (m_totalFrames <= 0) {
+        // Release the decoder's hold on the file (see the comment further
+        // below on the success path for why) even on this early-out.
+        m_decoder->setSource(QUrl());
         emit errorOccurred(tr("No audio data could be decoded from this file."));
         setState(State::Stopped);
         return;
@@ -473,6 +483,20 @@ void AudioEngine::onDecoderFinished()
     } else {
         setState(State::Paused);
     }
+
+    // Release the decoder's hold on the file now that everything has been
+    // copied into m_pcm - playback from here on reads only from that
+    // in-memory buffer via QAudioSink, never from the decoder again. On
+    // Windows, the Media Foundation backend otherwise keeps an exclusive-ish
+    // read handle open on the source for as long as it stays set, which
+    // blocks anything else (e.g. saving an edited tag, see TagEditor) from
+    // opening the "currently loaded" file for writing - "Access is denied"
+    // even though decoding itself finished long ago. Deliberately done last
+    // (see the guard comment at the top of this function): this is what
+    // triggers the re-entrant finished() call, and m_ready is already true
+    // by this point so that call safely no-ops instead of running the
+    // whole function again.
+    m_decoder->setSource(QUrl());
 }
 
 void AudioEngine::onDecoderError(QAudioDecoder::Error error)
