@@ -1498,6 +1498,22 @@ void MainWindow::playIndex(int index, bool autoPlay)
     m_engine->loadFile(path, autoPlay);
     updateCoverArt(path);
     refreshTrackInfoLabels(path);
+
+    // Optimistic: reflects that a play was just requested (double-clicking
+    // a playlist row, Next/Previous, or auto-advance all funnel through
+    // here with autoPlay=true), even though AudioEngine's own state won't
+    // actually reach State::Playing until decoding - and for DSF/FLAC/WAV,
+    // the settle delay on top of that (see AudioEngine.cpp) - finishes.
+    // loadFile() above synchronously emits stateChanged(Loading) (same-
+    // thread signal/slot = direct call), which onEngineStateChanged()
+    // already turned back into a Play icon by the time loadFile() returns
+    // here - this call is what overrides that back to Pause. Every later
+    // stateChanged (Playing once audio genuinely starts, or Stopped if
+    // decoding fails) still updates the icon correctly on its own, so
+    // this is purely about not leaving the button showing "Play" the
+    // whole time a track the user just asked to play is still loading.
+    if (autoPlay)
+        updatePlayPauseIcon(true);
 }
 
 void MainWindow::updatePlayPauseIcon(bool playing)

@@ -206,6 +206,15 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
     เองจะไม่โดน cursor busy ซ้ำ (ไม่เคย set busy จาก state `Paused` อยู่แล้ว) มี
     safety net ที่ `onEngineError()` กันเคส output error ทำให้ cursor ค้างค้าง
     ไปตลอดด้วย
+  - **ปุ่ม Play/Pause เปลี่ยนเป็นไอคอน Pause ทันทีที่ double-click/Next/Prev**
+    (ไม่ต้องรอถอดรหัส/settle delay เสร็จก่อน) — `updatePlayPauseIcon()` เดิม
+    ผูกกับ `AudioEngine::State::Playing` ล้วน ๆ ซึ่งกว่าจะถึง state นั้นต้องรอ
+    ถอดรหัส + delay (สำหรับ DSF/FLAC/WAV) เสร็จก่อน ทำให้ปุ่มโชว์ไอคอน Play
+    ค้างอยู่หลายวินาทีทั้งที่ผู้ใช้กด "เล่น" ไปแล้ว `MainWindow::playIndex()`
+    (จุดรวมของ double-click/Next/Prev/context-menu Play/auto-advance ทุกทาง)
+    จึง set ไอคอน Pause ไว้ล่วงหน้าทันทีเมื่อ `autoPlay=true` — ถ้าถอดรหัส
+    ล้มเหลว (state กลับไป `Stopped`) หรือเป็นการโหลดแบบไม่ auto-play ไอคอนก็ยัง
+    ถูกคืนกลับเป็น Play ให้ถูกต้องผ่าน `onEngineStateChanged()` ตามปกติ
 - **ใช้หน่วยความจำ ~10MB ต่อเพลง 1 นาที** (float 32-bit, stereo) แลกกับการ
   **seek ได้ทันที** ไม่มีดีเลย์ เพราะ `QAudioDecoder` เองไม่รองรับการ seek
 - **Visualizer แสดงสัญญาณเสียงต้นฉบับ (ก่อนปรับ EQ)** ไม่ใช่เสียงหลัง EQ ที่
