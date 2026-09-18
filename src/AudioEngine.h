@@ -82,6 +82,20 @@ signals:
     void decodingProgress(int percent);
     void formatDescriptionChanged(QString text); // "MP3 - 320 kbps - 44.1 kHz - Stereo"
 
+    // Emitted whenever the underlying QAudioSink reports itself as
+    // QAudio::ActiveState - i.e. actually pulling and playing audio, as
+    // opposed to stateChanged's State::Playing, which is set synchronously
+    // the instant play() calls QAudioSink::start(), before the sink (and
+    // the OS audio stack underneath it) has necessarily confirmed
+    // anything is really flowing yet. MainWindow uses this, not
+    // State::Playing, to decide when a busy cursor shown for a freshly
+    // loaded track can finally go away - "the code told the sink to
+    // start" and "the sink says it's active" aren't quite the same
+    // moment, especially right after a sample-rate/format change (see the
+    // DSF/FLAC/WAV settle delay in onDecoderFinished() below, which exists
+    // for exactly that kind of gap).
+    void audioActive();
+
     // Internal: emitted from the audio-pull thread inside pullAudio(). Never
     // connect to this from outside AudioEngine. A signal emission is
     // thread-safe by design and, connected with Qt::QueuedConnection to a

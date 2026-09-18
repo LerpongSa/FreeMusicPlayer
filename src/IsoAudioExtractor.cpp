@@ -9,6 +9,7 @@
 #include <QAudioDecoder>
 #include <QAudioBuffer>
 #include <QEventLoop>
+#include <QTimer>
 #include <QUrl>
 
 #include <algorithm>
@@ -174,10 +175,12 @@ struct DemuxResult
     std::vector<uint8_t> rawDsd; // concatenated complete, uncompressed frames
     bool sawDst = false;
     bool sawRawDsd = false;
+    bool cancelled = false;
 };
 
 DemuxResult demuxTrackAudio(QFile &iso, int64_t startLsn, int64_t lengthLsn, int areaChannelCount,
-                             const std::function<void(int percent)> &onProgress = nullptr)
+                             const std::function<void(int percent)> &onProgress = nullptr,
+                             const std::function<bool()> &isCancelled = nullptr)
 {
     DemuxResult result;
     std::vector<uint8_t> curFrame;
@@ -219,6 +222,13 @@ DemuxResult demuxTrackAudio(QFile &iso, int64_t startLsn, int64_t lengthLsn, int
     int64_t chunkLsnCount = 0;
 
     for (int64_t i = 0; i < lengthLsn; ++i) {
+        // Checked every sector, not just once - a multi-minute track's
+        // demux is otherwise one long, uninterruptible loop from the
+        // caller's point of view.
+        if (isCancelled && isCancelled()) {
+            result.cancelled = true;
+            break;
+        }
         if (onProgress && lengthLsn > 0) {
             const int pct = static_cast<int>((i * 100) / lengthLsn);
             if (pct != lastReportedPercent) {
@@ -386,7 +396,8 @@ std::vector<IsoAudioExtractor::TrackInfo> parseCueSheet(const QString &cuePath, 
 // decoders included, handle predictably without an explicit target
 // format).
 bool decodeToInt32Pcm(const QString &path, int targetSampleRate, int targetChannels,
-                      std::vector<int32_t> &outInterleaved, int outBitsPerSample, QString *error)
+                      std::vector<int32_t> &outInterleaved, int outBitsPerSample, QString *error,
+                      const std::function<bool()> &isCancelled = nullptr)
 {
     QAudioDecoder decoder;
     QAudioFormat fmt;
@@ -424,9 +435,34 @@ bool decodeToInt32Pcm(const QString &path, int targetSampleRate, int targetChann
                           decodeErrorString = decoder.errorString();
                           loop.quit();
                       });
+
+    // decoder.start() hands control to FFmpeg's own decode thread(s), with
+    // this thread just waiting on loop.exec() for a bufferReady/finished/
+    // error signal - there's no loop of our own to check isCancelled()
+    // inside, so a short-interval timer is the only way to notice a
+    // cancellation promptly instead of only once decoding finishes or
+    // errors out on its own.
+    QTimer cancelPoll;
+    bool wasCancelled = false;
+    if (isCancelled) {
+        cancelPoll.setInterval(100);
+        QObject::connect(&cancelPoll, &QTimer::timeout, &decoder, [&]() {
+            if (isCancelled()) {
+                wasCancelled = true;
+                decoder.stop();
+                loop.quit();
+            }
+        });
+        cancelPoll.start();
+    }
+
     decoder.start();
     loop.exec();
 
+    if (wasCancelled) {
+        if (error) *error = QStringLiteral("Cancelled.");
+        return false;
+    }
     if (decodeError) {
         if (error) *error = decodeErrorString.isEmpty()
                                  ? QStringLiteral("Could not decode the extracted DSD audio.")
@@ -524,9 +560,18 @@ OpenResult open(const QString &isoPath)
 
 ExtractResult extractTrackToFlac(const QString &isoPath, const TrackInfo &track,
                                   const QString &outFlacPath, const QString &tempDir,
-                                  const ProgressCallback &onProgress)
+                                  const ProgressCallback &onProgress, const CancelCheck &isCancelled)
 {
     ExtractResult result;
+
+    // Checked before doing any work at all, plus again at every phase
+    // transition below and inside each phase's own loop (demux, decode,
+    // encode) - see CancelCheck's doc comment in the header for why a
+    // single check up front wouldn't be enough on its own.
+    if (isCancelled && isCancelled()) {
+        result.cancelled = true;
+        return result;
+    }
 
     if (track.kind == SourceKind::SacdDst) {
         result.errorMessage = QStringLiteral("This track is DST-compressed, which this app cannot decode.");
@@ -561,11 +606,21 @@ ExtractResult extractTrackToFlac(const QString &isoPath, const TrackInfo &track,
         if (onProgress)
             onProgress(ProgressPhase::ReadingCdda, 100);
 
+        if (isCancelled && isCancelled()) {
+            result.cancelled = true;
+            return result;
+        }
+
         QString encodeError;
         const auto encodeProgress = onProgress
             ? std::function<void(int)>([&](int p) { onProgress(ProgressPhase::EncodingFlac, p); })
             : std::function<void(int)>();
-        if (!FlacEncoder::encode(outFlacPath, pcm, 44100, 2, 16, &encodeError, encodeProgress)) {
+        if (!FlacEncoder::encode(outFlacPath, pcm, 44100, 2, 16, &encodeError, encodeProgress, isCancelled)) {
+            QFile::remove(outFlacPath); // FlacEncoder::encode() always creates/truncates this file, even when it bails immediately
+            if (isCancelled && isCancelled()) {
+                result.cancelled = true;
+                return result;
+            }
             result.errorMessage = encodeError;
             return result;
         }
@@ -577,8 +632,12 @@ ExtractResult extractTrackToFlac(const QString &isoPath, const TrackInfo &track,
     const auto demuxProgress = onProgress
         ? std::function<void(int)>([&](int p) { onProgress(ProgressPhase::ReadingSacdAudio, p); })
         : std::function<void(int)>();
-    const DemuxResult demux =
-        demuxTrackAudio(iso, track.startLsn, track.lengthLsn, /*areaChannelCount=*/2, demuxProgress);
+    const DemuxResult demux = demuxTrackAudio(iso, track.startLsn, track.lengthLsn,
+                                               /*areaChannelCount=*/2, demuxProgress, isCancelled);
+    if (demux.cancelled) {
+        result.cancelled = true;
+        return result;
+    }
     if (demux.sawDst && !demux.sawRawDsd) {
         result.errorMessage = QStringLiteral("Track %1 is DST-compressed, which this app cannot decode.")
                                    .arg(track.number);
@@ -602,14 +661,24 @@ ExtractResult extractTrackToFlac(const QString &isoPath, const TrackInfo &track,
     if (onProgress)
         onProgress(ProgressPhase::WritingDsf, 100);
 
+    if (isCancelled && isCancelled()) {
+        QFile::remove(tempDsfPath);
+        result.cancelled = true;
+        return result;
+    }
+
     if (onProgress)
         onProgress(ProgressPhase::DecodingDsd, 0);
     std::vector<int32_t> pcm;
     QString decodeError;
-    const bool decoded = decodeToInt32Pcm(tempDsfPath, 88200, 2, pcm, 24, &decodeError);
+    const bool decoded = decodeToInt32Pcm(tempDsfPath, 88200, 2, pcm, 24, &decodeError, isCancelled);
     QFile::remove(tempDsfPath);
 
     if (!decoded) {
+        if (isCancelled && isCancelled()) {
+            result.cancelled = true;
+            return result;
+        }
         result.errorMessage = decodeError;
         return result;
     }
@@ -620,11 +689,21 @@ ExtractResult extractTrackToFlac(const QString &isoPath, const TrackInfo &track,
     if (onProgress)
         onProgress(ProgressPhase::DecodingDsd, 100);
 
+    if (isCancelled && isCancelled()) {
+        result.cancelled = true;
+        return result;
+    }
+
     QString encodeError;
     const auto encodeProgress = onProgress
         ? std::function<void(int)>([&](int p) { onProgress(ProgressPhase::EncodingFlac, p); })
         : std::function<void(int)>();
-    if (!FlacEncoder::encode(outFlacPath, pcm, 88200, 2, 24, &encodeError, encodeProgress)) {
+    if (!FlacEncoder::encode(outFlacPath, pcm, 88200, 2, 24, &encodeError, encodeProgress, isCancelled)) {
+        QFile::remove(outFlacPath); // FlacEncoder::encode() always creates/truncates this file, even when it bails immediately
+        if (isCancelled && isCancelled()) {
+            result.cancelled = true;
+            return result;
+        }
         result.errorMessage = encodeError;
         return result;
     }

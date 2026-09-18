@@ -383,7 +383,8 @@ bool encode(const QString &outPath,
             int channelCount,
             int bitsPerSample,
             QString *errorMessage,
-            const std::function<void(int percent)> &onProgress)
+            const std::function<void(int percent)> &onProgress,
+            const std::function<bool()> &isCancelled)
 {
     auto fail = [&](const QString &msg) {
         if (errorMessage)
@@ -402,6 +403,9 @@ bool encode(const QString &outPath,
         return fail(QStringLiteral("FlacEncoder: empty or non-interleaved sample buffer."));
     }
 
+    if (isCancelled && isCancelled())
+        return fail(QStringLiteral("Cancelled."));
+
     const uint64_t totalSamplesPerChannel = interleavedSamples.size() / static_cast<size_t>(channelCount);
 
     QFile file(outPath);
@@ -412,18 +416,35 @@ bool encode(const QString &outPath,
     // interleaved, signed little-endian, byte-aligned. 16 and 24 bits are
     // both already a whole number of bytes, so no sign-extension padding
     // (the spec's rule for e.g. 6-bit samples) is needed here.
+    //
+    // Fed to QCryptographicHash incrementally in chunks (rather than
+    // building the whole little-endian buffer up front and hashing it in
+    // one call) so isCancelled() gets checked along the way - a long
+    // track's worth of samples is enough data that hashing it is itself a
+    // non-trivial, otherwise-uninterruptible pause before the per-block
+    // checks in the frame loop below even start.
     const int bytesPerSample = bitsPerSample / 8;
-    QByteArray md5Input;
-    md5Input.resize(static_cast<int>(interleavedSamples.size()) * bytesPerSample);
+    QCryptographicHash md5Hasher(QCryptographicHash::Md5);
     {
-        char *p = md5Input.data();
-        for (int32_t s : interleavedSamples) {
-            for (int b = 0; b < bytesPerSample; ++b) {
-                *p++ = static_cast<char>((s >> (8 * b)) & 0xFF);
+        constexpr size_t kChunkSamples = 1 << 20; // ~1M samples between cancellation checks
+        QByteArray chunkBuf;
+        chunkBuf.resize(static_cast<int>(kChunkSamples) * bytesPerSample);
+        size_t i = 0;
+        while (i < interleavedSamples.size()) {
+            if (isCancelled && isCancelled())
+                return fail(QStringLiteral("Cancelled."));
+            const size_t n = std::min(kChunkSamples, interleavedSamples.size() - i);
+            char *p = chunkBuf.data();
+            for (size_t j = 0; j < n; ++j) {
+                const int32_t s = interleavedSamples[i + j];
+                for (int b = 0; b < bytesPerSample; ++b)
+                    *p++ = static_cast<char>((s >> (8 * b)) & 0xFF);
             }
+            md5Hasher.addData(QByteArrayView(chunkBuf.constData(), static_cast<qsizetype>(n) * bytesPerSample));
+            i += n;
         }
     }
-    const QByteArray md5 = QCryptographicHash::hash(md5Input, QCryptographicHash::Md5);
+    const QByteArray md5 = md5Hasher.result();
 
     // ---- STREAMINFO -----------------------------------------------------
     {
@@ -466,6 +487,15 @@ bool encode(const QString &outPath,
     if (onProgress)
         onProgress(0); // guarantee a 0% callback even for a very short (single-frame) track
     for (uint64_t pos = 0; pos < totalSamplesPerChannel; pos += kBlockSize) {
+        // Checked every block (not just once before the loop) so a
+        // cancellation lands within one block's worth of encoding time,
+        // not only after however much of the track was left - see this
+        // parameter's own doc comment in FlacEncoder.h.
+        if (isCancelled && isCancelled()) {
+            file.close();
+            return fail(QStringLiteral("Cancelled."));
+        }
+
         const int thisBlockSize =
             static_cast<int>(std::min<uint64_t>(kBlockSize, totalSamplesPerChannel - pos));
         const int32_t *framePtr =

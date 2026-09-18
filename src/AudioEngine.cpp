@@ -507,7 +507,9 @@ void AudioEngine::startPlaybackDevice()
     m_sink->setVolume(m_muted ? 0.0 : m_volumePercent / 100.0);
 
     connect(m_sink.get(), &QAudioSink::stateChanged, this, [this](QAudio::State s) {
-        if (s == QAudio::IdleState && m_state == State::Playing) {
+        if (s == QAudio::ActiveState) {
+            emit audioActive();
+        } else if (s == QAudio::IdleState && m_state == State::Playing) {
             // Sink ran dry - our own end-of-track signal (emitted from
             // pullAudio) is the authoritative source of truth, so this is
             // just a safety net; nothing to do here.

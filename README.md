@@ -194,9 +194,18 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
   - **DSF / FLAC / WAV หน่วงเพิ่มอีก 5 วินาที** หลังถอดรหัสเสร็จ ก่อนเริ่มเล่น
     เสียงจริง (เฉพาะ 3 นามสกุลนี้ — format อื่นเริ่มเล่นทันทีตามปกติ) เผื่อเวลา
     ให้ output device/DAC relock sample rate หรือ bit depth ใหม่ ไม่ให้เสียง
-    วูบหรือแตกในช่วงแรกของเพลง ระหว่างรอ state ยังเป็น `Loading` อยู่ (busy
-    cursor + seek bar ที่ disable ไว้ตอน Loading จึงครอบคลุมช่วงนี้ให้อัตโนมัติ)
-    สลับเพลงระหว่างรอ (Next/Prev) จะยกเลิก delay ที่ค้างอยู่ ไม่เล่นเพลงเก่าซ้อน
+    วูบหรือแตกในช่วงแรกของเพลง สลับเพลงระหว่างรอ (Next/Prev) จะยกเลิก delay
+    ที่ค้างอยู่ ไม่เล่นเพลงเก่าซ้อน
+  - **เคอร์เซอร์เป็นรูป Loading (busy cursor) จน "มีเสียงออกจริง" ไม่ใช่แค่จน
+    ถอดรหัสเสร็จ** — ครอบคลุมทั้งช่วง `Loading` (ถอดรหัส) และช่วง delay ข้างบน
+    (state ยังเป็น `Loading` ตลอดสองช่วงนี้) แต่ต่อให้ state เปลี่ยนเป็น
+    `Playing` แล้ว ปุ่ม `play()` ก็แค่เรียก `QAudioSink::start()` — ยังไม่ได้
+    ยืนยันว่า sink เริ่ม pull ข้อมูลจริงหรือยัง จึงเก็บ cursor ไว้ต่ออีกนิดจนกว่า
+    `QAudioSink::stateChanged` จะรายงาน `QAudio::ActiveState` จริง (signal
+    `AudioEngine::audioActive()`) ค่อยคืนเคอร์เซอร์ปกติ — กด pause/resume มือ
+    เองจะไม่โดน cursor busy ซ้ำ (ไม่เคย set busy จาก state `Paused` อยู่แล้ว) มี
+    safety net ที่ `onEngineError()` กันเคส output error ทำให้ cursor ค้างค้าง
+    ไปตลอดด้วย
 - **ใช้หน่วยความจำ ~10MB ต่อเพลง 1 นาที** (float 32-bit, stereo) แลกกับการ
   **seek ได้ทันที** ไม่มีดีเลย์ เพราะ `QAudioDecoder` เองไม่รองรับการ seek
 - **Visualizer แสดงสัญญาณเสียงต้นฉบับ (ก่อนปรับ EQ)** ไม่ใช่เสียงหลัง EQ ที่
@@ -264,6 +273,28 @@ subframe แบบเดิม) — ลด full-array pass ต่อ subframe �
 Release) — ดูหัวข้อ Build ด้านบนสำหรับอีกสาเหตุหลักที่ทำให้การแปลงช้า
 (`CMAKE_BUILD_TYPE` ไม่เคย set มาก่อน)
 
+**Cancel หยุดทันที**: ปุ่ม Cancel ใน progress dialog เดิม (2026-09-18 ก่อนแก้)
+เชื่อม signal `canceled` เข้ากับ `IsoImportWorker::cancel()` ด้วย
+`Qt::AutoConnection` (default) ซึ่งข้าม thread จริง Qt จะ resolve เป็น
+**queued** เสมอ — แปลว่า `cancel()` จะไม่ถูกเรียกจนกว่า event loop ของ worker
+thread จะได้ spin อีกครั้ง ซึ่งระหว่าง `demuxTrackAudio()`/
+`FlacEncoder::encode()` (เป็น loop C++ ธรรมดา ไม่มี event loop ของตัวเอง) ไม่มี
+จังหวะให้ spin เลยจนกว่าทั้ง track (หรือทั้ง import) จะเสร็จไปเอง — กด Cancel
+แล้วเหมือนไม่มีอะไรเกิดขึ้นจนกว่างานจะเสร็จตามปกติ แก้โดย:
+1. ใส่ `Qt::DirectConnection` ตรง ๆ ให้ `connect()` เส้นนี้ — `cancel()` แค่
+   flip `std::atomic_bool` เดียว ปลอดภัยที่จะเรียกตรง ๆ ข้าม thread แบบ
+   synchronous (ไม่เหมือน slot ทั่วไปที่อาจแตะ Qt object ที่ไม่ thread-safe)
+2. เพิ่ม `isCancelled` callback เข้าไปทุก loop ที่กินเวลานาน —
+   `demuxTrackAudio()` เช็คทุก sector, `FlacEncoder::encode()` เช็คทุก block
+   (4096 samples) และระหว่างคำนวณ MD5 (แยก chunk ทีละ ~1M samples แทนแฮชรวด
+   เดียวทั้งไฟล์), `decodeToInt32Pcm()` เช็คผ่าน `QTimer` poll ทุก 100ms
+   ระหว่างรอ `QAudioDecoder` (เพราะจุดนั้นไม่มี loop ของเราให้เช็คตรง ๆ)
+3. ไฟล์ผลลัพธ์ที่เขียนไปแล้วบางส่วน (`.flac`, `.dsf` ชั่วคราว) ถูกลบทิ้งเมื่อ
+   cancel กลางทาง ไม่เหลือไฟล์เสีย/ไม่สมบูรณ์ค้างไว้
+
+ทดสอบด้วยการ cancel กลางไฟล์ 10 นาทีจริง — ยืนยันว่าหยุดใน < 1 วินาที (ไม่ใช่
+รอจนกว่า track จะ encode ครบตามปกติ)
+
 ## Thread safety
 
 - ตำแหน่งเล่นปัจจุบัน (`m_frameCursor`), mute, และ end-of-track flag เป็น
@@ -274,8 +305,12 @@ Release) — ดูหัวข้อ Build ด้านบนสำหรับ
   และทุกจุดที่ UI thread แก้ค่า gain/preset ก็ล็อกก่อนแก้เสมอ
 - `IsoImportWorker` รันทั้ง pipeline บน `QThread` ของตัวเอง (ดูหัวข้อ
   Import ISO ด้านบน) — `cancel()` เป็น `std::atomic_bool` เรียกข้าม thread ได้
-  ตรง ๆ โดยไม่ต้องผ่าน `QMetaObject::invokeMethod`, ส่วน signal ความคืบหน้า
-  ทุกตัวถูกส่งกลับ UI thread ผ่าน queued connection ตามปกติของ Qt
+  ตรง ๆ **แต่ต้องระบุ `Qt::DirectConnection` ตรง ๆ ตอน `connect()`** (ปล่อยเป็น
+  default `Qt::AutoConnection` จะกลาย เป็น queued ข้าม thread เสมอ ทำให้
+  `cancel()` ไม่ถูกเรียกจนกว่า worker thread's event loop จะได้ spin — ดูหัวข้อ
+  "Cancel หยุดทันที" ด้านบน) ส่วน signal ความคืบหน้าทุกตัวยังส่งกลับ UI thread
+  ผ่าน queued connection ตามปกติของ Qt (ไม่ต้องรีบ เพราะแค่ update ตัวเลข
+  ไม่ใช่ต้องหยุดงานทันทีแบบ cancel)
 
 ## การตรวจสอบความถูกต้องของอัลกอริทึมหลัก
 

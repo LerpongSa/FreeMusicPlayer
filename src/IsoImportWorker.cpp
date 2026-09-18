@@ -87,8 +87,11 @@ void IsoImportWorker::run(const QString &isoPath, const QString &outDir)
             isoPath, track, outPath, tempDir.path(),
             [this, i](IsoAudioExtractor::ProgressPhase phase, int percent) {
                 emit trackProgress(i, phaseLabel(phase), percent);
-            });
+            },
+            [this]() { return m_cancelRequested.load(); });
 
+        if (r.cancelled)
+            break; // the user's own request taking effect, not a track failure to report
         if (!r.ok) {
             emit trackFailed(i, track.title, r.errorMessage);
             continue;

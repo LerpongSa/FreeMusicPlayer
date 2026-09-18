@@ -109,6 +109,7 @@ private slots:
     void onEnginePlaybackFinished();
     void onEngineError(const QString &message);
     void onEngineFormatDescriptionChanged(const QString &text);
+    void onEngineAudioActive(); // AudioEngine::audioActive() - see its own doc comment for why this, not State::Playing, ends the busy cursor
 
 private:
     void setupUi();

@@ -83,6 +83,12 @@ struct ExtractResult
 {
     bool ok = false;
     QString errorMessage;
+    // True when this track stopped early because isCancelled() (see
+    // extractTrackToFlac below) returned true, as opposed to a genuine
+    // error - callers should treat the two very differently (a cancelled
+    // track isn't a failure to report to the user, just the user's own
+    // request taking effect).
+    bool cancelled = false;
 };
 
 // Coarse phase of one track's extraction, reported through
@@ -116,8 +122,18 @@ enum class ProgressPhase {
 // 0 then once at 100 as start/end markers.
 using ProgressCallback = std::function<void(ProgressPhase phase, int percent)>;
 
+// isCancelled, when given, is polled at every reasonable opportunity
+// throughout extraction - between phases, inside the SACD sector-demux
+// loop, inside the QAudioDecoder wait, and inside FlacEncoder::encode()
+// itself (see its own isCancelled parameter) - so a cancellation request
+// takes effect within roughly one loop iteration's worth of work, not
+// only once the whole track finishes on its own. Called synchronously on
+// the caller's own thread, same as onProgress.
+using CancelCheck = std::function<bool()>;
+
 ExtractResult extractTrackToFlac(const QString &isoPath, const TrackInfo &track,
                                   const QString &outFlacPath, const QString &tempDir,
-                                  const ProgressCallback &onProgress = nullptr);
+                                  const ProgressCallback &onProgress = nullptr,
+                                  const CancelCheck &isCancelled = nullptr);
 
 } // namespace IsoAudioExtractor

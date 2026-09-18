@@ -62,20 +62,30 @@ namespace FlacEncoder {
 // so no "uncommon sample rate" escape is needed).
 //
 // Returns false (and, if given, an error message) on an unsupported
-// parameter combination or a file I/O failure; the partially-written file
-// is left in place in the latter case (the caller already knows the whole
-// import failed and will report/skip the track, same as any other
-// mid-batch I/O error).
+// parameter combination, a file I/O failure, or a cancellation (see
+// isCancelled below) - the caller is responsible for deleting the
+// partially-written file in every one of those cases (this function only
+// closes it), same as it already has to for any other mid-batch failure.
 // onProgress, when given, is called synchronously on the caller's own
 // thread (never from a background thread of this function's own making -
 // there is none) each time encoding progress crosses another whole
-// percent, with 0 and 100 both guaranteed to be reported exactly once.
+// percent, with 0 and 100 both guaranteed to be reported exactly once
+// (100 is skipped if cancelled before finishing).
+//
+// isCancelled, when given, is polled once per block (every 4096 samples,
+// not just once at the start) so a cancellation request lands promptly
+// even in the middle of a single, otherwise-uninterruptible call -
+// encoding a few minutes of audio is fast (see FlacEncoder.cpp's own
+// history for why this matters: it wasn't always this fast), but even a
+// sub-second gap between "the user clicked Cancel" and "this actually
+// stops" reads as unresponsive.
 bool encode(const QString &outPath,
             const std::vector<int32_t> &interleavedSamples,
             int sampleRate,
             int channelCount,
             int bitsPerSample,
             QString *errorMessage = nullptr,
-            const std::function<void(int percent)> &onProgress = nullptr);
+            const std::function<void(int percent)> &onProgress = nullptr,
+            const std::function<bool()> &isCancelled = nullptr);
 
 } // namespace FlacEncoder

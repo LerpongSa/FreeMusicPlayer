@@ -855,6 +855,7 @@ void MainWindow::setupConnections()
     connect(m_engine, &AudioEngine::playbackFinished, this, &MainWindow::onEnginePlaybackFinished);
     connect(m_engine, &AudioEngine::errorOccurred, this, &MainWindow::onEngineError);
     connect(m_engine, &AudioEngine::formatDescriptionChanged, this, &MainWindow::onEngineFormatDescriptionChanged);
+    connect(m_engine, &AudioEngine::audioActive, this, &MainWindow::onEngineAudioActive);
 }
 
 // ---------------------------------------------------------------------------
@@ -1371,20 +1372,45 @@ void MainWindow::onEngineStateChanged(AudioEngine::State state)
     m_visualizer->setActive(playing && m_vizEnableCheck->isChecked());
     m_seekSlider->setEnabled(state != AudioEngine::State::Loading);
 
-    // Busy cursor for exactly the Loading span (AudioEngine decodes the
-    // whole track into memory before anything is playable - see
-    // AudioEngine.h - so this is the one state where clicking around does
-    // nothing yet). setState() only emits when the state actually changes,
-    // so back-to-back loadFile() calls that never leave Loading (e.g.
-    // mashing Next while the previous track is still decoding) fire this
-    // at most once per span - m_loadingCursorActive still guards it so a
-    // set is never pushed or restored on QApplication's override-cursor
-    // stack more than once for the same span.
+    // Busy cursor for the Loading span (AudioEngine decodes the whole
+    // track into memory before anything is playable - see AudioEngine.h -
+    // so this is the one state where clicking around does nothing yet)
+    // AND for however much longer it takes after that for audio to
+    // actually start (see AudioEngine::audioActive()'s doc comment - the
+    // request this satisfies was specifically "until sound comes out",
+    // not just "until decoding finishes"). setState() only emits when the
+    // state actually changes, so back-to-back loadFile() calls that never
+    // leave Loading (e.g. mashing Next while the previous track is still
+    // decoding) fire this at most once per span - m_loadingCursorActive
+    // still guards it so a set is never pushed or restored on
+    // QApplication's override-cursor stack more than once for the same
+    // span.
+    //
+    // Playing is deliberately excluded from the "turn it off" branch below:
+    // reaching Playing only means play() has called QAudioSink::start(),
+    // not that the sink has confirmed anything is actually flowing yet -
+    // onEngineAudioActive() (AudioEngine::audioActive(), wired in
+    // setupConnections()) is what actually clears the cursor once that's
+    // true. Manually pausing/resuming never turns the cursor on in the
+    // first place (that only happens from Loading), so audioActive()
+    // firing on every resume too is harmless - the "still on" check inside
+    // it is a no-op unless a load is genuinely still being waited out.
     const bool loading = (state == AudioEngine::State::Loading);
     if (loading && !m_loadingCursorActive) {
         QApplication::setOverrideCursor(Qt::BusyCursor);
         m_loadingCursorActive = true;
-    } else if (!loading && m_loadingCursorActive) {
+    } else if (!loading && state != AudioEngine::State::Playing && m_loadingCursorActive) {
+        // Loading ended some other way than reaching Playing (paused
+        // without auto-play, stopped, decode failed) - nothing left to
+        // wait for.
+        QApplication::restoreOverrideCursor();
+        m_loadingCursorActive = false;
+    }
+}
+
+void MainWindow::onEngineAudioActive()
+{
+    if (m_loadingCursorActive) {
         QApplication::restoreOverrideCursor();
         m_loadingCursorActive = false;
     }
@@ -1438,6 +1464,18 @@ void MainWindow::onEnginePlaybackFinished()
 void MainWindow::onEngineError(const QString &message)
 {
     statusBar()->showMessage(message, 5000);
+
+    // Safety net: an audio output error right after starting playback
+    // (e.g. the device rejects the format) can leave AudioEngine's state
+    // sitting at Playing forever without ever reaching ActiveState, since
+    // nothing else transitions it back to Stopped on its own - without
+    // this, onEngineStateChanged()'s Loading-vs-Playing carve-out (see its
+    // comment) would leave the busy cursor stuck on indefinitely instead
+    // of just failing visibly.
+    if (m_loadingCursorActive) {
+        QApplication::restoreOverrideCursor();
+        m_loadingCursorActive = false;
+    }
 }
 
 void MainWindow::onEngineFormatDescriptionChanged(const QString &text)
@@ -1697,10 +1735,21 @@ void MainWindow::startIsoImport(const QString &isoPath, const QString &outDir)
     // QProgressDialog's own value-reaches-maximum heuristics.
     m_isoImportProgressDialog->setAutoClose(false);
     m_isoImportProgressDialog->setAutoReset(false);
-    // cancel() just flips a std::atomic_bool (see IsoImportWorker.h) - safe
-    // to call directly from this (the UI) thread without marshaling it
-    // through the worker thread's event loop.
-    connect(m_isoImportProgressDialog, &QProgressDialog::canceled, m_isoImportWorker, &IsoImportWorker::cancel);
+    // Qt::DirectConnection is required here, not optional: m_isoImportWorker
+    // lives on m_isoImportThread, so plain Qt::AutoConnection (the default)
+    // would resolve to a QUEUED cross-thread call - meaning cancel() would
+    // only actually run once the worker thread's event loop next gets a
+    // chance to process its queue, which, while run() is deep in a
+    // synchronous demux/decode/encode call with no event loop of its own
+    // spinning, might not happen until the whole import finishes on its
+    // own anyway (confirmed: this is exactly why an earlier version of
+    // this feature's Cancel button didn't actually stop anything
+    // promptly). DirectConnection instead calls cancel() synchronously,
+    // immediately, on this (the UI) thread's own call stack the moment the
+    // signal fires - safe specifically because cancel()'s body only flips
+    // a std::atomic_bool (see IsoImportWorker.h), nothing thread-affine.
+    connect(m_isoImportProgressDialog, &QProgressDialog::canceled, m_isoImportWorker,
+            &IsoImportWorker::cancel, Qt::DirectConnection);
 
     m_isoImportThread->start();
     QMetaObject::invokeMethod(m_isoImportWorker, "run", Qt::QueuedConnection,
