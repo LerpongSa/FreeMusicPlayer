@@ -185,6 +185,24 @@ void drawListMusic(QPainter &p, double s)
     p.drawRect(QRectF(s * 0.84, s * 0.30, s * 0.05, s * 0.42));
 }
 
+void drawDisc(QPainter &p, double s)
+{
+    // Outer disc, then punch the center hole with the same "clear
+    // composition mode" trick drawClear() uses for its strike slots.
+    const QColor c = p.brush().color();
+    p.drawEllipse(QRectF(s * 0.08, s * 0.08, s * 0.84, s * 0.84));
+    p.setCompositionMode(QPainter::CompositionMode_Clear);
+    p.drawEllipse(QRectF(s * 0.40, s * 0.40, s * 0.20, s * 0.20));
+    p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+    // Thin inner ring marking the data area, stroked rather than filled.
+    QPen ring(c);
+    ring.setWidthF(s * 0.035);
+    p.setPen(ring);
+    p.setBrush(Qt::NoBrush);
+    p.drawEllipse(QRectF(s * 0.24, s * 0.24, s * 0.52, s * 0.52));
+}
+
 void drawAppIcon(QPainter &p, double s)
 {
     QRadialGradient grad(QPointF(s * 0.5, s * 0.42), s * 0.6);
@@ -231,6 +249,7 @@ QIcon make(Glyph glyph, const QColor &color, int size)
     case Glyph::Save: drawSave(p, s); break;
     case Glyph::Clear: drawClear(p, s); break;
     case Glyph::ListMusic: drawListMusic(p, s); break;
+    case Glyph::Disc: drawDisc(p, s); break;
     case Glyph::AppIcon: drawAppIcon(p, s); break;
     }
 

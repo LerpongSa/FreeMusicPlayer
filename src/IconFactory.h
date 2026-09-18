@@ -27,6 +27,7 @@ enum class Glyph {
     Save,
     Clear,
     ListMusic,
+    Disc, // "Add ISO..." playlist toolbar button
     AppIcon, // used for both the window icon and rendered into app.ico
 };
 

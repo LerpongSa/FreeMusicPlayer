@@ -29,6 +29,22 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
   ลากไฟล์จาก Explorer มาวางบนหน้าต่างเพื่อเพิ่มเข้า playlist ได้เลย — เพลงที่
   โหลดอยู่จริง (ไม่ใช่แค่แถวที่คลิกเลือกไว้) มีไอคอนรูปลำโพงกำกับหน้าชื่อไฟล์
   เสมอ ไม่ว่าจะ pause/seek อยู่ หรือคลิกเลือกแถวอื่นดูอยู่ก็ตาม
+  - **Add ISO...** — แปลงเพลงจากไฟล์ `.iso` เป็น `.flac` แล้วเพิ่มเข้า playlist
+    อัตโนมัติ เลือกไฟล์ `.iso` แล้วเริ่มแปลงทันที **ไม่ถามว่าจะเก็บไฟล์ที่ไหน**
+    — สร้างโฟลเดอร์ชื่อเดียวกับไฟล์ `.iso` ไว้ข้าง ๆ ไฟล์ต้นฉบับให้เองเสมอ
+    (เช่น `Some Album.iso` → โฟลเดอร์ `Some Album\` ข้าง ๆ กัน ตามธรรมเนียม
+    โปรแกรม rip แผ่นทั่วไป) รองรับ 2 แบบ: **SACD ISO** (อ่าน 2-channel area ตรงจาก
+    ScarletBook TOC ของแผ่น, demux DSD ดิบทีละ sector/packet เอง, ห่อเป็น
+    `.dsf` ชั่วคราวแล้วถอดรหัสผ่าน `QAudioDecoder`/FFmpeg ตัวเดียวกับที่เล่น
+    `.dsf` ปกติ, สุดท้ายเข้ารหัส FLAC เอง — **เพลงที่เป็น DST-compressed
+    ถูกข้ามพร้อมแจ้งเตือน ไม่รองรับ** เพราะ DST เป็นสเปกที่ซับซ้อนเกินกว่าจะ
+    เขียนเองแล้วมั่นใจว่าถูกต้องโดยไม่มีไฟล์ทดสอบจริงมา verify, ส่วน
+    multichannel area (MULCHTOC) ไม่อ่านเลย ใช้เฉพาะ 2-channel) และ **CD-DA
+    image ดิบ** (แยกแทร็กจากไฟล์ `.cue` ข้าง ๆ ถ้ามี ไม่มีก็ถือทั้งไฟล์เป็น
+    แทร็กเดียว) ทั้ง FLAC encoder (fixed predictor + Rice coding, ไม่พึ่ง
+    libFLAC) และ DSF writer เขียนขึ้นเองทั้งหมด ไม่มีการเรียกโปรแกรมภายนอก
+    เลย — verify แล้วด้วยการเข้ารหัสแล้วถอดกลับผ่าน `QAudioDecoder` จริงของ
+    แอปเอง เทียบ sample ต้นทาง/ปลายทางตรงกัน (ดูหัวข้อสถาปัตยกรรมด้านล่าง)
 - **Seek bar** — คลิกตรงไหนก็ได้บนแถบความคืบหน้าเพื่อกระโดดไปเล่นตรงจุดนั้น
   ทันที (ไม่ต้องลากหัว slider) ลากต่อจากจุดที่คลิกได้ด้วย
 - **Sound Visualizer** — วิเคราะห์สเปกตรัมด้วย FFT แบบ log-spaced band เปิด/ปิด
@@ -77,7 +93,11 @@ FreeMusicPlayer/
 │   ├── TextDecoder.*         ตัวช่วยอ่านข้อความแท็กเก่า (sniff TIS-620/UTF-8/Latin-1)
 │   ├── Settings.*            wrapper รอบ QSettings (รองรับ portable mode)
 │   ├── IconFactory.*         วาดไอคอนปุ่มเองด้วย QPainter (ธีมมืด)
-│   └── Theme.h                สี + QSS ของทั้งแอป (รองรับพาเลตต์ custom)
+│   ├── Theme.h                สี + QSS ของทั้งแอป (รองรับพาเลตต์ custom)
+│   ├── IsoAudioExtractor.*   อ่าน SACD ISO / CD-DA image, demux เป็น PCM/DSD ดิบ
+│   ├── DsfWriter.*           เขียน .dsf ชั่วคราวจาก DSD ที่ demux มา (ดูหัวข้อ Add ISO)
+│   ├── FlacEncoder.*         FLAC encoder เขียนเอง (fixed predictor + Rice coding)
+│   └── IsoImportWorker.*     QThread worker คุม pipeline ทั้งก้อนของปุ่ม Add ISO
 └── resources/
     ├── resources.qrc          ไอคอนหน้าต่าง/taskbar ตอนรัน (app.png)
     ├── app.rc                 ไอคอนของตัว .exe (app.ico หลายขนาด 16–256px)
@@ -105,6 +125,19 @@ build.bat
 
 ถ้าต้องการเปลี่ยน compiler/generator ใหม่ ให้รัน `clean.bat` ก่อนแล้วค่อยรัน
 `build.bat` อีกครั้ง (CMake cache ค่าคอมไพเลอร์ไว้ ต้องลบ `build\` ก่อนเปลี่ยน)
+
+**Build type**: `CMakeLists.txt` default เป็น `Release` (`-O3`) เองถ้าไม่ได้
+สั่งอย่างอื่นมา (`if(NOT CMAKE_BUILD_TYPE) ... FORCE`) — ตั้งใจไว้แบบนี้เพราะ
+`build.bat`'s `cmake --build ... --config Release` เป็น no-op สำหรับ
+generator "MinGW Makefiles" (ใช้ได้เฉพาะ multi-config generator อย่าง Visual
+Studio/Ninja Multi-Config) ค่า optimization จริง ๆ มาจาก `CMAKE_BUILD_TYPE`
+ตอน configure เท่านั้น ก่อนแก้จุดนี้ (2026-09-18) `CMAKE_BUILD_TYPE` ไม่เคยถูก
+set มาก่อนเลย ทำให้ทั้งแอป — ไม่ใช่แค่ฟีเจอร์ Add ISO — build แบบไม่ optimize
+(`-O0`) มาโดยตลอด ตัว "ISO to FLAC แปลงช้ามาก" ที่ผู้ใช้เจอคือจุดที่ทำให้สังเกต
+เห็นปัญหานี้ (Rice-coding เป็น tight arithmetic loop ที่ -O0 กับ -O3 ต่างกัน
+มาก) แต่จริง ๆ กระทบทุก path ที่กิน CPU หนักในแอป (FFT, biquad EQ,
+visualizer) เท่า ๆ กัน ถ้าต้องการ build แบบ Debug (มี symbol ให้ debug) ให้
+สั่ง `-DCMAKE_BUILD_TYPE=Debug` ตอน configure เอง (จะ override ค่า default นี้)
 
 ## Portable copy (คัดลอกไปเครื่องอื่นได้เลย ไม่ต้องติดตั้ง Qt)
 
@@ -169,6 +202,68 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
 - **Visualizer แสดงสัญญาณเสียงต้นฉบับ (ก่อนปรับ EQ)** ไม่ใช่เสียงหลัง EQ ที่
   ส่งออกลำโพงจริง ๆ เพื่อเลี่ยงการรัน filter chain ซ้ำสองชุดพร้อมกัน
 
+## สถาปัตยกรรมการ Import ISO (ปุ่ม "Add ISO...")
+
+```
+.iso ──> IsoAudioExtractor::open()          sniff SACDMTOC (LSN 510) / CD001 / .cue ข้างไฟล์
+           │                                 → รายชื่อแทร็ก + ตำแหน่ง (LSN หรือ byte range)
+           ▼
+     extractTrackToFlac() ต่อแทร็ก
+           │
+   ┌───────┴────────┐
+   │ SACD (DSD)      │ CD-DA (PCM)
+   ▼                 ▼
+ demux sector/packet  อ่าน byte range ตรง ๆ
+ ตาม audio_sector_t   (16-bit/44.1kHz stereo)
+   │
+   ▼
+ DsfWriter → .dsf ชั่วคราว (bit-reversal + de-interleave)
+   │
+   ▼
+ QAudioDecoder/FFmpeg ตัวเดียวกับที่เล่น .dsf ปกติ → PCM float
+           │
+           ▼
+     FlacEncoder::encode() → .flac จริง → เพิ่มเข้า playlist
+```
+
+รันทั้งหมดใน `IsoImportWorker` บน `QThread` แยก (ผ่าน `moveToThread`) ไม่บล็อก
+UI — ต้องมี event loop ของ thread เดินอยู่เพราะ `QAudioDecoder` ข้างในถูกใช้
+แบบ synchronous (ผูกกับ `QEventLoop` ท้องถิ่นรอ signal `finished`)
+
+**Progress ระหว่างแปลง**: หน้าต่าง progress แสดงทั้งภาพรวม (แท็กที่เท่าไหร่/
+ทั้งหมดกี่แท็ก, bar หนึ่งขั้นต่อหนึ่งแท็กที่แปลงเสร็จ) และความคืบหน้าภายใน
+แท็กที่กำลังแปลงอยู่แบบ real-time (`ReadingSacdAudio`/`WritingDsf`/
+`DecodingDsd`/`ReadingCdda`/`EncodingFlac` — ดู `IsoAudioExtractor::
+ProgressPhase`) พร้อม % ของ phase นั้น เช่น "Track 3 of 10: ชื่อเพลง -
+Encoding FLAC (57%)" — เปอร์เซ็นต์คำนวณจริงจากจำนวน sector/sample ที่
+ประมวลผลแล้ว ไม่ใช่ค่าประมาณ, ตัวเลขทั้งหมดบังคับเป็นเลขอารบิก (`QLocale::c()`
+บน progress dialog) ไม่ให้กลายเป็นเลขไทยตาม system locale
+
+**ทำไมไม่พึ่งโปรแกรม/ไลบรารีภายนอก**: ทั้ง DSF container writer และ FLAC
+encoder เขียนขึ้นเองทั้งหมดในโปรเจกต์ (`DsfWriter.*`, `FlacEncoder.*`) ตาม
+philosophy เดียวกับ `FFT.h`/`BiquadFilter.h` ที่มีอยู่แล้ว — ไม่ต้องพึ่ง
+`ffmpeg.exe`/`flac.exe` แยกที่ผู้ใช้ต้องติดตั้งเอง ก่อนใช้งานจริงมีการ
+เข้ารหัสแล้วถอดกลับผ่าน `QAudioDecoder` ของแอปเองเทียบ sample ต้นทาง/ปลายทาง
+(รวมถึงสร้าง SACD ISO สังเคราะห์ทดสอบ pipeline เต็มทาง TOC parsing → demux →
+DSF → decode → FLAC) ยืนยันว่า bitstream ถูกต้องจริงก่อนใช้งาน — ไม่ใช่แค่
+compile ผ่านแล้วเดาว่าถูก
+
+**สิ่งที่ตั้งใจไม่รองรับ** (ดูรายละเอียดเหตุผลในหัวข้อ "ข้อจำกัดที่รู้อยู่แล้ว"
+ด้านล่าง): SACD track ที่เป็น DST-compressed, SACD multichannel area
+(MULCHTOC), FLAC output เป็น verbatim/fixed-predictor + Rice coding เท่านั้น
+(ไม่มี LPC/stereo decorrelation แบบ `flac -8`) — ไฟล์ที่ได้เล็กกว่า WAV จริง
+แต่ไม่ได้บีบอัดสุดเหมือน libFLAC
+
+**ความเร็ว**: การเลือก fixed-predictor order + Rice parameter ใช้วิธี
+ประมาณค่าที่ถูกก่อน (sum-of-absolute-residual สำหรับ order, มาตรฐานเดียวกับที่
+libFLAC's `estimate_best_order()` ใช้ / estimate-แล้ว-refine ±1 สำหรับ Rice
+parameter) แทนการลองครบทุกค่าแล้วเทียบ (5 order × 15 ค่า Rice parameter ต่อ
+subframe แบบเดิม) — ลด full-array pass ต่อ subframe จาก ~75 ครั้งเหลือ ~14
+ครั้ง โดยผลลัพธ์ยัง valid/lossless เท่าเดิมทุกกรณี (ต่างแค่บีบอัดได้ไม่สุดในบาง
+เคสที่หายากมาก) วัดจริง: เข้ารหัส 5 นาที 44.1kHz/16-bit ได้ใน ~2 วินาที (build
+Release) — ดูหัวข้อ Build ด้านบนสำหรับอีกสาเหตุหลักที่ทำให้การแปลงช้า
+(`CMAKE_BUILD_TYPE` ไม่เคย set มาก่อน)
+
 ## Thread safety
 
 - ตำแหน่งเล่นปัจจุบัน (`m_frameCursor`), mute, และ end-of-track flag เป็น
@@ -177,6 +272,10 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
 - ค่าสัมประสิทธิ์ EQ และ delay-line state ป้องกันด้วย `QMutex` ใน `Equalizer`
   — ล็อกครั้งเดียวต่อ audio block (ไม่ใช่ต่อ sample) ฝั่ง `AudioEngine::pullAudio()`
   และทุกจุดที่ UI thread แก้ค่า gain/preset ก็ล็อกก่อนแก้เสมอ
+- `IsoImportWorker` รันทั้ง pipeline บน `QThread` ของตัวเอง (ดูหัวข้อ
+  Import ISO ด้านบน) — `cancel()` เป็น `std::atomic_bool` เรียกข้าม thread ได้
+  ตรง ๆ โดยไม่ต้องผ่าน `QMetaObject::invokeMethod`, ส่วน signal ความคืบหน้า
+  ทุกตัวถูกส่งกลับ UI thread ผ่าน queued connection ตามปกติของ Qt
 
 ## การตรวจสอบความถูกต้องของอัลกอริทึมหลัก
 
@@ -201,6 +300,22 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
 - **การลบเพลงหลายรายการพร้อมกัน**: จำลอง 1000+ รอบแบบสุ่ม (ลบก่อน/หลัง/ที่
   ตำแหน่งเพลงปัจจุบัน, ลบไม่ต่อเนื่อง, ลบทั้งหมด) ยืนยันว่า index เพลงที่
   กำลังเล่นอยู่ยังชี้ไปที่เพลงเดิมถูกต้องเสมอ
+- **FlacEncoder / DsfWriter / IsoAudioExtractor** (ปุ่ม Add ISO): เข้ารหัส
+  สัญญาณสังเคราะห์ (ไซน์เวฟหลายความถี่ + ช่วงเงียบ, ทั้ง 44.1/88.2kHz,
+  16/24-bit, mono/stereo, ความยาวคี่ที่ตัด block สุดท้ายไม่พอดี) แล้วถอดกลับ
+  ผ่าน `QAudioDecoder` จริงของแอป เทียบ sample ต้นทาง/ปลายทางคลาดเคลื่อนไม่
+  เกิน ~1 LSB (rounding เท่านั้น ไม่ใช่ bug); DsfWriter ตรวจ byte ของ header/
+  payload ตรงกับค่าที่คำนวณมือทุก byte, ยืนยันด้วยว่า FFmpeg ยอมรับ
+  `block_size_per_channel` ที่ไม่ใช่ 4096 (ค่าที่ IsoAudioExtractor ใช้จริง
+  คือ 4704 ตามขนาดเฟรมธรรมชาติของ SACD); IsoAudioExtractor ทดสอบ end-to-end
+  ด้วย SACD ISO สังเคราะห์ (Master TOC + Area TOC + SACDTRL1 + audio sector
+  จริงตามสเปก) และ CD-DA image + `.cue` สังเคราะห์ ผ่านทั้ง `open()` และ
+  `extractTrackToFlac()` เหมือนที่ UI เรียกจริง; progress callback (ทุก
+  `ProgressPhase`) ตรวจว่าค่า % เริ่มที่ 0 จบที่ 100 และไม่มีทางลดลงระหว่างทาง
+  ด้วย; หลังเปลี่ยนมาใช้ order/Rice-parameter แบบประมาณค่า (ดูหัวข้อ "ความเร็ว"
+  ด้านบน) เข้ารหัสซ้ำแล้วถอดกลับเทียบ sample อีกรอบ — ผลตรงกันทุก sample
+  (`max abs error: 0.0`, ไม่ใช่แค่ในทน tolerance เหมือนตอนแรก) ยืนยันว่าการลด
+  จำนวนค่าที่ลองไม่ได้ทำให้ bitstream เพี้ยน
 
 สคริปต์ตรวจสอบเหล่านี้ไม่ได้รวมมาด้วย (เป็นเครื่องมือช่วยตรวจตอนพัฒนา ไม่ใช่
 ส่วนหนึ่งของแอป) แต่ตรรกะที่ผ่านการตรวจสอบแล้วถูกพอร์ตมาเป็น C++ ตรงนี้ทั้งหมด
@@ -215,3 +330,14 @@ QAudioDecoder → PCM float ทั้งเพลงในหน่วยคว�
   `TagEditor` แยกต่างหาก)
 - ยังไม่รองรับ gapless playback ระหว่างเพลง (มีดีเลย์สั้น ๆ ตอนเปลี่ยนเพลง
   ตามที่อธิบายไว้ในหัวข้อสถาปัตยกรรมด้านบน)
+- **Add ISO ไม่รองรับ SACD track ที่เป็น DST-compressed** (ตรวจพบแล้วข้าม
+  พร้อมแจ้งเตือนต่อแทร็ก ไม่ใช่แปลงออกมาเพี้ยน) — DST เป็น lossless codec
+  เฉพาะของ SACD ที่ซับซ้อนมาก (predictive + arithmetic coding) การเขียน
+  decoder เองโดยไม่มีไฟล์ทดสอบจริงมา verify มีความเสี่ยงสูงเกินไปที่จะเชื่อถือ
+  ได้ ส่วน uncompressed DSD track เล่น/แปลงได้ปกติ
+- **Add ISO อ่านเฉพาะ SACD 2-channel area** — multichannel area (MULCHTOC)
+  ไม่ถูกอ่านเลย เพื่อเลี่ยงต้องตัดสินใจเรื่อง downmix ลง stereo เอง
+- **FLAC ที่ Add ISO สร้างไม่ได้บีบอัดสูงสุด** — ใช้ fixed predictor (order
+  0-4) + Rice coding แบบ partition เดียวต่อ subframe เท่านั้น ไม่มี LPC
+  (linear predictor) หรือ stereo decorrelation แบบที่ `flac -8` ใช้ — ไฟล์
+  เล็กกว่า WAV จริงแต่ใหญ่กว่า FLAC ที่เข้ารหัสด้วย libFLAC ระดับสูงสุด

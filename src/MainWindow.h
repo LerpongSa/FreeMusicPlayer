@@ -22,6 +22,9 @@ class QRadioButton;
 class QSpinBox;
 class QTimer;
 class QTabWidget;
+class QThread;
+class QProgressDialog;
+class IsoImportWorker;
 
 class MainWindow : public QMainWindow
 {
@@ -55,6 +58,7 @@ private slots:
     // Playlist
     void onAddFilesClicked();
     void onAddFolderClicked();
+    void onAddIsoClicked();
     void onLoadPlaylistClicked();
     void onSavePlaylistClicked();
     void onClearPlaylistClicked();
@@ -86,6 +90,17 @@ private slots:
     void onThemeAccentColorClicked();
     void onThemeResetClicked();
 
+    // ISO import (see IsoImportWorker.h) - each mirrors one of its signals,
+    // always delivered back on this (UI) thread via the queued connections
+    // startIsoImport() sets up.
+    void onIsoOpenFailed(const QString &message);
+    void onIsoTrackCountKnown(int count, const QString &formatLabel);
+    void onIsoTrackStarted(int index, int count, const QString &title);
+    void onIsoTrackProgress(int index, const QString &phase, int percent);
+    void onIsoTrackFailed(int index, const QString &title, const QString &message);
+    void onIsoTrackFinished(int index, const QString &title, const QString &outFlacPath);
+    void onIsoImportFinished(const QStringList &flacPaths);
+
     // AudioEngine
     void onEngineStateChanged(AudioEngine::State state);
     void onEngineTrackLoaded(qint64 durationMs);
@@ -111,6 +126,7 @@ private:
     void refreshPlaylistWidget();
     void updateNowPlayingIcon(); // stamps a speaker glyph on m_playlist->currentIndex()'s row, clears every other row's
     void addFilesToPlaylist(const QStringList &paths);
+    void startIsoImport(const QString &isoPath, const QString &outDir); // spins up the QThread + IsoImportWorker, shows the progress dialog
     void performScheduledShutdown(bool alsoShutdownComputer);
     static QString formatTime(qint64 ms);
 
@@ -164,9 +180,24 @@ private:
     QListWidget *m_playlistView = nullptr;
     QPushButton *m_addFilesBtn = nullptr;
     QPushButton *m_addFolderBtn = nullptr;
+    QPushButton *m_addIsoBtn = nullptr;
     QPushButton *m_loadPlaylistBtn = nullptr;
     QPushButton *m_savePlaylistBtn = nullptr;
     QPushButton *m_clearPlaylistBtn = nullptr;
+
+    // ISO import (see IsoImportWorker.h / startIsoImport()) - null whenever
+    // no import is in progress. The worker is owned by the thread (deleted
+    // via QThread::finished -> deleteLater()); the thread itself is owned
+    // by `this` like every other QObject here, but closeEvent() stops it
+    // explicitly first since destroying a still-running QThread is unsafe.
+    QThread *m_isoImportThread = nullptr;
+    IsoImportWorker *m_isoImportWorker = nullptr;
+    QProgressDialog *m_isoImportProgressDialog = nullptr;
+    QStringList m_isoImportFailures;
+    bool m_isoImportOpenFailed = false; // suppresses the redundant "0 tracks converted" summary after onIsoOpenFailed already reported the real problem
+    int m_isoImportTrackCount = 0;      // cached from trackCountKnown so onIsoTrackProgress can render "track X of Y" without the signal repeating it every call
+    QString m_isoImportCurrentTitle;    // cached from trackStarted, same reason
+    QString m_isoImportOutDir;          // cached from startIsoImport so the finish summary can name where the files went (there's no "choose a folder" prompt to remind the user otherwise)
 
     // Equalizer
     QCheckBox *m_eqEnableCheck = nullptr;

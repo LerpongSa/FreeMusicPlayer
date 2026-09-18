@@ -289,6 +289,23 @@ inline QString appStyleSheet()
             background: %2;
         }
 
+        /* QProgressDialog's internal bar (ISO import) - same panel/border
+           treatment as QFrame#Panel, filled portion in the accent color
+           (matching QSlider::sub-page above) instead of the style's
+           default system-blue chunk. */
+        QProgressBar {
+            background-color: %4;
+            border: 1px solid %5;
+            border-radius: 6px;
+            text-align: center;
+            color: %2;
+            min-height: 18px;
+        }
+        QProgressBar::chunk {
+            background-color: %7;
+            border-radius: 5px;
+        }
+
         QListWidget {
             background-color: %4;
             border: 1px solid %5;

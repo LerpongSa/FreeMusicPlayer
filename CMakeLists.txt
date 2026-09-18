@@ -1,6 +1,27 @@
 cmake_minimum_required(VERSION 3.19)
 project(FreeMusicPlayer VERSION 1.0.0 LANGUAGES CXX)
 
+# ---------------------------------------------------------------------------
+# Default to an optimized build. "MinGW Makefiles" (what build.bat configures
+# below) is a single-config generator, where the actual optimization level
+# comes from CMAKE_BUILD_TYPE at CONFIGURE time - unlike a multi-config
+# generator (Visual Studio, Ninja Multi-Config), `cmake --build . --config
+# Release` (what build.bat's build step passes) does NOT select this after
+# the fact; for this generator, that flag is silently ignored. Since nothing
+# ever set CMAKE_BUILD_TYPE at configure time, every build - the whole app,
+# not just anything added since - was actually compiling with GCC's default
+# -O0 (no optimization) despite build.bat's own "Release" wording implying
+# otherwise. Confirmed via build/CMakeCache.txt: CMAKE_BUILD_TYPE was empty.
+# This surfaced as "ISO-to-FLAC conversion is very slow" (2026-09-18) - that
+# feature's per-sample Rice-coding search is exactly the kind of tight
+# arithmetic loop -O0 vs -O3 differs most on - but it silently cost every
+# other CPU-bound path in the app (FFT, biquad EQ, visualizer) the same way.
+# `if(NOT ...)` still lets an explicit `-DCMAKE_BUILD_TYPE=Debug` (e.g. for
+# gdb) override this default.
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type (Release/Debug/RelWithDebInfo/MinSizeRel)" FORCE)
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
@@ -55,6 +76,14 @@ set(APP_SOURCES
     src/IconFactory.cpp
     src/IconFactory.h
     src/Theme.h
+    src/FlacEncoder.cpp
+    src/FlacEncoder.h
+    src/DsfWriter.cpp
+    src/DsfWriter.h
+    src/IsoAudioExtractor.cpp
+    src/IsoAudioExtractor.h
+    src/IsoImportWorker.cpp
+    src/IsoImportWorker.h
 )
 
 qt_add_executable(FreeMusicPlayer WIN32

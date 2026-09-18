@@ -4,6 +4,7 @@
 #include "TagEditDialog.h"
 #include "IconFactory.h"
 #include "Theme.h"
+#include "IsoImportWorker.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -44,6 +45,8 @@
 #include <QPainter>
 #include <QProcess>
 #include <QDesktopServices>
+#include <QThread>
+#include <QProgressDialog>
 #include <QApplication>
 #include <QStyleOptionSlider>
 #include <QStyle>
@@ -514,6 +517,9 @@ void MainWindow::setupUi()
     m_addFilesBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, iconColor, 16));
     m_addFolderBtn = new QPushButton(tr("Add Folder"), playlistTab);
     m_addFolderBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, iconColor, 16));
+    m_addIsoBtn = new QPushButton(tr("Add ISO..."), playlistTab);
+    m_addIsoBtn->setIcon(IconFactory::make(IconFactory::Glyph::Disc, iconColor, 16));
+    m_addIsoBtn->setToolTip(tr("Convert tracks from an SACD or CD-DA .iso image to FLAC and add them to the playlist"));
     m_loadPlaylistBtn = new QPushButton(tr("Load Playlist"), playlistTab);
     m_loadPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::ListMusic, iconColor, 16));
     m_savePlaylistBtn = new QPushButton(tr("Save Playlist"), playlistTab);
@@ -523,6 +529,7 @@ void MainWindow::setupUi()
 
     playlistToolbar->addWidget(m_addFilesBtn);
     playlistToolbar->addWidget(m_addFolderBtn);
+    playlistToolbar->addWidget(m_addIsoBtn);
     playlistToolbar->addWidget(m_loadPlaylistBtn);
     playlistToolbar->addWidget(m_savePlaylistBtn);
     playlistToolbar->addStretch(1);
@@ -551,6 +558,7 @@ void MainWindow::setupUi()
 
     connect(m_addFilesBtn, &QPushButton::clicked, this, &MainWindow::onAddFilesClicked);
     connect(m_addFolderBtn, &QPushButton::clicked, this, &MainWindow::onAddFolderClicked);
+    connect(m_addIsoBtn, &QPushButton::clicked, this, &MainWindow::onAddIsoClicked);
     connect(m_loadPlaylistBtn, &QPushButton::clicked, this, &MainWindow::onLoadPlaylistClicked);
     connect(m_savePlaylistBtn, &QPushButton::clicked, this, &MainWindow::onSavePlaylistClicked);
     connect(m_clearPlaylistBtn, &QPushButton::clicked, this, &MainWindow::onClearPlaylistClicked);
@@ -962,6 +970,30 @@ void MainWindow::onAddFolderClicked()
     addFilesToPlaylist(audioFilesUnder(dir));
 }
 
+void MainWindow::onAddIsoClicked()
+{
+    if (m_isoImportThread) {
+        QMessageBox::information(this, tr("Add ISO"), tr("An ISO import is already in progress."));
+        return;
+    }
+
+    const QString isoPath = QFileDialog::getOpenFileName(this, tr("Add ISO"), QString(),
+                                                           tr("ISO Images (*.iso);;All Files (*)"));
+    if (isoPath.isEmpty())
+        return;
+
+    // No extra "where to save" prompt - the output folder is always a new
+    // subfolder next to the .iso itself, named after the .iso (e.g.
+    // "Some Album.iso" -> "Some Album\"), same convention ripper tools use.
+    // startIsoImport() -> IsoImportWorker::run() creates it (QDir::mkpath)
+    // if it doesn't exist yet; if it already does (a previous import of the
+    // same disc), the new .flac files just land alongside whatever's there.
+    const QFileInfo isoInfo(isoPath);
+    const QString outDir = isoInfo.dir().filePath(isoInfo.completeBaseName());
+
+    startIsoImport(isoPath, outDir);
+}
+
 void MainWindow::onLoadPlaylistClicked()
 {
     const QString path = QFileDialog::getOpenFileName(this, tr("Load Playlist"), QString(),
@@ -1294,6 +1326,7 @@ void MainWindow::refreshStaticIcons()
     m_nextBtn->setIcon(IconFactory::make(IconFactory::Glyph::Next, c));
     m_addFilesBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, c, 16));
     m_addFolderBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, c, 16));
+    m_addIsoBtn->setIcon(IconFactory::make(IconFactory::Glyph::Disc, c, 16));
     m_loadPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::ListMusic, c, 16));
     m_savePlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Save, c, 16));
     m_clearPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Clear, c, 16));
@@ -1620,6 +1653,167 @@ void MainWindow::addFilesToPlaylist(const QStringList &paths)
     }
 }
 
+// ---------------------------------------------------------------------------
+// ISO import (see IsoAudioExtractor.h / IsoImportWorker.h)
+// ---------------------------------------------------------------------------
+
+void MainWindow::startIsoImport(const QString &isoPath, const QString &outDir)
+{
+    m_isoImportFailures.clear();
+    m_isoImportOpenFailed = false;
+    m_isoImportOutDir = outDir;
+
+    // IsoImportWorker must have no parent before moveToThread() - Qt
+    // refuses to move a QObject with a parent to another thread. Ownership
+    // instead comes from the QThread::finished -> deleteLater() connection
+    // below, which fires once the thread's event loop actually stops.
+    m_isoImportThread = new QThread(this);
+    m_isoImportWorker = new IsoImportWorker();
+    m_isoImportWorker->moveToThread(m_isoImportThread);
+    connect(m_isoImportThread, &QThread::finished, m_isoImportWorker, &QObject::deleteLater);
+
+    connect(m_isoImportWorker, &IsoImportWorker::openFailed, this, &MainWindow::onIsoOpenFailed);
+    connect(m_isoImportWorker, &IsoImportWorker::trackCountKnown, this, &MainWindow::onIsoTrackCountKnown);
+    connect(m_isoImportWorker, &IsoImportWorker::trackStarted, this, &MainWindow::onIsoTrackStarted);
+    connect(m_isoImportWorker, &IsoImportWorker::trackProgress, this, &MainWindow::onIsoTrackProgress);
+    connect(m_isoImportWorker, &IsoImportWorker::trackFailed, this, &MainWindow::onIsoTrackFailed);
+    connect(m_isoImportWorker, &IsoImportWorker::trackFinished, this, &MainWindow::onIsoTrackFinished);
+    connect(m_isoImportWorker, &IsoImportWorker::importFinished, this, &MainWindow::onIsoImportFinished);
+
+    m_isoImportProgressDialog = new QProgressDialog(tr("Opening ISO..."), tr("Cancel"), 0, 0, this);
+    m_isoImportProgressDialog->setWindowModality(Qt::WindowModal);
+    m_isoImportProgressDialog->setMinimumDuration(0);
+    // Forces plain 0-9 (ASCII/"Arabic") digits in every number this dialog
+    // draws itself (the "NN%" text baked into the progress bar), regardless
+    // of the system locale - Qt's own progress-bar text otherwise renders
+    // through the widget's locale, which on a Thai-locale system means Thai
+    // numerals (๐๑๒...) there. The percent numbers inside our own label
+    // text (below) are built with plain QString::number()/.arg(int), which
+    // are never locale-converted either way, but this keeps every digit in
+    // the dialog consistent.
+    m_isoImportProgressDialog->setLocale(QLocale::c());
+    // Both false: this dialog's lifetime is driven entirely by the ISO
+    // import signals (onIsoTrackStarted/onIsoImportFinished), not by
+    // QProgressDialog's own value-reaches-maximum heuristics.
+    m_isoImportProgressDialog->setAutoClose(false);
+    m_isoImportProgressDialog->setAutoReset(false);
+    // cancel() just flips a std::atomic_bool (see IsoImportWorker.h) - safe
+    // to call directly from this (the UI) thread without marshaling it
+    // through the worker thread's event loop.
+    connect(m_isoImportProgressDialog, &QProgressDialog::canceled, m_isoImportWorker, &IsoImportWorker::cancel);
+
+    m_isoImportThread->start();
+    QMetaObject::invokeMethod(m_isoImportWorker, "run", Qt::QueuedConnection,
+                               Q_ARG(QString, isoPath), Q_ARG(QString, outDir));
+
+    m_isoImportProgressDialog->show();
+}
+
+void MainWindow::onIsoOpenFailed(const QString &message)
+{
+    m_isoImportOpenFailed = true;
+    QMessageBox::warning(this, tr("Add ISO"), message);
+}
+
+void MainWindow::onIsoTrackCountKnown(int count, const QString &formatLabel)
+{
+    m_isoImportTrackCount = count;
+    if (!m_isoImportProgressDialog)
+        return;
+    // One unit of the overall bar per track, ticked up once a track
+    // actually finishes/fails (see onIsoTrackFinished/onIsoTrackFailed) -
+    // sitting on a track's own start doesn't move this bar, since a single
+    // track's extraction is itself the multi-phase, multi-percent process
+    // onIsoTrackProgress's label text tracks separately below.
+    m_isoImportProgressDialog->setRange(0, count);
+    m_isoImportProgressDialog->setValue(0);
+    m_isoImportProgressDialog->setLabelText(tr("%1 - %2 track(s) found").arg(formatLabel).arg(count));
+}
+
+void MainWindow::onIsoTrackStarted(int index, int count, const QString &title)
+{
+    m_isoImportCurrentTitle = title;
+    if (!m_isoImportProgressDialog)
+        return;
+    m_isoImportProgressDialog->setLabelText(tr("Track %1 of %2: %3").arg(index + 1).arg(count).arg(title));
+}
+
+void MainWindow::onIsoTrackProgress(int index, const QString &phase, int percent)
+{
+    if (!m_isoImportProgressDialog)
+        return;
+    // "Track 3 of 10: Some Song Title - Encoding FLAC (57%)" - phase and
+    // percent are the part that actually changes moment to moment during
+    // one track's conversion, which is exactly what was missing before
+    // (the old label only ever said which track, never what it was doing
+    // or how far along).
+    m_isoImportProgressDialog->setLabelText(
+        tr("Track %1 of %2: %3 - %4 (%5%)")
+            .arg(index + 1)
+            .arg(m_isoImportTrackCount)
+            .arg(m_isoImportCurrentTitle, phase)
+            .arg(percent));
+}
+
+void MainWindow::onIsoTrackFailed(int index, const QString &title, const QString &message)
+{
+    m_isoImportFailures << tr("%1 - %2").arg(title, message);
+    if (m_isoImportProgressDialog)
+        m_isoImportProgressDialog->setValue(index + 1);
+}
+
+void MainWindow::onIsoTrackFinished(int index, const QString &title, const QString &outFlacPath)
+{
+    Q_UNUSED(title);
+    Q_UNUSED(outFlacPath);
+    if (m_isoImportProgressDialog)
+        m_isoImportProgressDialog->setValue(index + 1);
+}
+
+void MainWindow::onIsoImportFinished(const QStringList &flacPaths)
+{
+    if (m_isoImportProgressDialog) {
+        // Make sure the bar actually reaches its maximum before closing -
+        // onIsoTrackFinished/onIsoTrackFailed already do this for every
+        // track that ran, but a cancel or an early openFailed() can leave
+        // it short; setValue() clamps to the dialog's own range regardless.
+        m_isoImportProgressDialog->setValue(m_isoImportProgressDialog->maximum());
+        m_isoImportProgressDialog->close();
+        m_isoImportProgressDialog->deleteLater();
+        m_isoImportProgressDialog = nullptr;
+    }
+    if (m_isoImportThread) {
+        m_isoImportThread->quit();
+        m_isoImportThread->wait();
+        m_isoImportThread->deleteLater();
+        m_isoImportThread = nullptr;
+        m_isoImportWorker = nullptr; // already queued for deleteLater() via the thread's finished signal
+    }
+
+    if (!flacPaths.isEmpty())
+        addFilesToPlaylist(flacPaths);
+
+    // onIsoOpenFailed() already reported the actual problem (the ISO
+    // couldn't even be opened, so there was never a track list to report
+    // on) - a second "0 tracks converted" dialog on top of that would just
+    // be redundant.
+    if (m_isoImportOpenFailed)
+        return;
+
+    // No "choose a folder" prompt happens anymore (see onAddIsoClicked()),
+    // so this is the only place the user finds out where the files went.
+    QString summary = flacPaths.isEmpty()
+        ? tr("Converted 0 tracks to FLAC.")
+        : tr("Converted %1 track(s) to FLAC in:\n%2").arg(flacPaths.size()).arg(m_isoImportOutDir);
+    if (!m_isoImportFailures.isEmpty()) {
+        summary += tr("\n\n%1 track(s) could not be converted:\n").arg(m_isoImportFailures.size());
+        summary += m_isoImportFailures.join(QStringLiteral("\n"));
+    }
+    if (flacPaths.isEmpty() && m_isoImportFailures.isEmpty())
+        return; // cancelled before any track finished or failed - nothing worth reporting
+    QMessageBox::information(this, tr("Add ISO"), summary);
+}
+
 void MainWindow::performScheduledShutdown(bool alsoShutdownComputer)
 {
     // Skip closeEvent()'s "Are you sure you want to exit?" prompt - this is
@@ -1808,6 +2002,20 @@ void MainWindow::closeEvent(QCloseEvent *event)
             event->ignore();
             return;
         }
+    }
+
+    // Destroying a still-running QThread is unsafe (Qt just warns and
+    // leaks/crashes rather than doing anything graceful) - cancel() lets
+    // the worker finish whatever single track it's mid-extraction on
+    // (bounded: one track, not the whole album) rather than abandoning a
+    // half-written FLAC file, then quit()+wait() stops the thread's event
+    // loop cleanly before letting the normal QObject-parent teardown below
+    // (m_isoImportThread is parented to `this`) delete it.
+    if (m_isoImportThread) {
+        if (m_isoImportWorker)
+            m_isoImportWorker->cancel();
+        m_isoImportThread->quit();
+        m_isoImportThread->wait(10000);
     }
 
     saveSettings();
