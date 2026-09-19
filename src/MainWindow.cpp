@@ -978,6 +978,19 @@ void MainWindow::onAddIsoClicked()
         return;
     }
 
+    // Requested by the user (2026-09-19): prompt to save the current
+    // playlist before the .iso file picker even opens, not after picking a
+    // file - so the save happens up front no matter which .iso ends up
+    // getting chosen, or whether the user backs out of that picker with no
+    // file chosen at all. Still just a courtesy prompt, not a gate: does
+    // nothing but open/close the "Save Playlist" dialog here, same as the
+    // toolbar button. Whether the CURRENT playlist actually gets cleared
+    // stays tied to the user picking a real .iso file below, so cancelling
+    // the picker after this leaves the current playlist untouched
+    // (confirmed with the user).
+    if (!m_playlist->isEmpty())
+        promptSaveCurrentPlaylist();
+
     const QString isoPath = QFileDialog::getOpenFileName(this, tr("Add ISO"), QString(),
                                                            tr("ISO Images (*.iso);;All Files (*)"));
     if (isoPath.isEmpty())
@@ -992,21 +1005,13 @@ void MainWindow::onAddIsoClicked()
     const QFileInfo isoInfo(isoPath);
     const QString outDir = isoInfo.dir().filePath(isoInfo.completeBaseName());
 
-    // Requested by the user (2026-09-19): Add ISO always starts the newly
-    // ripped tracks as a fresh playlist instead of appending them onto
-    // whatever was already loaded (onIsoImportFinished() calls
-    // addFilesToPlaylist() once conversion finishes) - so offer the same
-    // "Save Playlist" prompt the toolbar button uses first, in case the
-    // current list isn't saved anywhere yet, then clear it. Runs right
-    // here, before the conversion even starts, not after it finishes - so
-    // the playlist sits empty for the whole import, matching what's about
-    // to happen to it. The user went back and forth on what happens if
-    // that save dialog is cancelled (or the write fails) - briefly changed
-    // to abort the whole Add ISO, but reverted (2026-09-19) back to this:
-    // clear and proceed with the import regardless. The save prompt is a
-    // courtesy, not a gate on starting the import.
+    // Add ISO always starts the newly ripped tracks as a fresh playlist
+    // instead of appending them onto whatever was already loaded
+    // (onIsoImportFinished() calls addFilesToPlaylist() once conversion
+    // finishes) - the save prompt already ran above, before the file
+    // picker; this just clears the old playlist now that a real .iso file
+    // has actually been chosen and the import is definitely going ahead.
     if (!m_playlist->isEmpty()) {
-        promptSaveCurrentPlaylist();
         // Same as onClearPlaylistClicked()/onLoadPlaylistClicked(): stop
         // playback before the clear, not after, so a track that's
         // currently playing doesn't keep going with no corresponding row
