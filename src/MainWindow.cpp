@@ -1000,11 +1000,18 @@ void MainWindow::onAddIsoClicked()
     // current list isn't saved anywhere yet, then clear it. Runs right
     // here, before the conversion even starts, not after it finishes - so
     // the playlist sits empty for the whole import, matching what's about
-    // to happen to it. Clearing proceeds either way, even if the user
-    // cancels the save dialog: the prompt is a courtesy, not a gate on
-    // starting the import (confirmed with the user).
+    // to happen to it. The user went back and forth on what happens if
+    // that save dialog is cancelled (or the write fails) - briefly changed
+    // to abort the whole Add ISO, but reverted (2026-09-19) back to this:
+    // clear and proceed with the import regardless. The save prompt is a
+    // courtesy, not a gate on starting the import.
     if (!m_playlist->isEmpty()) {
         promptSaveCurrentPlaylist();
+        // Same as onClearPlaylistClicked()/onLoadPlaylistClicked(): stop
+        // playback before the clear, not after, so a track that's
+        // currently playing doesn't keep going with no corresponding row
+        // left in the playlist (confirmed as a bug by the user, 2026-09-19).
+        m_engine->stop();
         m_playlist->clear();
     }
 
@@ -1018,6 +1025,11 @@ void MainWindow::onLoadPlaylistClicked()
     if (path.isEmpty())
         return;
 
+    // Stop whatever's currently playing before swapping the list out from
+    // under it - same as onClearPlaylistClicked() - otherwise the engine
+    // keeps playing a track that no longer has a row in the playlist at
+    // all (confirmed as a bug by the user, 2026-09-19).
+    m_engine->stop();
     m_playlist->clear();
     int skipped = 0;
     const int loaded = m_playlist->loadM3u(path, &skipped);
@@ -1040,17 +1052,19 @@ void MainWindow::onSavePlaylistClicked()
     promptSaveCurrentPlaylist();
 }
 
-void MainWindow::promptSaveCurrentPlaylist()
+bool MainWindow::promptSaveCurrentPlaylist()
 {
     const QString path = QFileDialog::getSaveFileName(this, tr("Save Playlist"), QString(),
                                                         tr("Playlist (*.m3u8)"));
     if (path.isEmpty())
-        return;
+        return false;
 
-    if (m_playlist->saveM3u(path))
+    if (m_playlist->saveM3u(path)) {
         statusBar()->showMessage(tr("Playlist saved."), 3000);
-    else
-        QMessageBox::warning(this, tr("Save Playlist"), tr("Could not write the playlist file."));
+        return true;
+    }
+    QMessageBox::warning(this, tr("Save Playlist"), tr("Could not write the playlist file."));
+    return false;
 }
 
 void MainWindow::onClearPlaylistClicked()
