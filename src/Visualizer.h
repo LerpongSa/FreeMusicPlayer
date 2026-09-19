@@ -100,6 +100,16 @@ public:
     // active so the widget doesn't burn CPU animating silence.
     void setActive(bool active);
 
+    // Clears every piece of animated/transient state (band magnitudes,
+    // waveform, VU ballistics, particles, spectrogram history, etc.) back
+    // to zero/empty and repaints immediately. setActive(false) alone just
+    // stops the redraw timer - it leaves whatever was last painted on
+    // screen, which reads as a frozen frame of the track that just
+    // stopped. Call this when there's no longer any "last track" for that
+    // frozen frame to make sense as (e.g. the playlist got cleared out
+    // from under it).
+    void reset();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 

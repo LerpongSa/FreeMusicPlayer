@@ -1018,6 +1018,18 @@ void MainWindow::onAddIsoClicked()
         // left in the playlist (confirmed as a bug by the user, 2026-09-19).
         m_engine->stop();
         m_playlist->clear();
+        // Requested by the user (2026-09-19): reset the cover art and
+        // visualizer back to their default/idle look too, instead of
+        // leaving them showing the just-cleared track's artwork and a
+        // frozen last frame for the whole ISO conversion. updateCoverArt()
+        // with an empty path repaints the "no artwork" placeholder (same
+        // as any track that simply has none); Visualizer::reset() clears
+        // its animated state and repaints blank - setActive(false) alone
+        // (already done via onEngineStateChanged() reacting to stop()
+        // above) only stops the redraw timer, it doesn't clear what was
+        // last painted.
+        updateCoverArt(QString());
+        m_visualizer->reset();
     }
 
     startIsoImport(isoPath, outDir);

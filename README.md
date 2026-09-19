@@ -61,7 +61,15 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
     ตอน Save Playlist ไปก่อนหน้านี้ก็ตาม (ยืนยันกับผู้ใช้แล้ว 2026-09-19) เมื่อ
     เลือกไฟล์ `.iso` สำเร็จแล้ว ก็ Clear + เริ่มแปลงต่อทันที ไม่ว่าจะเคย Save
     Playlist จริงหรือ Cancel ไปตอนต้นก็ตาม เพราะแทร็กที่แปลงจาก ISO จะกลายเป็น
-    playlist ใหม่ล้วน ๆ ไม่ใช่ต่อท้ายของเดิม **แปลงเสร็จหมดแล้ว กด OK ที่ dialog
+    playlist ใหม่ล้วน ๆ ไม่ใช่ต่อท้ายของเดิม **ตอน Clear playlist เดิมนี้ ปกเพลง
+    กับ Visualizer จะถูกรีเซ็ตกลับเป็นค่าเริ่มต้นด้วย** ไม่งั้นปกเพลง/รูป
+    Visualizer ของเพลงที่เพิ่งถูก Clear ทิ้งจะค้างอยู่บนจอตลอดที่ ISO กำลังแปลง —
+    `updateCoverArt(QString())` วาด placeholder "ไม่มีปก" แบบเดียวกับเพลงที่ไม่มี
+    artwork ฝังมา ส่วน `Visualizer::reset()` (เมธอดใหม่) เคลียร์ state ที่เป็น
+    animation ทั้งหมด (band magnitude, waveform, VU ballistics, particles,
+    spectrogram history ฯลฯ) แล้ว repaint ทันที — คนละเรื่องกับ `setActive(false)`
+    ที่แค่หยุด timer แต่เฟรมสุดท้ายที่วาดค้างไว้ยังไม่หาย
+    **แปลงเสร็จหมดแล้ว กด OK ที่ dialog
     สรุปผล ("Converted N track(s) to FLAC in...") ปุ๊บ เพลงแรกเริ่มเล่นทันที**
     — `onIsoImportFinished()` เรียก `playIndex(0, true)` ต่อจาก
     `QMessageBox::information()` (ซึ่งเป็น dialog แบบ modal ค้างจนกว่าจะกด OK

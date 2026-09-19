@@ -247,6 +247,23 @@ void Visualizer::setActive(bool active)
         m_timer.stop();
 }
 
+void Visualizer::reset()
+{
+    m_bandMagnitudes.fill(0.0f);
+    m_bandPeaks.fill(0.0f);
+    m_waveform.clear();
+    m_vuRms = 0.0f;
+    m_vuPeak = 0.0f;
+    m_vuPeakHold = 0.0f;
+    m_vuClip = 0.0f;
+    m_particles.clear();
+    m_spectrogramHistory.clear();
+    m_orbitPhase = 0.0;
+    m_tunnelRings.clear();
+    m_tunnelSpawnAccum = 0.0;
+    update();
+}
+
 void Visualizer::onTick()
 {
     computeSpectrum();
