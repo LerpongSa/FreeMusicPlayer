@@ -331,6 +331,19 @@ subframe แบบเดิม) — ลด full-array pass ต่อ subframe �
 Release) — ดูหัวข้อ Build ด้านบนสำหรับอีกสาเหตุหลักที่ทำให้การแปลงช้า
 (`CMAKE_BUILD_TYPE` ไม่เคย set มาก่อน)
 
+**คอขวดจริงคือ decode DSD→PCM ไม่ใช่การอ่าน/แปลง byte** (วัดจริง 2026-09-19 บน
+SACD ISO จริง track 3:45 / 154 MB): ก่อนแก้ demux 2.4 วิ + เขียน .dsf 0.5 วิ +
+FLAC encode 3.7 วิ แต่ช่วง `decodeToInt32Pcm()` (QAudioDecoder/FFmpeg) กิน
+**527 วินาที** ≈ 99% ของทั้งหมด (รวม ~534 วิ) สาเหตุคือใน callback `bufferReady`
+เรียก `outInterleaved.reserve(size() + n)` ทุก buffer — libstdc++ `reserve()`
+จองความจุ "เท่าที่ขอเป๊ะ" ไม่เผื่อโต จึง realloc + ก๊อปทั้ง vector (~160 MB ตอน
+ท้าย) ใหม่ทุกครั้ง = O(n²) แก้เป็น `resize()` (โตแบบ geometric) → decode เหลือ
+~6 วิ รวมทั้ง track ~10.5 วิ (**เร็วขึ้น ~51 เท่า**, ผลลัพธ์เหมือนเดิมทุก
+sample) ส่วนที่เคยสงสัยไว้ — อ่านทีละ sector (อ่านเป็นก้อน 4 MiB อยู่แล้ว),
+กลับบิตทีละ byte, เขียน .dsf ชั่วคราว, progress callback — รวมกันไม่ถึง ~1 วิ
+ต่อ track จึงไม่คุ้มแก้ (ส่วน .dsf ชั่วคราวเป็นทางเดียวที่ส่ง DSD เข้า
+QAudioDecoder/FFmpeg ได้ ไม่ต้องเขียน DSD decimation filter เอง)
+
 **Cancel หยุดทันที**: ปุ่ม Cancel ใน progress dialog เดิม (2026-09-18 ก่อนแก้)
 เชื่อม signal `canceled` เข้ากับ `IsoImportWorker::cancel()` ด้วย
 `Qt::AutoConnection` (default) ซึ่งข้าม thread จริง Qt จะ resolve เป็น

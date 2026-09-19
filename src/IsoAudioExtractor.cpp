@@ -420,12 +420,20 @@ bool decodeToInt32Pcm(const QString &path, int targetSampleRate, int targetChann
             return;
         const float *data = buf.constData<float>();
         const int n = buf.frameCount() * buf.format().channelCount();
-        outInterleaved.reserve(outInterleaved.size() + static_cast<size_t>(n));
+        // resize() (geometric growth), NOT reserve(size() + n): libstdc++'s
+        // reserve() allocates exactly the requested capacity, so calling it
+        // with size()+n once per decoded buffer reallocates and copies the
+        // ENTIRE vector every time - quadratic. Measured on a real 3:45 SACD
+        // track (2026-09-19): that alone made the decode phase take ~527 s,
+        // ~99% of the whole import, versus ~4 s for demux + DSF write +
+        // FLAC encode combined.
+        const size_t base = outInterleaved.size();
+        outInterleaved.resize(base + static_cast<size_t>(n));
+        int32_t *dst = outInterleaved.data() + base;
         for (int i = 0; i < n; ++i) {
             const double v = static_cast<double>(data[i]) * scale;
-            const int32_t s = static_cast<int32_t>(std::lround(std::clamp(v, static_cast<double>(clampLo),
-                                                                           static_cast<double>(clampHi))));
-            outInterleaved.push_back(s);
+            dst[i] = static_cast<int32_t>(std::lround(std::clamp(v, static_cast<double>(clampLo),
+                                                                  static_cast<double>(clampHi))));
         }
     });
     QObject::connect(&decoder, &QAudioDecoder::finished, &loop, &QEventLoop::quit);
