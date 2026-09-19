@@ -258,6 +258,30 @@ src/CoverArtExtractor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/CoverArtExtractor.cpp.s
 .PHONY : src/CoverArtExtractor.cpp.s
 
+src/DsfWriter.obj: src/DsfWriter.cpp.obj
+.PHONY : src/DsfWriter.obj
+
+# target to build an object file
+src/DsfWriter.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj
+.PHONY : src/DsfWriter.cpp.obj
+
+src/DsfWriter.i: src/DsfWriter.cpp.i
+.PHONY : src/DsfWriter.i
+
+# target to preprocess a source file
+src/DsfWriter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.i
+.PHONY : src/DsfWriter.cpp.i
+
+src/DsfWriter.s: src/DsfWriter.cpp.s
+.PHONY : src/DsfWriter.s
+
+# target to generate assembly for a file
+src/DsfWriter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.s
+.PHONY : src/DsfWriter.cpp.s
+
 src/Equalizer.obj: src/Equalizer.cpp.obj
 .PHONY : src/Equalizer.obj
 
@@ -282,6 +306,30 @@ src/Equalizer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/Equalizer.cpp.s
 .PHONY : src/Equalizer.cpp.s
 
+src/FlacEncoder.obj: src/FlacEncoder.cpp.obj
+.PHONY : src/FlacEncoder.obj
+
+# target to build an object file
+src/FlacEncoder.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj
+.PHONY : src/FlacEncoder.cpp.obj
+
+src/FlacEncoder.i: src/FlacEncoder.cpp.i
+.PHONY : src/FlacEncoder.i
+
+# target to preprocess a source file
+src/FlacEncoder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.i
+.PHONY : src/FlacEncoder.cpp.i
+
+src/FlacEncoder.s: src/FlacEncoder.cpp.s
+.PHONY : src/FlacEncoder.s
+
+# target to generate assembly for a file
+src/FlacEncoder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.s
+.PHONY : src/FlacEncoder.cpp.s
+
 src/IconFactory.obj: src/IconFactory.cpp.obj
 .PHONY : src/IconFactory.obj
 
@@ -305,6 +353,54 @@ src/IconFactory.s: src/IconFactory.cpp.s
 src/IconFactory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.s
 .PHONY : src/IconFactory.cpp.s
+
+src/IsoAudioExtractor.obj: src/IsoAudioExtractor.cpp.obj
+.PHONY : src/IsoAudioExtractor.obj
+
+# target to build an object file
+src/IsoAudioExtractor.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj
+.PHONY : src/IsoAudioExtractor.cpp.obj
+
+src/IsoAudioExtractor.i: src/IsoAudioExtractor.cpp.i
+.PHONY : src/IsoAudioExtractor.i
+
+# target to preprocess a source file
+src/IsoAudioExtractor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.i
+.PHONY : src/IsoAudioExtractor.cpp.i
+
+src/IsoAudioExtractor.s: src/IsoAudioExtractor.cpp.s
+.PHONY : src/IsoAudioExtractor.s
+
+# target to generate assembly for a file
+src/IsoAudioExtractor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.s
+.PHONY : src/IsoAudioExtractor.cpp.s
+
+src/IsoImportWorker.obj: src/IsoImportWorker.cpp.obj
+.PHONY : src/IsoImportWorker.obj
+
+# target to build an object file
+src/IsoImportWorker.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj
+.PHONY : src/IsoImportWorker.cpp.obj
+
+src/IsoImportWorker.i: src/IsoImportWorker.cpp.i
+.PHONY : src/IsoImportWorker.i
+
+# target to preprocess a source file
+src/IsoImportWorker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.i
+.PHONY : src/IsoImportWorker.cpp.i
+
+src/IsoImportWorker.s: src/IsoImportWorker.cpp.s
+.PHONY : src/IsoImportWorker.s
+
+# target to generate assembly for a file
+src/IsoImportWorker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.s
+.PHONY : src/IsoImportWorker.cpp.s
 
 src/MainWindow.obj: src/MainWindow.cpp.obj
 .PHONY : src/MainWindow.obj
@@ -522,12 +618,24 @@ help:
 	@echo ... src/CoverArtExtractor.obj
 	@echo ... src/CoverArtExtractor.i
 	@echo ... src/CoverArtExtractor.s
+	@echo ... src/DsfWriter.obj
+	@echo ... src/DsfWriter.i
+	@echo ... src/DsfWriter.s
 	@echo ... src/Equalizer.obj
 	@echo ... src/Equalizer.i
 	@echo ... src/Equalizer.s
+	@echo ... src/FlacEncoder.obj
+	@echo ... src/FlacEncoder.i
+	@echo ... src/FlacEncoder.s
 	@echo ... src/IconFactory.obj
 	@echo ... src/IconFactory.i
 	@echo ... src/IconFactory.s
+	@echo ... src/IsoAudioExtractor.obj
+	@echo ... src/IsoAudioExtractor.i
+	@echo ... src/IsoAudioExtractor.s
+	@echo ... src/IsoImportWorker.obj
+	@echo ... src/IsoImportWorker.i
+	@echo ... src/IsoImportWorker.s
 	@echo ... src/MainWindow.obj
 	@echo ... src/MainWindow.i
 	@echo ... src/MainWindow.s

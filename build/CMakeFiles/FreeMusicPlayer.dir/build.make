@@ -74,7 +74,7 @@ FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp: D:/AI_Programming/C++/Free
 FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp: C:/Qt/6.11.1/mingw_64/bin/rcc.exe
 FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp: C:/Qt/6.11.1/mingw_64/bin/rcc.exe
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources/resources.qrc"
-	"C:\Program Files\CMake\bin\cmake.exe" -E cmake_autorcc D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Info.json 
+	"C:\Program Files\CMake\bin\cmake.exe" -E cmake_autorcc D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Info.json Release
 
 CMakeFiles/FreeMusicPlayer.dir/codegen:
 .PHONY : CMakeFiles/FreeMusicPlayer.dir/codegen
@@ -274,16 +274,76 @@ CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.s"
 	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\AI_Programming\C++\FreeMusicPlayer\src\IconFactory.cpp -o CMakeFiles\FreeMusicPlayer.dir\src\IconFactory.cpp.s
 
+CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/flags.make
+CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/includes_CXX.rsp
+CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj: D:/AI_Programming/C++/FreeMusicPlayer/src/FlacEncoder.cpp
+CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj -MF CMakeFiles\FreeMusicPlayer.dir\src\FlacEncoder.cpp.obj.d -o CMakeFiles\FreeMusicPlayer.dir\src\FlacEncoder.cpp.obj -c D:\AI_Programming\C++\FreeMusicPlayer\src\FlacEncoder.cpp
+
+CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.i"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\AI_Programming\C++\FreeMusicPlayer\src\FlacEncoder.cpp > CMakeFiles\FreeMusicPlayer.dir\src\FlacEncoder.cpp.i
+
+CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.s"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\AI_Programming\C++\FreeMusicPlayer\src\FlacEncoder.cpp -o CMakeFiles\FreeMusicPlayer.dir\src\FlacEncoder.cpp.s
+
+CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/flags.make
+CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/includes_CXX.rsp
+CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj: D:/AI_Programming/C++/FreeMusicPlayer/src/DsfWriter.cpp
+CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj -MF CMakeFiles\FreeMusicPlayer.dir\src\DsfWriter.cpp.obj.d -o CMakeFiles\FreeMusicPlayer.dir\src\DsfWriter.cpp.obj -c D:\AI_Programming\C++\FreeMusicPlayer\src\DsfWriter.cpp
+
+CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.i"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\AI_Programming\C++\FreeMusicPlayer\src\DsfWriter.cpp > CMakeFiles\FreeMusicPlayer.dir\src\DsfWriter.cpp.i
+
+CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.s"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\AI_Programming\C++\FreeMusicPlayer\src\DsfWriter.cpp -o CMakeFiles\FreeMusicPlayer.dir\src\DsfWriter.cpp.s
+
+CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/flags.make
+CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/includes_CXX.rsp
+CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj: D:/AI_Programming/C++/FreeMusicPlayer/src/IsoAudioExtractor.cpp
+CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj -MF CMakeFiles\FreeMusicPlayer.dir\src\IsoAudioExtractor.cpp.obj.d -o CMakeFiles\FreeMusicPlayer.dir\src\IsoAudioExtractor.cpp.obj -c D:\AI_Programming\C++\FreeMusicPlayer\src\IsoAudioExtractor.cpp
+
+CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.i"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\AI_Programming\C++\FreeMusicPlayer\src\IsoAudioExtractor.cpp > CMakeFiles\FreeMusicPlayer.dir\src\IsoAudioExtractor.cpp.i
+
+CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.s"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\AI_Programming\C++\FreeMusicPlayer\src\IsoAudioExtractor.cpp -o CMakeFiles\FreeMusicPlayer.dir\src\IsoAudioExtractor.cpp.s
+
+CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/flags.make
+CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/includes_CXX.rsp
+CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj: D:/AI_Programming/C++/FreeMusicPlayer/src/IsoImportWorker.cpp
+CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj -MF CMakeFiles\FreeMusicPlayer.dir\src\IsoImportWorker.cpp.obj.d -o CMakeFiles\FreeMusicPlayer.dir\src\IsoImportWorker.cpp.obj -c D:\AI_Programming\C++\FreeMusicPlayer\src\IsoImportWorker.cpp
+
+CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.i"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\AI_Programming\C++\FreeMusicPlayer\src\IsoImportWorker.cpp > CMakeFiles\FreeMusicPlayer.dir\src\IsoImportWorker.cpp.i
+
+CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.s"
+	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\AI_Programming\C++\FreeMusicPlayer\src\IsoImportWorker.cpp -o CMakeFiles\FreeMusicPlayer.dir\src\IsoImportWorker.cpp.s
+
 CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj: CMakeFiles/FreeMusicPlayer.dir/flags.make
 CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj: D:/AI_Programming/C++/FreeMusicPlayer/resources/app.rc
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building RC object CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building RC object CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj"
 	C:\Qt\Tools\mingw1310_64\bin\windres.exe -O coff $(RC_DEFINES) $(RC_INCLUDES) $(RC_FLAGS) D:\AI_Programming\C++\FreeMusicPlayer\resources\app.rc CMakeFiles\FreeMusicPlayer.dir\resources\app.rc.obj
 
 CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/flags.make
 CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/includes_CXX.rsp
 CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj: FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp
 CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj: CMakeFiles/FreeMusicPlayer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj"
 	C:\Qt\Tools\mingw1310_64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj -MF CMakeFiles\FreeMusicPlayer.dir\FreeMusicPlayer_autogen\3YJK5W5UP7\qrc_resources.cpp.obj.d -o CMakeFiles\FreeMusicPlayer.dir\FreeMusicPlayer_autogen\3YJK5W5UP7\qrc_resources.cpp.obj -c D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer_autogen\3YJK5W5UP7\qrc_resources.cpp
 
 CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.i: cmake_force
@@ -309,6 +369,10 @@ FreeMusicPlayer_OBJECTS = \
 "CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj" \
 "CMakeFiles/FreeMusicPlayer.dir/src/TextDecoder.cpp.obj" \
 "CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.obj" \
+"CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj" \
+"CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj" \
+"CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj" \
+"CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj" \
 "CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj" \
 "CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj"
 
@@ -328,6 +392,10 @@ FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/TagEditor.cpp.obj
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/TextDecoder.cpp.obj
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.obj
+FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj
+FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj
+FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj
+FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/build.make
@@ -341,7 +409,7 @@ FreeMusicPlayer.exe: FreeMusicPlayer.exe.manifest
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/linkLibs.rsp
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/objects1.rsp
 FreeMusicPlayer.exe: CMakeFiles/FreeMusicPlayer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable FreeMusicPlayer.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking CXX executable FreeMusicPlayer.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\FreeMusicPlayer.dir\link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold "Running windeployqt"
 	C:\Qt\6.11.1\mingw_64\bin\windeployqt.exe --dir D:/AI_Programming/C++/FreeMusicPlayer/build D:/AI_Programming/C++/FreeMusicPlayer/build/FreeMusicPlayer.exe

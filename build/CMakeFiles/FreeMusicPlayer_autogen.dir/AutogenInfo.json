@@ -450,6 +450,12 @@
 			null
 		],
 		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/DsfWriter.h",
+			"MU",
+			"UVLADIE3JM/moc_DsfWriter.cpp",
+			null
+		],
+		[
 			"D:/AI_Programming/C++/FreeMusicPlayer/src/Equalizer.h",
 			"MU",
 			"UVLADIE3JM/moc_Equalizer.cpp",
@@ -462,9 +468,27 @@
 			null
 		],
 		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/FlacEncoder.h",
+			"MU",
+			"UVLADIE3JM/moc_FlacEncoder.cpp",
+			null
+		],
+		[
 			"D:/AI_Programming/C++/FreeMusicPlayer/src/IconFactory.h",
 			"MU",
 			"UVLADIE3JM/moc_IconFactory.cpp",
+			null
+		],
+		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/IsoAudioExtractor.h",
+			"MU",
+			"UVLADIE3JM/moc_IsoAudioExtractor.cpp",
+			null
+		],
+		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/IsoImportWorker.h",
+			"MU",
+			"UVLADIE3JM/moc_IsoImportWorker.cpp",
 			null
 		],
 		[
@@ -603,9 +627,25 @@
 			"MU",
 			null
 		],
+		[ "D:/AI_Programming/C++/FreeMusicPlayer/src/DsfWriter.cpp", "MU", null ],
 		[ "D:/AI_Programming/C++/FreeMusicPlayer/src/Equalizer.cpp", "MU", null ],
 		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/FlacEncoder.cpp",
+			"MU",
+			null
+		],
+		[
 			"D:/AI_Programming/C++/FreeMusicPlayer/src/IconFactory.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/IsoAudioExtractor.cpp",
+			"MU",
+			null
+		],
+		[
+			"D:/AI_Programming/C++/FreeMusicPlayer/src/IsoImportWorker.cpp",
 			"MU",
 			null
 		],

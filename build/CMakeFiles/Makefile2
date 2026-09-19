@@ -83,16 +83,16 @@ clean: CMakeFiles/FreeMusicPlayer_autogen.dir/clean
 # Target rules for target CMakeFiles/FreeMusicPlayer.dir
 
 # All Build rule for target.
-CMakeFiles/FreeMusicPlayer.dir/all: CMakeFiles/FreeMusicPlayer_autogen.dir/all
 CMakeFiles/FreeMusicPlayer.dir/all: CMakeFiles/FreeMusicPlayer_autogen_timestamp_deps.dir/all
+CMakeFiles/FreeMusicPlayer.dir/all: CMakeFiles/FreeMusicPlayer_autogen.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Built target FreeMusicPlayer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Built target FreeMusicPlayer"
 .PHONY : CMakeFiles/FreeMusicPlayer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/FreeMusicPlayer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles 18
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles 22
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/FreeMusicPlayer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles 0
 .PHONY : CMakeFiles/FreeMusicPlayer.dir/rule
@@ -104,7 +104,7 @@ FreeMusicPlayer: CMakeFiles/FreeMusicPlayer.dir/rule
 # codegen rule for target.
 CMakeFiles/FreeMusicPlayer.dir/codegen: CMakeFiles/FreeMusicPlayer_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer.dir\build.make CMakeFiles/FreeMusicPlayer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Finished codegen for target FreeMusicPlayer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Finished codegen for target FreeMusicPlayer"
 .PHONY : CMakeFiles/FreeMusicPlayer.dir/codegen
 
 # clean rule for target.
@@ -151,7 +151,7 @@ CMakeFiles/FreeMusicPlayer_autogen_timestamp_deps.dir/clean:
 CMakeFiles/FreeMusicPlayer_autogen.dir/all: CMakeFiles/FreeMusicPlayer_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer_autogen.dir\build.make CMakeFiles/FreeMusicPlayer_autogen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer_autogen.dir\build.make CMakeFiles/FreeMusicPlayer_autogen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=18 "Built target FreeMusicPlayer_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=22 "Built target FreeMusicPlayer_autogen"
 .PHONY : CMakeFiles/FreeMusicPlayer_autogen.dir/all
 
 # Build rule for subdir invocation for target.
@@ -168,7 +168,7 @@ FreeMusicPlayer_autogen: CMakeFiles/FreeMusicPlayer_autogen.dir/rule
 # codegen rule for target.
 CMakeFiles/FreeMusicPlayer_autogen.dir/codegen: CMakeFiles/FreeMusicPlayer_autogen_timestamp_deps.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\FreeMusicPlayer_autogen.dir\build.make CMakeFiles/FreeMusicPlayer_autogen.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=18 "Finished codegen for target FreeMusicPlayer_autogen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=22 "Finished codegen for target FreeMusicPlayer_autogen"
 .PHONY : CMakeFiles/FreeMusicPlayer_autogen.dir/codegen
 
 # clean rule for target.

@@ -766,11 +766,19 @@ FreeMusicPlayer_autogen/timestamp: \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/BiquadFilter.h \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/CoverArtExtractor.cpp \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/CoverArtExtractor.h \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/DsfWriter.cpp \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/DsfWriter.h \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/Equalizer.cpp \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/Equalizer.h \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/FFT.h \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/FlacEncoder.cpp \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/FlacEncoder.h \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/IconFactory.cpp \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/IconFactory.h \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/IsoAudioExtractor.cpp \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/IsoAudioExtractor.h \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/IsoImportWorker.cpp \
+	D:/AI_Programming/C++/FreeMusicPlayer/src/IsoImportWorker.h \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/MainWindow.cpp \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/MainWindow.h \
 	D:/AI_Programming/C++/FreeMusicPlayer/src/Playlist.cpp \

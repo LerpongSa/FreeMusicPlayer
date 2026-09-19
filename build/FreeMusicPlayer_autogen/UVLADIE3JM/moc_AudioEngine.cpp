@@ -55,6 +55,7 @@ template <> constexpr inline auto AudioEngine::qt_create_metaobjectdata<qt_meta_
         "percent",
         "formatDescriptionChanged",
         "text",
+        "audioActive",
         "audioThreadReachedEnd",
         "onDecoderBufferReady",
         "onDecoderFinished",
@@ -102,34 +103,36 @@ template <> constexpr inline auto AudioEngine::qt_create_metaobjectdata<qt_meta_
         QtMocHelpers::SignalData<void(QString)>(15, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 16 },
         }}),
-        // Signal 'audioThreadReachedEnd'
+        // Signal 'audioActive'
         QtMocHelpers::SignalData<void()>(17, 2, QMC::AccessPublic, QMetaType::Void),
+        // Signal 'audioThreadReachedEnd'
+        QtMocHelpers::SignalData<void()>(18, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'onDecoderBufferReady'
-        QtMocHelpers::SlotData<void()>(18, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onDecoderFinished'
         QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onDecoderFinished'
+        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onDecoderError'
-        QtMocHelpers::SlotData<void(QAudioDecoder::Error)>(20, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 21, 22 },
+        QtMocHelpers::SlotData<void(QAudioDecoder::Error)>(21, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 22, 23 },
         }}),
         // Slot 'onDecoderDurationChanged'
-        QtMocHelpers::SlotData<void(qint64)>(23, 2, QMC::AccessPrivate, QMetaType::Void, {{
+        QtMocHelpers::SlotData<void(qint64)>(24, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::LongLong, 6 },
         }}),
         // Slot 'handlePlaybackEnded'
-        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'emitPositionTick'
         QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'emitPositionTick'
+        QtMocHelpers::SlotData<void()>(26, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
     QtMocHelpers::UintData qt_enums {
         // enum 'State'
-        QtMocHelpers::EnumData<enum State>(26, 26, QMC::EnumIsScoped).add({
-            {   27, State::Stopped },
-            {   28, State::Loading },
-            {   29, State::Playing },
-            {   30, State::Paused },
+        QtMocHelpers::EnumData<enum State>(27, 27, QMC::EnumIsScoped).add({
+            {   28, State::Stopped },
+            {   29, State::Loading },
+            {   30, State::Playing },
+            {   31, State::Paused },
         }),
     };
     return QtMocHelpers::metaObjectData<AudioEngine, qt_meta_tag_ZN11AudioEngineE_t>(QMC::MetaObjectFlag{}, qt_stringData,
@@ -158,13 +161,14 @@ void AudioEngine::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 5: _t->errorOccurred((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
         case 6: _t->decodingProgress((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
         case 7: _t->formatDescriptionChanged((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
-        case 8: _t->audioThreadReachedEnd(); break;
-        case 9: _t->onDecoderBufferReady(); break;
-        case 10: _t->onDecoderFinished(); break;
-        case 11: _t->onDecoderError((*reinterpret_cast<std::add_pointer_t<QAudioDecoder::Error>>(_a[1]))); break;
-        case 12: _t->onDecoderDurationChanged((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
-        case 13: _t->handlePlaybackEnded(); break;
-        case 14: _t->emitPositionTick(); break;
+        case 8: _t->audioActive(); break;
+        case 9: _t->audioThreadReachedEnd(); break;
+        case 10: _t->onDecoderBufferReady(); break;
+        case 11: _t->onDecoderFinished(); break;
+        case 12: _t->onDecoderError((*reinterpret_cast<std::add_pointer_t<QAudioDecoder::Error>>(_a[1]))); break;
+        case 13: _t->onDecoderDurationChanged((*reinterpret_cast<std::add_pointer_t<qint64>>(_a[1]))); break;
+        case 14: _t->handlePlaybackEnded(); break;
+        case 15: _t->emitPositionTick(); break;
         default: ;
         }
     }
@@ -185,7 +189,9 @@ void AudioEngine::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
             return;
         if (QtMocHelpers::indexOfMethod<void (AudioEngine::*)(QString )>(_a, &AudioEngine::formatDescriptionChanged, 7))
             return;
-        if (QtMocHelpers::indexOfMethod<void (AudioEngine::*)()>(_a, &AudioEngine::audioThreadReachedEnd, 8))
+        if (QtMocHelpers::indexOfMethod<void (AudioEngine::*)()>(_a, &AudioEngine::audioActive, 8))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (AudioEngine::*)()>(_a, &AudioEngine::audioThreadReachedEnd, 9))
             return;
     }
 }
@@ -209,14 +215,14 @@ int AudioEngine::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 16;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 16)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 15;
+        _id -= 16;
     }
     return _id;
 }
@@ -270,8 +276,14 @@ void AudioEngine::formatDescriptionChanged(QString _t1)
 }
 
 // SIGNAL 8
-void AudioEngine::audioThreadReachedEnd()
+void AudioEngine::audioActive()
 {
     QMetaObject::activate(this, &staticMetaObject, 8, nullptr);
+}
+
+// SIGNAL 9
+void AudioEngine::audioThreadReachedEnd()
+{
+    QMetaObject::activate(this, &staticMetaObject, 9, nullptr);
 }
 QT_WARNING_POP

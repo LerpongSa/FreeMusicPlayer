@@ -16,12 +16,12 @@ Configuring with MinGW Makefiles ...
 -- Performing Test HAVE_STDATOMIC - Success
 -- Found WrapAtomic: TRUE
 -- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
--- Configuring done (3.6s)
--- Generating done (0.2s)
+-- Configuring done (8.4s)
+-- Generating done (0.7s)
 -- Build files have been written to: D:/AI_Programming/C++/FreeMusicPlayer/build
 Building ...
 [  0%] Built target FreeMusicPlayer_autogen_timestamp_deps
-[  5%] Automatic MOC and UIC for target FreeMusicPlayer
+[  4%] Automatic MOC and UIC for target FreeMusicPlayer
 AutoMoc: Could not request license for qtframework:
     Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
     Status code: 100
@@ -112,23 +112,45 @@ Additionally, attach the logs folder of the Qt License Service that can be found
 On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
 
 To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
-[  5%] Built target FreeMusicPlayer_autogen
-[ 11%] Automatic RCC for resources/resources.qrc
-[ 16%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/mocs_compilation.cpp.obj
-[ 22%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/main.cpp.obj
-[ 27%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj
-[ 33%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Settings.cpp.obj
-[ 38%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/AudioEngine.cpp.obj
-[ 44%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Equalizer.cpp.obj
-[ 50%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Visualizer.cpp.obj
-[ 55%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Playlist.cpp.obj
-[ 61%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/CoverArtExtractor.cpp.obj
-[ 66%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TagEditor.cpp.obj
-[ 72%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj
-[ 77%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TextDecoder.cpp.obj
-[ 83%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.obj
-[ 88%] Building RC object CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj
-[ 94%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj
+AutoMoc: Could not request license for qtframework:
+    Message: No valid license could be acquired. Please contact your license admin. For more details, see: https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-service.html#qt-license-service-error-messages.
+    Status code: 100
+    Error details:
+      • The licenses available to the current user have expired. License IDs:
+        11893783. Check your available licenses in the customer portal or
+        contact your local license admin. For more details, see
+        https://doc.qt.io/qtlicenseserver/qls-reference-troubleshooting-server.html#reservation-errors.
+Cannot acquire license to use qtframework.
+
+If the issue persists, please contact Qt Support: https://account.qt.io/s/support-center
+
+Attach the above details when contacting support.
+
+Additionally, attach the logs folder of the Qt License Service that can be found from the directory of this Qt installation.
+On this system the log file path appears to be: "C:\Qt\Tools\LicenseService\logs".
+
+To bypass the license check entirely, set the environment variable QTFRAMEWORK_BYPASS_LICENSE_CHECK with value 1.
+[  4%] Built target FreeMusicPlayer_autogen
+[  9%] Automatic RCC for resources/resources.qrc
+[ 13%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/mocs_compilation.cpp.obj
+[ 18%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/main.cpp.obj
+[ 22%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/MainWindow.cpp.obj
+[ 27%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Settings.cpp.obj
+[ 31%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/AudioEngine.cpp.obj
+[ 36%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Equalizer.cpp.obj
+[ 40%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Visualizer.cpp.obj
+[ 45%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/Playlist.cpp.obj
+[ 50%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/CoverArtExtractor.cpp.obj
+[ 54%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TagEditor.cpp.obj
+[ 59%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TagEditDialog.cpp.obj
+[ 63%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/TextDecoder.cpp.obj
+[ 68%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/IconFactory.cpp.obj
+[ 72%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/FlacEncoder.cpp.obj
+[ 77%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/DsfWriter.cpp.obj
+[ 81%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/IsoAudioExtractor.cpp.obj
+[ 86%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/src/IsoImportWorker.cpp.obj
+[ 90%] Building RC object CMakeFiles/FreeMusicPlayer.dir/resources/app.rc.obj
+[ 95%] Building CXX object CMakeFiles/FreeMusicPlayer.dir/FreeMusicPlayer_autogen/3YJK5W5UP7/qrc_resources.cpp.obj
 [100%] Linking CXX executable FreeMusicPlayer.exe
 Running windeployqt
 D:\AI_Programming\C++\FreeMusicPlayer\build\FreeMusicPlayer.exe 64 bit, release executable

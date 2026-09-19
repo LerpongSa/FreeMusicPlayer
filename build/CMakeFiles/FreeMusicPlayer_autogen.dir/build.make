@@ -71,7 +71,7 @@ FreeMusicPlayer_autogen/timestamp: C:/Qt/6.11.1/mingw_64/bin/moc.exe
 FreeMusicPlayer_autogen/timestamp: C:/Qt/6.11.1/mingw_64/bin/uic.exe
 FreeMusicPlayer_autogen/timestamp: CMakeFiles/FreeMusicPlayer_autogen.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=D:\AI_Programming\C++\FreeMusicPlayer\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target FreeMusicPlayer"
-	"C:\Program Files\CMake\bin\cmake.exe" -E cmake_autogen D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer_autogen.dir/AutogenInfo.json ""
+	"C:\Program Files\CMake\bin\cmake.exe" -E cmake_autogen D:/AI_Programming/C++/FreeMusicPlayer/build/CMakeFiles/FreeMusicPlayer_autogen.dir/AutogenInfo.json Release
 	"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/AI_Programming/C++/FreeMusicPlayer/build/FreeMusicPlayer_autogen/timestamp
 
 CMakeFiles/FreeMusicPlayer_autogen.dir/codegen:
