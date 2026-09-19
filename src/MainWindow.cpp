@@ -1917,6 +1917,18 @@ void MainWindow::onIsoImportFinished(const QStringList &flacPaths)
     if (flacPaths.isEmpty() && m_isoImportFailures.isEmpty())
         return; // cancelled before any track finished or failed - nothing worth reporting
     QMessageBox::information(this, tr("Add ISO"), summary);
+
+    // Requested by the user (2026-09-19): once the user acknowledges this
+    // summary, start playing the newly-converted tracks right away instead
+    // of leaving them sitting loaded-but-silent in the playlist. Index 0,
+    // not m_playlist->currentIndex(): onAddIsoClicked() always clears the
+    // playlist before an import starts, so addFilesToPlaylist() above added
+    // these tracks to what was definitely an empty list - Playlist::addFiles()
+    // itself sets currentIndex to 0 in that case, but being explicit here
+    // doesn't depend on that happening to still be true if either of those
+    // assumptions ever changes.
+    if (!flacPaths.isEmpty())
+        playIndex(0, true);
 }
 
 void MainWindow::performScheduledShutdown(bool alsoShutdownComputer)
