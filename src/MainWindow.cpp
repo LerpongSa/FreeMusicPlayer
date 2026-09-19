@@ -992,6 +992,22 @@ void MainWindow::onAddIsoClicked()
     const QFileInfo isoInfo(isoPath);
     const QString outDir = isoInfo.dir().filePath(isoInfo.completeBaseName());
 
+    // Requested by the user (2026-09-19): Add ISO always starts the newly
+    // ripped tracks as a fresh playlist instead of appending them onto
+    // whatever was already loaded (onIsoImportFinished() calls
+    // addFilesToPlaylist() once conversion finishes) - so offer the same
+    // "Save Playlist" prompt the toolbar button uses first, in case the
+    // current list isn't saved anywhere yet, then clear it. Runs right
+    // here, before the conversion even starts, not after it finishes - so
+    // the playlist sits empty for the whole import, matching what's about
+    // to happen to it. Clearing proceeds either way, even if the user
+    // cancels the save dialog: the prompt is a courtesy, not a gate on
+    // starting the import (confirmed with the user).
+    if (!m_playlist->isEmpty()) {
+        promptSaveCurrentPlaylist();
+        m_playlist->clear();
+    }
+
     startIsoImport(isoPath, outDir);
 }
 
@@ -1021,6 +1037,11 @@ void MainWindow::onSavePlaylistClicked()
         QMessageBox::information(this, tr("Save Playlist"), tr("The playlist is empty."));
         return;
     }
+    promptSaveCurrentPlaylist();
+}
+
+void MainWindow::promptSaveCurrentPlaylist()
+{
     const QString path = QFileDialog::getSaveFileName(this, tr("Save Playlist"), QString(),
                                                         tr("Playlist (*.m3u8)"));
     if (path.isEmpty())

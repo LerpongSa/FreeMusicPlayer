@@ -127,6 +127,7 @@ private:
     void refreshPlaylistWidget();
     void updateNowPlayingIcon(); // stamps a speaker glyph on m_playlist->currentIndex()'s row, clears every other row's
     void addFilesToPlaylist(const QStringList &paths);
+    void promptSaveCurrentPlaylist(); // shows the same Save Playlist dialog as the toolbar button; no-op if cancelled
     void startIsoImport(const QString &isoPath, const QString &outDir); // spins up the QThread + IsoImportWorker, shows the progress dialog
     void performScheduledShutdown(bool alsoShutdownComputer);
     static QString formatTime(qint64 ms);
