@@ -97,9 +97,14 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
     window flag บน top-level widget ที่แสดงอยู่แล้วไม่มีผลจนกว่าจะถูกซ่อน/โชว์
     ใหม่ (Windows ต้องสร้าง native window ใหม่ตาม style bit ที่เปลี่ยน)
     แถบปุ่มเล่นเพลงถูกห่อด้วย widget ใหม่ชื่อ `m_transportContainer`
-    (object name `"MiniPlayerPill"`) ซึ่งเป็นจุดเดียวที่ยังทึบแสง/มุมมน
+    (object name `"MiniPlayerPill"`) ซึ่งเป็นจุดเดียวที่ยังมีพื้นหลัง/มุมมน
     (`border-radius: 22px`) ส่วน `QMainWindow`/central widget โปร่งใสหมด —
-    ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS override ต่อท้าย
+    **พื้นหลัง pill เองก็โปร่งแสง 50% ด้วย** (ผู้ใช้ขอ 2026-09-20 หลังเห็นว่า
+    ทึบแสง 100%) ใช้ `rgba(r, g, b, 128)` ของสี `Theme::current().bg0` — Qt
+    Style Sheets' `rgba()` รับค่า alpha เป็น int 0-255 ไม่ใช่ 0-1 แบบ CSS ทั่วไป
+    128 จึงเป็นจุดกึ่งกลาง ~50% ปุ่มต่าง ๆ บน pill ยังทึบแสงปกติเหมือนเดิม (ไม่ได้
+    โปร่งแสงตาม) เพราะ objectName `TransportButton`/`PlayButton` มี QSS ของ
+    ตัวเองแยกต่างหาก ไม่ถูกกระทบ — ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS override ต่อท้าย
     `Theme::appStyleSheet()` เดิม (ไม่ได้เขียน stylesheet แยกใหม่ทั้งชุด) มี
     ผลเฉพาะตอน `m_miniPlayerMode` เท่านั้น เรียกทั้งตอน setupUi() และทุกครั้งที่
     เปลี่ยนธีม (`applyThemePalette()`) กันธีมเปลี่ยนระหว่างอยู่ใน Mini Player
@@ -109,6 +114,17 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
     `mouseReleaseEvent` ที่ override ไว้ ทำงานเฉพาะตอน `m_miniPlayerMode`) —
     Alt+F4 ยังปิดได้ตรงๆ เหมือนเดิมเพราะ Windows ส่ง WM_SYSCOMMAND/SC_CLOSE
     โดยไม่สนว่าหน้าต่างมี title bar หรือไม่
+    - **แก้บั๊ก: เห็น icon บน desktop (เช่น VLC) โผล่มาข้าง ๆ ปุ่มได้** (ผู้ใช้ส่ง
+      รูปมาชี้ 2026-09-20) สาเหตุคือ margin ซ้อนกัน 2 ชั้น: `rootLayout` ของ
+      `centralWidget()` เอง (`14,14,14,10`, ตั้งไว้ครั้งเดียวตอน `setupUi()`
+      ไม่เคยถูกปรับตามโหมด) บวกกับ margin ของ `m_transportContainer` เอง
+      (`14,10,14,10` เฉพาะตอน mini mode) รวมกันกลายเป็นแถบหน้าต่างโปร่งใส
+      "เปล่า ๆ" กว้างมากรอบ pill (ไม่ใช่ส่วนโค้งมนของ pill เลย) กว้างพอที่ icon
+      บน desktop จะโผล่ผ่านมาให้เห็นชัด ๆ ติดกับปุ่มได้ แก้ด้วยการลด
+      `centralWidget()->layout()`'s margins ลงเหลือแค่ `2,2,2,2` เฉพาะตอน
+      mini mode ด้วย (คืนกลับ `14,14,14,10` เดิมตอนออกจากโหมด) ให้หน้าต่าง
+      หุบชิดตัว pill จริง ๆ — ยืนยันแล้วว่ามุมโค้งของ pill ไม่โดนตัดขาดไปด้วย และ
+      restore ขนาดตอนออกจากโหมดยังตรงเป๊ะเหมือนเดิม
   - **ปุ่ม Exit (ไอคอนปุ่มเพาเวอร์) ซ้ายสุดของแถบปุ่ม** — แยกห่างจาก
     Play/Next/ปุ่มอื่น ๆ ในกลุ่มไปอยู่อีกฝั่งเพื่อกันคลิกโดนพลาด (ผู้ใช้ขอย้าย
     จากขวาสุดมาซ้ายสุด 2026-09-20) เพิ่มเข้ามาเพราะโหมด Mini Player ไม่มี

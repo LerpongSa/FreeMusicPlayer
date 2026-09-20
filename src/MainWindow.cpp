@@ -1401,6 +1401,19 @@ void MainWindow::onMiniPlayerToggled(bool on)
     // widget paints itself), hence setting it directly on the layout here.
     m_transportContainer->layout()->setContentsMargins(on ? QMargins(14, 10, 14, 10) : QMargins(0, 0, 0, 0));
 
+    // centralWidget()'s own rootLayout margin (14/14/14/10, set once in
+    // setupUi() for the full player's layout) stacks with
+    // m_transportContainer's margin above, adding a second, WIDER band of
+    // fully-transparent window around the pill - not part of the rounded
+    // pill shape at all, just bare transparent window background. Wide
+    // enough that a desktop icon sitting near the window ended up clearly
+    // visible in that band, right next to the transport buttons (reported
+    // by the user with a screenshot, 2026-09-20). Tightened to a few
+    // pixels in mini mode - just enough that adjustSize() doesn't clip the
+    // pill's own rounded corners - so the transparent window shrinks down
+    // to hug the pill closely instead of leaving that extra gap.
+    centralWidget()->layout()->setContentsMargins(on ? QMargins(2, 2, 2, 2) : QMargins(14, 14, 14, 10));
+
     // QMainWindow's status bar is its own dock area, entirely separate from
     // centralWidget()'s layout - hiding m_normalModeContainer above does
     // nothing to it, so without this it stayed docked at the bottom the
@@ -1553,10 +1566,21 @@ void MainWindow::applyWindowStyleSheet()
 {
     QString css = Theme::appStyleSheet();
     if (m_miniPlayerMode) {
+        // 50% alpha (requested by the user, 2026-09-20) so the desktop
+        // shows through the pill itself, not just the transparent window
+        // corners around it. Qt Style Sheets' rgba() takes four 0-255
+        // ints - unlike plain CSS, the alpha channel is NOT 0-1 here - so
+        // 128 is the ~50% point, not 0.5. The buttons on top stay fully
+        // opaque (their own #TransportButton/#PlayButton QSS rules are
+        // untouched), which is deliberate: a translucent backing plate
+        // behind fully legible controls, not every pixel see-through.
+        const QColor bg = Theme::current().bg0;
         css += QStringLiteral(
                    "QMainWindow, QWidget#CentralWidget { background: transparent; }"
-                   "QWidget#MiniPlayerPill { background-color: %1; border-radius: 22px; }")
-                   .arg(Theme::current().bg0.name());
+                   "QWidget#MiniPlayerPill { background-color: rgba(%1, %2, %3, 128); border-radius: 22px; }")
+                   .arg(bg.red())
+                   .arg(bg.green())
+                   .arg(bg.blue());
     } else {
         css += QStringLiteral("QWidget#MiniPlayerPill { background: transparent; }");
     }
