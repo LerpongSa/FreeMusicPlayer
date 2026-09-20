@@ -960,7 +960,7 @@ void MainWindow::onPlayPauseClicked()
 // changes on its own, hence the unpolish/polish.
 void MainWindow::flashTransportButton(QPushButton *btn)
 {
-    constexpr int kTransportFlashMs = 2000;
+    constexpr int kTransportFlashMs = 1000;
 
     auto setFlash = [btn](bool on) {
         btn->setProperty("flash", on);
