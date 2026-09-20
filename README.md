@@ -90,21 +90,47 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
   default และ **ไม่บันทึกขนาดหน้าต่างตอนอยู่ใน Mini Player ลง settings** —
   ถ้าปิดแอปตอนอยู่โหมดนี้ ครั้งหน้าเปิดมาจะเป็นโหมดปกติที่ขนาดหน้าต่างเดิม
   (ก่อนเข้า Mini Player ครั้งล่าสุด) เสมอ ไม่ใช่โหมดเต็มบีบอยู่ในหน้าต่างจิ๋ว
+  - **ตำแหน่งหน้าต่าง: เข้า Mini Player ไปมุมขวาบนของจอ, ออกแล้วกลับมากลางจอ**
+    (ผู้ใช้ขอ 2026-09-20) ใช้ `screen()->availableGeometry()` (พื้นที่ที่ไม่รวม
+    taskbar) เว้นขอบ 12px เข้าไปมุมขวาบนทุกครั้งที่เข้า แล้วตอนออกก็ย้ายมา
+    กึ่งกลางพื้นที่นั้น ไม่ว่าก่อนหน้าจะลากไปวางไว้ตรงไหนก็ตาม (เลือกจอที่หน้าต่าง
+    อยู่ตอนนั้น ถ้ามีหลายจอ) — ต้อง **เลื่อนการ `move()` ไปรันหลังจากนั้น 1
+    รอบ event loop** (`QTimer::singleShot(0, ...)`) ห้ามเรียกทันทีหลังสลับ
+    frameless flag เพราะ Qt ยังจำ frame margin ของหน้าต่างแบบมีกรอบเก่าอยู่
+    ทำให้ตำแหน่งเพี้ยนลงมาเท่าความสูง title bar พอดี (31px) ทั้งตอนเข้า Mini
+    Player และตอนคำนวณกึ่งกลางตอนออก (คลาดไป ~8px) ยืนยันด้วยการวัดจริงว่า
+    ห่างขอบขวา/บน 12px เป๊ะทุกรอบ และ restore ขนาดยังตรง 996×831
   - **ไม่มี title bar, มุมหน้าต่างโปร่งใส, เห็นแค่แถบปุ่มมนลอยอยู่ (rounded
     pill)** — เข้า Mini Player แล้วหน้าต่างเปลี่ยนเป็น frameless
-    (`Qt::FramelessWindowHint`) + translucent (`Qt::WA_TranslucentBackground`)
-    ทันที ต้อง `hide()`/`show()` คู่กับ `setWindowFlag()` เสมอ เพราะเปลี่ยน
-    window flag บน top-level widget ที่แสดงอยู่แล้วไม่มีผลจนกว่าจะถูกซ่อน/โชว์
-    ใหม่ (Windows ต้องสร้าง native window ใหม่ตาม style bit ที่เปลี่ยน)
+    (`Qt::FramelessWindowHint`) ทันที ต้อง `hide()`/`show()` คู่กับ
+    `setWindowFlag()` เสมอ เพราะเปลี่ยน window flag บน top-level widget ที่
+    แสดงอยู่แล้วไม่มีผลจนกว่าจะถูกซ่อน/โชว์ใหม่ (Windows ต้องสร้าง native
+    window ใหม่ตาม style bit ที่เปลี่ยน) ส่วน translucent
+    (`Qt::WA_TranslucentBackground`) **ตั้งครั้งเดียวใน `setupUi()` ก่อน
+    `show()` ครั้งแรก แล้วเปิดค้างไว้ตลอด ไม่สลับตามโหมด**:
+    - **แก้บั๊ก: เข้า Mini Player ครั้งแรกไม่โปร่งใส (มีกล่องสี่เหลี่ยมสีดำรอบ
+      pill) ครั้งที่ 2 เป็นต้นไปปกติ** (ผู้ใช้แจ้ง 2026-09-20, reproduce ได้จริง
+      ด้วย screenshot เทียบครั้งที่ 1 กับครั้งที่ 2) เดิมสลับ
+      `WA_TranslucentBackground` ตาม `on`/`off` พร้อมกับ frameless flag ทำให้
+      ตอนเข้าครั้งแรก native window ที่สร้างไปแล้วไม่มี alpha channel
+      (Qt ต้องการให้ตั้ง attribute นี้ตั้งแต่ก่อน window ถูกสร้างครั้งแรกถึงจะ
+      ได้ surface แบบมี alpha แน่นอน) ย้ายไปตั้งใน `setupUi()` แล้วเลิกสลับ
+      ทำให้ครั้งแรกโปร่งใสเหมือนครั้งต่อ ๆ ไป — เปิดค้างไว้ในโหมดปกติได้เพราะ
+      `Theme::appStyleSheet()` วาดพื้นทึบให้ทุก widget อยู่แล้ว ตรวจแล้วโหมด
+      ปกติหน้าตาเหมือนเดิมทุกอย่าง (title bar, พื้นหลังทึบ, ขนาดคืนค่า 996×831)
     แถบปุ่มเล่นเพลงถูกห่อด้วย widget ใหม่ชื่อ `m_transportContainer`
     (object name `"MiniPlayerPill"`) ซึ่งเป็นจุดเดียวที่ยังมีพื้นหลัง/มุมมน
     (`border-radius: 22px`) ส่วน `QMainWindow`/central widget โปร่งใสหมด —
-    **พื้นหลัง pill เองก็โปร่งแสง 50% ด้วย** (ผู้ใช้ขอ 2026-09-20 หลังเห็นว่า
-    ทึบแสง 100%) ใช้ `rgba(r, g, b, 128)` ของสี `Theme::current().bg0` — Qt
-    Style Sheets' `rgba()` รับค่า alpha เป็น int 0-255 ไม่ใช่ 0-1 แบบ CSS ทั่วไป
-    128 จึงเป็นจุดกึ่งกลาง ~50% ปุ่มต่าง ๆ บน pill ยังทึบแสงปกติเหมือนเดิม (ไม่ได้
-    โปร่งแสงตาม) เพราะ objectName `TransportButton`/`PlayButton` มี QSS ของ
-    ตัวเองแยกต่างหาก ไม่ถูกกระทบ — ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS override ต่อท้าย
+    **พื้นหลัง pill รวมถึงตัวปุ่มเองก็โปร่งแสง 50% ทั้งหมด** (ผู้ใช้ขอ
+    2026-09-20 หลังเห็นว่า pill ทึบแสง 100%, แล้วขอเพิ่มอีกรอบให้ตัวปุ่มเอง
+    โปร่งแสงด้วยหลังเจอ icon บน desktop ซ้อนอยู่ข้างใต้ปุ่ม Power แล้วมองไม่เห็น)
+    ใช้ `rgba(r, g, b, 128)` กับสีของแต่ละส่วน (`bg0` สำหรับ pill, `bg2`
+    สำหรับ `#TransportButton` ปกติ, `accent`/`accentHi` สำหรับ `#PlayButton`
+    และปุ่มที่ `:checked` เช่น Mini Player ตอนกำลัง active) — Qt Style
+    Sheets' `rgba()` รับค่า alpha เป็น int 0-255 ไม่ใช่ 0-1 แบบ CSS ทั่วไป 128
+    จึงเป็นจุดกึ่งกลาง ~50% ไอคอนบนปุ่ม (วาดจาก `IconFactory::make()` เป็น
+    pixel ทึบบน PNG โปร่งใส) ยังคมชัดปกติเพราะเป็นคนละ layer จากพื้นหลังปุ่ม —
+    ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS override ต่อท้าย
     `Theme::appStyleSheet()` เดิม (ไม่ได้เขียน stylesheet แยกใหม่ทั้งชุด) มี
     ผลเฉพาะตอน `m_miniPlayerMode` เท่านั้น เรียกทั้งตอน setupUi() และทุกครั้งที่
     เปลี่ยนธีม (`applyThemePalette()`) กันธีมเปลี่ยนระหว่างอยู่ใน Mini Player

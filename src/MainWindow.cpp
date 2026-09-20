@@ -48,6 +48,7 @@
 #include <QThread>
 #include <QProgressDialog>
 #include <QApplication>
+#include <QScreen>
 #include <QStyleOptionSlider>
 #include <QStyle>
 #include <QProxyStyle>
@@ -317,6 +318,21 @@ MainWindow::~MainWindow() = default;
 
 void MainWindow::setupUi()
 {
+    // Set once, here, before the window is ever shown - and left on for the
+    // life of the app. Mini Player mode (onMiniPlayerToggled()) needs a
+    // per-pixel-alpha window surface, but Qt only reliably gives a native
+    // window one if WA_TranslucentBackground is already set when that
+    // window is first created. Setting it later, on the FIRST entry into
+    // Mini Player (as this originally did, alongside the frameless flag),
+    // left the surface without an alpha channel: the window came up with a
+    // solid black rectangle around the pill instead of transparent
+    // corners, and only the second and later entries worked (reported by
+    // the user, 2026-09-20; reproduced with screenshots). Leaving it on in
+    // the normal player is harmless - Theme::appStyleSheet() paints an
+    // opaque background on every widget there, so nothing is actually
+    // see-through outside Mini Player mode.
+    setAttribute(Qt::WA_TranslucentBackground, true);
+
     auto *central = new QWidget(this);
     // Targeted by applyWindowStyleSheet()'s mini-mode override, which needs
     // to punch a hole through the blanket "QWidget { background-color }"
@@ -1439,8 +1455,10 @@ void MainWindow::onMiniPlayerToggled(bool on)
         // re-shown - the native HWND has to be recreated with the new
         // style bits - hence the explicit hide()/show() around it instead
         // of relying on the implicit one later in this function.
+        // WA_TranslucentBackground is NOT set here - it's set once in
+        // setupUi(), before the first show(), and left on (see the comment
+        // there for why toggling it here broke the first entry).
         hide();
-        setAttribute(Qt::WA_TranslucentBackground, true);
         setWindowFlag(Qt::FramelessWindowHint, true);
         applyWindowStyleSheet();
         show();
@@ -1461,12 +1479,33 @@ void MainWindow::onMiniPlayerToggled(bool on)
         // window down to that immediately rather than leaving it at its
         // old (now mostly empty) full-player height.
         adjustSize();
+
+        // Top-right corner of the screen the window is on (requested by
+        // the user, 2026-09-20), inside the taskbar-aware availableGeometry()
+        // rather than the full screen so it never lands under the taskbar.
+        // Done after adjustSize() since it needs the final (mini) width.
+        // Always snaps there on entry, even if the full player was
+        // somewhere else - the user can still drag it afterwards.
+        //
+        // Deferred one event-loop turn, not called inline: right after the
+        // frameless flip, Qt's cached frame margins still describe the OLD
+        // framed window, so an inline move() put the pill 31px (exactly
+        // the title-bar height) lower than asked. By the next turn the
+        // margins have refreshed and frameGeometry() is accurate.
+        QTimer::singleShot(0, this, [this]() {
+            if (!m_miniPlayerMode)
+                return; // toggled back out before this ran
+            if (QScreen *scr = screen()) {
+                constexpr int kMargin = 12;
+                const QRect avail = scr->availableGeometry();
+                move(avail.x() + avail.width() - frameGeometry().width() - kMargin, avail.y() + kMargin);
+            }
+        });
     } else {
         m_normalModeContainer->setVisible(true);
 
         hide();
         setWindowFlag(Qt::FramelessWindowHint, false);
-        setAttribute(Qt::WA_TranslucentBackground, false);
         applyWindowStyleSheet();
         show();
 
@@ -1482,7 +1521,26 @@ void MainWindow::onMiniPlayerToggled(bool on)
             // an immediate resize. Queuing this after gives it the last
             // word instead.
             const QSize targetSize = m_preMiniPlayerSize;
-            QTimer::singleShot(0, this, [this, targetSize]() { resize(targetSize); });
+            QTimer::singleShot(0, this, [this, targetSize]() {
+                if (m_miniPlayerMode)
+                    return; // toggled back into mini mode before this ran
+                resize(targetSize);
+                // Centered on the screen (requested by the user,
+                // 2026-09-20) rather than back wherever it was before Mini
+                // Player. A further turn later, for the same reason as the
+                // resize above: measuring frameGeometry() (client size +
+                // title bar + borders) right after resize() used stale
+                // values, leaving it ~8px off vertically.
+                QTimer::singleShot(0, this, [this]() {
+                    if (m_miniPlayerMode)
+                        return;
+                    if (QScreen *scr = screen()) {
+                        const QSize fs = frameGeometry().size();
+                        const QRect avail = scr->availableGeometry();
+                        move(avail.center() - QPoint(fs.width() / 2, fs.height() / 2));
+                    }
+                });
+            });
         }
     }
 }
@@ -1567,20 +1625,39 @@ void MainWindow::applyWindowStyleSheet()
     QString css = Theme::appStyleSheet();
     if (m_miniPlayerMode) {
         // 50% alpha (requested by the user, 2026-09-20) so the desktop
-        // shows through the pill itself, not just the transparent window
-        // corners around it. Qt Style Sheets' rgba() takes four 0-255
-        // ints - unlike plain CSS, the alpha channel is NOT 0-1 here - so
-        // 128 is the ~50% point, not 0.5. The buttons on top stay fully
-        // opaque (their own #TransportButton/#PlayButton QSS rules are
-        // untouched), which is deliberate: a translucent backing plate
-        // behind fully legible controls, not every pixel see-through.
+        // shows through the pill AND the buttons on it, not just the
+        // pill's own background gaps between them - the user specifically
+        // asked to see a desktop icon that had ended up sitting right
+        // behind the Power button. Qt Style Sheets' rgba() takes four
+        // 0-255 ints - unlike plain CSS, the alpha channel is NOT 0-1 here
+        // - so 128 is the ~50% point, not 0.5. Each button's own semantic
+        // color (bg2 for the plain transport buttons, accent/accentHi for
+        // Play and any checked button) is kept, just with alpha added -
+        // the glyphs drawn on top (IconFactory::make(), opaque pixels on a
+        // transparent PNG) stay fully crisp/legible either way, since
+        // they're painted separately from this background.
         const QColor bg = Theme::current().bg0;
+        const QColor btnBg = Theme::current().bg2;
+        const QColor accent = Theme::current().accent;
+        const QColor accentHi = Theme::current().accentHi;
         css += QStringLiteral(
                    "QMainWindow, QWidget#CentralWidget { background: transparent; }"
-                   "QWidget#MiniPlayerPill { background-color: rgba(%1, %2, %3, 128); border-radius: 22px; }")
+                   "QWidget#MiniPlayerPill { background-color: rgba(%1, %2, %3, 128); border-radius: 22px; }"
+                   "QPushButton#TransportButton { background-color: rgba(%4, %5, %6, 128); }"
+                   "QPushButton#TransportButton:checked, QPushButton#PlayButton { background-color: rgba(%7, %8, %9, 128); }"
+                   "QPushButton#PlayButton:hover { background-color: rgba(%10, %11, %12, 128); }")
                    .arg(bg.red())
                    .arg(bg.green())
-                   .arg(bg.blue());
+                   .arg(bg.blue())
+                   .arg(btnBg.red())
+                   .arg(btnBg.green())
+                   .arg(btnBg.blue())
+                   .arg(accent.red())
+                   .arg(accent.green())
+                   .arg(accent.blue())
+                   .arg(accentHi.red())
+                   .arg(accentHi.green())
+                   .arg(accentHi.blue());
     } else {
         css += QStringLiteral("QWidget#MiniPlayerPill { background: transparent; }");
     }
