@@ -952,32 +952,61 @@ void MainWindow::onPlayPauseClicked()
 
 // Previous/Next/Stop are momentary buttons, not toggles, so they have no
 // lasting "on" state of their own to tint - the accent color after a press
-// (requested by the user, 2026-09-20: 2 seconds) is just feedback that the
-// press registered. Driven by a dynamic property that Theme.h's QSS keys
-// on (QPushButton#TransportButton[flash="true"]), so it follows the current
-// theme and Mini Player's translucent override rather than hardcoding a
-// color here. Qt doesn't re-evaluate a property selector when the property
-// changes on its own, hence the unpolish/polish.
+// is just feedback that the press registered. Driven by a dynamic property
+// that Theme.h's QSS keys on (QPushButton#TransportButton[flash="true"]), so
+// it follows the current theme and Mini Player's translucent override rather
+// than hardcoding a color here. Qt doesn't re-evaluate a property selector
+// when the property changes on its own, hence the unpolish/polish.
+//
+// Duration (user, 2026-09-20): originally a fixed 2s, then 1s, then "until
+// the mouse loading goes away" - i.e. the busy cursor onEngineStateChanged()
+// raises while a track is loading. Stop never loads anything, so a pure
+// "until loading ends" rule would revert it instantly (no flash at all);
+// hence kTransportFlashMs stays as a minimum for every button, and the flash
+// is only *held past* it while the busy cursor is still up (flashWaitLoad).
+// releaseLoadingCursor() lets go of the held ones the moment it drops.
+void MainWindow::setTransportFlash(QPushButton *btn, bool on)
+{
+    btn->setProperty("flash", on);
+    btn->style()->unpolish(btn);
+    btn->style()->polish(btn);
+}
+
 void MainWindow::flashTransportButton(QPushButton *btn)
 {
     constexpr int kTransportFlashMs = 1000;
 
-    auto setFlash = [btn](bool on) {
-        btn->setProperty("flash", on);
-        btn->style()->unpolish(btn);
-        btn->style()->polish(btn);
-    };
-    setFlash(true);
+    setTransportFlash(btn, true);
+    btn->setProperty("flashWaitLoad", false);
 
-    // A press during an earlier flash must restart the 2s, not be cut short
-    // by that earlier timer firing - each press bumps a generation counter
-    // and a timer only clears the flash if it is still the newest one.
+    // A press during an earlier flash must restart the minimum, not be cut
+    // short by that earlier timer firing - each press bumps a generation
+    // counter and a timer only acts if it is still the newest one.
     const int gen = btn->property("flashGen").toInt() + 1;
     btn->setProperty("flashGen", gen);
-    QTimer::singleShot(kTransportFlashMs, btn, [btn, gen, setFlash]() {
-        if (btn->property("flashGen").toInt() == gen)
-            setFlash(false);
+    QTimer::singleShot(kTransportFlashMs, btn, [this, btn, gen]() {
+        if (btn->property("flashGen").toInt() != gen)
+            return;
+        if (m_loadingCursorActive)
+            btn->setProperty("flashWaitLoad", true); // releaseLoadingCursor() will revert it
+        else
+            setTransportFlash(btn, false);
     });
+}
+
+void MainWindow::releaseLoadingCursor()
+{
+    if (!m_loadingCursorActive)
+        return;
+    QApplication::restoreOverrideCursor();
+    m_loadingCursorActive = false;
+
+    for (QPushButton *btn : {m_prevBtn, m_nextBtn, m_stopBtn}) {
+        if (btn->property("flashWaitLoad").toBool()) {
+            btn->setProperty("flashWaitLoad", false);
+            setTransportFlash(btn, false);
+        }
+    }
 }
 
 void MainWindow::onStopClicked()
@@ -1767,17 +1796,13 @@ void MainWindow::onEngineStateChanged(AudioEngine::State state)
         // Loading ended some other way than reaching Playing (paused
         // without auto-play, stopped, decode failed) - nothing left to
         // wait for.
-        QApplication::restoreOverrideCursor();
-        m_loadingCursorActive = false;
+        releaseLoadingCursor();
     }
 }
 
 void MainWindow::onEngineAudioActive()
 {
-    if (m_loadingCursorActive) {
-        QApplication::restoreOverrideCursor();
-        m_loadingCursorActive = false;
-    }
+    releaseLoadingCursor();
 }
 
 void MainWindow::onEngineTrackLoaded(qint64 durationMs)
@@ -1836,10 +1861,7 @@ void MainWindow::onEngineError(const QString &message)
     // this, onEngineStateChanged()'s Loading-vs-Playing carve-out (see its
     // comment) would leave the busy cursor stuck on indefinitely instead
     // of just failing visibly.
-    if (m_loadingCursorActive) {
-        QApplication::restoreOverrideCursor();
-        m_loadingCursorActive = false;
-    }
+    releaseLoadingCursor();
 }
 
 void MainWindow::onEngineFormatDescriptionChanged(const QString &text)

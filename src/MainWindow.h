@@ -138,7 +138,9 @@ private:
     void updateRepeatIcon();
     void updateVolumeIcon();
     void updateMiniPlayerIcon();
-    void flashTransportButton(QPushButton *btn); // tints btn with the theme accent for kTransportFlashMs after a press, then reverts on its own
+    void flashTransportButton(QPushButton *btn); // tints btn with the theme accent for at least kTransportFlashMs after a press, and for as long as the busy cursor is still up, then reverts on its own
+    void setTransportFlash(QPushButton *btn, bool on);
+    void releaseLoadingCursor(); // pops the busy cursor and lets any flash that was waiting on it revert
     void updateCoverArt(const QString &filePath);
     void refreshTrackInfoLabels(const QString &filePath); // reads real tags via TagEditor, falls back to filename/folder
     void refreshPlaylistWidget();
