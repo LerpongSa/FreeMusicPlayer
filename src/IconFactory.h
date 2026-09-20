@@ -28,6 +28,8 @@ enum class Glyph {
     Clear,
     ListMusic,
     Disc, // "Add ISO..." playlist toolbar button
+    MiniPlayer, // toggles between the full window and the transport-only mini player
+    Power, // quick-exit button next to MiniPlayer in the transport row - closes the app
     AppIcon, // used for both the window icon and rendered into app.ico
 };
 

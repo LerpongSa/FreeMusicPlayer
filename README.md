@@ -77,6 +77,59 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
     เสมอ (ดูบูลเลตด้านบน) แทร็กที่เพิ่ง `addFilesToPlaylist()` เข้าไปจึงเริ่มที่
     index 0 เสมอเช่นกัน — ข้ามขั้นตอนถ้าไม่มีแทร็กแปลงสำเร็จเลย (ไม่มี dialog OK
     ให้กดตั้งแต่แรก เพราะ error path คนละเส้นทาง)
+- **Mini Player** — ปุ่มที่ 7 ในแถบปุ่มเล่นเพลง ต่อจาก Repeat (ไม่ได้แยกไปอยู่
+  ต่างหาก เพราะเป็นส่วนหนึ่งของกลุ่มปุ่มเดียวที่ต้องเหลืออยู่ตอนย่อโหมด) กดสลับ
+  เข้า/ออกโหมดย่อ: ซ่อน cover art/แท็บ Playlist-Equalizer-Theme-Shutdown/
+  Visualizer/seek bar ทั้งหมด (รวมอยู่ใน widget เดียวคือ
+  `m_normalModeContainer`) เหลือแค่แถบปุ่มเล่นเพลงทั้ง 7 ปุ่ม แล้วย่อหน้าต่างลง
+  มาพอดีเนื้อหาด้วย `adjustSize()` — ต้อง `layout()->invalidate()` +
+  `activate()` ก่อนเรียก `adjustSize()` เสมอ ไม่งั้นหน้าต่างจะไม่ย่อขนาดจริง
+  (`setVisible(false)` invalidate layout แบบ lazy, `adjustSize()` ที่เรียกต่อ
+  ทันทีจะยังอ่าน sizeHint เก่าอยู่ - ยืนยันด้วยการทดสอบจริง 2026-09-20) กลับไป
+  โหมดปกติจะคืนขนาดหน้าต่างเดิมก่อนย่อ (`m_preMiniPlayerSize`) ไม่ใช่ขนาด
+  default และ **ไม่บันทึกขนาดหน้าต่างตอนอยู่ใน Mini Player ลง settings** —
+  ถ้าปิดแอปตอนอยู่โหมดนี้ ครั้งหน้าเปิดมาจะเป็นโหมดปกติที่ขนาดหน้าต่างเดิม
+  (ก่อนเข้า Mini Player ครั้งล่าสุด) เสมอ ไม่ใช่โหมดเต็มบีบอยู่ในหน้าต่างจิ๋ว
+  - **ไม่มี title bar, มุมหน้าต่างโปร่งใส, เห็นแค่แถบปุ่มมนลอยอยู่ (rounded
+    pill)** — เข้า Mini Player แล้วหน้าต่างเปลี่ยนเป็น frameless
+    (`Qt::FramelessWindowHint`) + translucent (`Qt::WA_TranslucentBackground`)
+    ทันที ต้อง `hide()`/`show()` คู่กับ `setWindowFlag()` เสมอ เพราะเปลี่ยน
+    window flag บน top-level widget ที่แสดงอยู่แล้วไม่มีผลจนกว่าจะถูกซ่อน/โชว์
+    ใหม่ (Windows ต้องสร้าง native window ใหม่ตาม style bit ที่เปลี่ยน)
+    แถบปุ่มเล่นเพลงถูกห่อด้วย widget ใหม่ชื่อ `m_transportContainer`
+    (object name `"MiniPlayerPill"`) ซึ่งเป็นจุดเดียวที่ยังทึบแสง/มุมมน
+    (`border-radius: 22px`) ส่วน `QMainWindow`/central widget โปร่งใสหมด —
+    ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS override ต่อท้าย
+    `Theme::appStyleSheet()` เดิม (ไม่ได้เขียน stylesheet แยกใหม่ทั้งชุด) มี
+    ผลเฉพาะตอน `m_miniPlayerMode` เท่านั้น เรียกทั้งตอน setupUi() และทุกครั้งที่
+    เปลี่ยนธีม (`applyThemePalette()`) กันธีมเปลี่ยนระหว่างอยู่ใน Mini Player
+    แล้วโปร่งใสหาย **ไม่มีขอบให้ลาก resize และไม่มีปุ่ม minimize เดิมให้กด**
+    (ยืนยันกับผู้ใช้แล้ว 2026-09-20) — ย้ายหน้าต่างด้วยการลากค้างที่ไหนก็ได้บน
+    ตัวหน้าต่างที่ไม่ใช่ปุ่ม (`mousePressEvent`/`mouseMoveEvent`/
+    `mouseReleaseEvent` ที่ override ไว้ ทำงานเฉพาะตอน `m_miniPlayerMode`) —
+    Alt+F4 ยังปิดได้ตรงๆ เหมือนเดิมเพราะ Windows ส่ง WM_SYSCOMMAND/SC_CLOSE
+    โดยไม่สนว่าหน้าต่างมี title bar หรือไม่
+  - **ปุ่ม Exit (ไอคอนปุ่มเพาเวอร์) ขวาสุดของแถบปุ่ม ต่อจาก Mini Player** —
+    เพิ่มเข้ามาเพราะโหมด Mini Player ไม่มี title bar/ปุ่ม close ของ Windows ให้
+    กดปิดแอปอีกต่อไป (ผู้ใช้ขอ 2026-09-20) กดแล้ว `close()` ทันที เหมือนกด
+    ปุ่ม close จริง ๆ ของหน้าต่าง — ยังเจอ dialog ยืนยัน "Are you sure you want
+    to exit?" จาก `closeEvent()` เหมือนเดิมทุกอย่าง ไม่ได้ bypass ความปลอดภัย
+    จุดนี้ ไม่ใช่ปุ่มลัดของแท็บ Shutdown (sleep timer) — เป็นคนละฟีเจอร์กัน แค่
+    ปิดโปรแกรมทันทีเฉย ๆ
+    - **แก้บั๊ก: มีแถบสีเข้มทึบแสงค้างอยู่ใต้ pill** (ผู้ใช้ส่งรูปวงสีแดงชี้มา
+      2026-09-20) สาเหตุคือ **status bar ของ `QMainWindow`** (สร้างจากการเรียก
+      `statusBar()` ครั้งแรกใน `setupUi()`, ใช้โชว์ข้อความชั่วคราวเช่น "Playlist
+      saved.") เป็นคนละส่วนกับ `centralWidget()`'s layout ไปเลย ซ่อน
+      `m_normalModeContainer` ไม่มีผลกับมันเลย แล้วก็ไม่ได้อยู่ในรายการที่
+      `applyWindowStyleSheet()` ทำให้โปร่งใสด้วย เลยยังคงค้างเป็นแท่งทึบเต็ม
+      ความกว้างหน้าต่างอยู่ใต้ pill ตลอด แก้ด้วยการเพิ่ม
+      `statusBar()->setVisible(!on)` เข้าไปใน `onMiniPlayerToggled()` ซ่อนไปพร้อม
+      กับเข้า Mini Player ทุกครั้ง — ระหว่างแก้จุดนี้ก็เจอว่า resize กลับ
+      ขนาดเดิมตอนออกจาก Mini Player เพี้ยนไปด้วย (สั้นกว่าเดิม ~39px เพราะ
+      status bar เพิ่งถูกโชว์กลับมาแล้ว Qt/Windows ยังไม่ relayout เสร็จตอนที่
+      `resize(m_preMiniPlayerSize)` รัน) แก้ด้วยการเลื่อน `resize()` นั้นไปรันผ่าน
+      `QTimer::singleShot(0, ...)` แทน (ให้ relayout จบก่อนค่อย resize) ยืนยัน
+      แล้วว่าขนาดหน้าต่างตรงเป๊ะกับก่อนเข้า Mini Player
 - **Seek bar** — คลิกตรงไหนก็ได้บนแถบความคืบหน้าเพื่อกระโดดไปเล่นตรงจุดนั้น
   ทันที (ไม่ต้องลากหัว slider) ลากต่อจากจุดที่คลิกได้ด้วย
 - **Sound Visualizer** — วิเคราะห์สเปกตรัมด้วย FFT แบบ log-spaced band เปิด/ปิด

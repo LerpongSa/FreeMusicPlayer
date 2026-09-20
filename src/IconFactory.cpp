@@ -203,6 +203,44 @@ void drawDisc(QPainter &p, double s)
     p.drawEllipse(QRectF(s * 0.24, s * 0.24, s * 0.52, s * 0.52));
 }
 
+// Picture-in-picture style glyph: an outer window outline with a smaller
+// filled "popped out" rectangle overlapping its bottom-right corner - the
+// standard visual shorthand for "mini player" / PiP toggles.
+void drawMiniPlayer(QPainter &p, double s)
+{
+    const QColor c = p.brush().color();
+    QPen pen(c);
+    pen.setWidthF(s * 0.08);
+    pen.setJoinStyle(Qt::MiterJoin);
+    p.setPen(pen);
+    p.setBrush(Qt::NoBrush);
+    p.drawRoundedRect(QRectF(s * 0.08, s * 0.14, s * 0.84, s * 0.62), s * 0.05, s * 0.05);
+
+    p.setPen(Qt::NoPen);
+    p.setBrush(c);
+    p.drawRoundedRect(QRectF(s * 0.46, s * 0.44, s * 0.40, s * 0.28), s * 0.04, s * 0.04);
+}
+
+// Classic power-button glyph: a circle with a gap at the top and a short
+// vertical tick running from above the circle down into that gap - the
+// universal "power/shutdown" symbol (IEC 5009).
+void drawPower(QPainter &p, double s)
+{
+    const QColor c = p.brush().color();
+    QPen pen(c);
+    pen.setWidthF(s * 0.09);
+    pen.setCapStyle(Qt::RoundCap);
+    p.setPen(pen);
+    p.setBrush(Qt::NoBrush);
+    // Qt arc angles: 0 = 3 o'clock, positive = counterclockwise, in
+    // 1/16th-degree units. Starting at 90+35=125 degrees and spanning
+    // 360-70=290 degrees draws the circle all the way around EXCEPT a
+    // 70-degree gap centered on the top (90 degrees) - that gap is where
+    // the vertical tick below sits.
+    p.drawArc(QRectF(s * 0.18, s * 0.18, s * 0.64, s * 0.64), (90 + 35) * 16, (360 - 70) * 16);
+    p.drawLine(QPointF(s * 0.5, s * 0.10), QPointF(s * 0.5, s * 0.42));
+}
+
 void drawAppIcon(QPainter &p, double s)
 {
     QRadialGradient grad(QPointF(s * 0.5, s * 0.42), s * 0.6);
@@ -250,6 +288,8 @@ QIcon make(Glyph glyph, const QColor &color, int size)
     case Glyph::Clear: drawClear(p, s); break;
     case Glyph::ListMusic: drawListMusic(p, s); break;
     case Glyph::Disc: drawDisc(p, s); break;
+    case Glyph::MiniPlayer: drawMiniPlayer(p, s); break;
+    case Glyph::Power: drawPower(p, s); break;
     case Glyph::AppIcon: drawAppIcon(p, s); break;
     }
 

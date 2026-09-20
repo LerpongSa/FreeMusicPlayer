@@ -318,6 +318,12 @@ MainWindow::~MainWindow() = default;
 void MainWindow::setupUi()
 {
     auto *central = new QWidget(this);
+    // Targeted by applyWindowStyleSheet()'s mini-mode override, which needs
+    // to punch a hole through the blanket "QWidget { background-color }"
+    // rule from Theme::appStyleSheet() so the window's transparent corners
+    // (see onMiniPlayerToggled()) actually show through instead of still
+    // painting solid behind them.
+    central->setObjectName(QStringLiteral("CentralWidget"));
     setCentralWidget(central);
 
     auto *rootLayout = new QVBoxLayout(central);
@@ -458,6 +464,25 @@ void MainWindow::setupUi()
     m_repeatBtn->setCheckable(true);
     m_repeatBtn->setToolTip(tr("Repeat"));
 
+    // Requested by the user (2026-09-20): grouped in with the rest of the
+    // transport buttons, not off on its own - so it's part of the one
+    // group that Mini Player mode leaves on screen. Toggling it hides
+    // m_normalModeContainer (everything else - cover art, tabs,
+    // visualizer, seek bar) and shrinks the window down to just this row.
+    m_miniPlayerBtn = new QPushButton(central);
+    m_miniPlayerBtn->setObjectName("TransportButton");
+    m_miniPlayerBtn->setCheckable(true);
+    m_miniPlayerBtn->setToolTip(tr("Mini Player"));
+
+    // Requested by the user (2026-09-20): a quick-exit button right next
+    // to Mini Player, since that mode has no title bar/close button of its
+    // own to close the app with otherwise. Not checkable - a momentary
+    // action button like Stop/Next, not a mode toggle.
+    m_exitBtn = new QPushButton(central);
+    m_exitBtn->setObjectName("TransportButton");
+    m_exitBtn->setIcon(IconFactory::make(IconFactory::Glyph::Power, iconColor));
+    m_exitBtn->setToolTip(tr("Exit"));
+
     transportLayout->addStretch(1);
     transportLayout->addWidget(m_shuffleBtn);
     transportLayout->addWidget(m_prevBtn);
@@ -465,9 +490,11 @@ void MainWindow::setupUi()
     transportLayout->addWidget(m_stopBtn);
     transportLayout->addWidget(m_nextBtn);
     transportLayout->addWidget(m_repeatBtn);
+    transportLayout->addWidget(m_miniPlayerBtn);
+    transportLayout->addWidget(m_exitBtn);
     transportLayout->addStretch(1);
     // Volume (mute button + slider) now lives in the seek row instead of
-    // here, so this row is purely [stretch][6 transport buttons][stretch]
+    // here, so this row is purely [stretch][8 transport buttons][stretch]
     // and the button group renders genuinely centered regardless of how
     // wide the volume control is.
 
@@ -764,15 +791,37 @@ void MainWindow::setupUi()
     topRowLayout->addWidget(leftPanel);
     topRowLayout->addWidget(m_tabs, 1);
 
-    rootLayout->addLayout(topRowLayout, 1);
-    rootLayout->addLayout(vizHeaderRow);
-    rootLayout->addWidget(m_visualizer);
-    rootLayout->addLayout(seekLayout);
-    rootLayout->addLayout(transportLayout);
+    // Everything except the transport row lives inside m_normalModeContainer
+    // so onMiniPlayerToggled() can hide/show it as one unit instead of
+    // tracking each piece individually - the transport row (with the Mini
+    // Player button itself in it) stays directly in rootLayout so it's the
+    // one thing left on screen in mini mode.
+    m_normalModeContainer = new QWidget(central);
+    auto *normalModeLayout = new QVBoxLayout(m_normalModeContainer);
+    normalModeLayout->setContentsMargins(0, 0, 0, 0);
+    normalModeLayout->setSpacing(10);
+    normalModeLayout->addLayout(topRowLayout, 1);
+    normalModeLayout->addLayout(vizHeaderRow);
+    normalModeLayout->addWidget(m_visualizer);
+    normalModeLayout->addLayout(seekLayout);
+
+    // Wrapped in its own widget (rather than added to rootLayout directly,
+    // as before) so it has something to paint the rounded "pill" background
+    // onto in Mini Player mode - see applyWindowStyleSheet(). The extra
+    // margin only applies in mini mode (onMiniPlayerToggled() sets it);
+    // QSS padding can't do this on its own since Qt's style sheets don't
+    // reserve layout space for it on a plain QWidget, only around content
+    // the widget paints itself (text/icons), never a child layout's items.
+    m_transportContainer = new QWidget(central);
+    m_transportContainer->setObjectName(QStringLiteral("MiniPlayerPill"));
+    m_transportContainer->setLayout(transportLayout);
+
+    rootLayout->addWidget(m_normalModeContainer, 1);
+    rootLayout->addWidget(m_transportContainer);
 
     statusBar();
 
-    setStyleSheet(Theme::appStyleSheet());
+    applyWindowStyleSheet();
 }
 
 void MainWindow::setupConnections()
@@ -785,6 +834,8 @@ void MainWindow::setupConnections()
     connect(m_repeatBtn, &QPushButton::clicked, this, &MainWindow::onRepeatClicked);
     connect(m_muteBtn, &QToolButton::clicked, this, &MainWindow::onMuteToggled);
     connect(m_volumeSlider, &QSlider::valueChanged, this, &MainWindow::onVolumeSliderMoved);
+    connect(m_miniPlayerBtn, &QPushButton::toggled, this, &MainWindow::onMiniPlayerToggled);
+    connect(m_exitBtn, &QPushButton::clicked, this, &QWidget::close);
 
     connect(m_seekSlider, &QSlider::sliderPressed, this, &MainWindow::onSeekSliderPressed);
     connect(m_seekSlider, &QSlider::sliderReleased, this, &MainWindow::onSeekSliderReleased);
@@ -1326,6 +1377,99 @@ void MainWindow::onThemeResetClicked()
     applyThemePalette();
 }
 
+// ---------------------------------------------------------------------------
+// Mini Player
+// ---------------------------------------------------------------------------
+
+void MainWindow::onMiniPlayerToggled(bool on)
+{
+    m_miniPlayerMode = on;
+    m_miniPlayerBtn->setToolTip(on ? tr("Restore full player") : tr("Mini Player"));
+    updateMiniPlayerIcon();
+
+    // Padding inside the pill around the buttons - 0 in the normal player,
+    // where the transport row sits flush the way it always has; a real
+    // margin only in mini mode, where #MiniPlayerPill's QSS background
+    // (applyWindowStyleSheet()) needs room to actually read as a pill
+    // rather than a rectangle the buttons touch on every side. QSS
+    // padding can't do this on a plain QWidget with a child layout (Qt's
+    // style sheets never reserve layout space for it, only for content the
+    // widget paints itself), hence setting it directly on the layout here.
+    m_transportContainer->layout()->setContentsMargins(on ? QMargins(14, 10, 14, 10) : QMargins(0, 0, 0, 0));
+
+    // QMainWindow's status bar is its own dock area, entirely separate from
+    // centralWidget()'s layout - hiding m_normalModeContainer above does
+    // nothing to it, so without this it stayed docked at the bottom the
+    // full window width, and since it's not covered by
+    // applyWindowStyleSheet()'s transparency override either, it painted
+    // as a solid opaque bar beneath the pill instead of the transparent
+    // window corner it should have been (reported by the user with a
+    // screenshot, 2026-09-20).
+    statusBar()->setVisible(!on);
+
+    if (on) {
+        // Remembered so the window comes back to the size (and, for a
+        // frameless-to-framed transition, the position - see below) the
+        // user actually had it at, not some arbitrary default, once they
+        // toggle back.
+        m_preMiniPlayerSize = size();
+        m_normalModeContainer->setVisible(false);
+
+        // Frameless + translucent so only #MiniPlayerPill's rounded
+        // background shows, not a rectangular window with a title bar
+        // (requested by the user, 2026-09-20). Changing window flags on an
+        // already-visible top-level widget doesn't take effect until it's
+        // re-shown - the native HWND has to be recreated with the new
+        // style bits - hence the explicit hide()/show() around it instead
+        // of relying on the implicit one later in this function.
+        hide();
+        setAttribute(Qt::WA_TranslucentBackground, true);
+        setWindowFlag(Qt::FramelessWindowHint, true);
+        applyWindowStyleSheet();
+        show();
+
+        // setVisible(false) invalidates centralWidget()'s layout, but that
+        // invalidation is lazy - the cached sizeHint used further down
+        // isn't recomputed until the layout is actually asked to activate
+        // (normally deferred to the next event-loop pass). Without forcing
+        // it synchronously here, adjustSize() below reads the STALE
+        // sizeHint from before the hide and the window doesn't shrink at
+        // all (confirmed via screenshot, 2026-09-20 - toggling left a tall
+        // window with a large empty area where the hidden content used to
+        // be, not a genuinely smaller one).
+        centralWidget()->layout()->invalidate();
+        centralWidget()->layout()->activate();
+        // With m_normalModeContainer gone, the layout's own minimum size
+        // shrinks to just the transport row - adjustSize() resizes the
+        // window down to that immediately rather than leaving it at its
+        // old (now mostly empty) full-player height.
+        adjustSize();
+    } else {
+        m_normalModeContainer->setVisible(true);
+
+        hide();
+        setWindowFlag(Qt::FramelessWindowHint, false);
+        setAttribute(Qt::WA_TranslucentBackground, false);
+        applyWindowStyleSheet();
+        show();
+
+        if (m_preMiniPlayerSize.isValid()) {
+            // Deferred one event-loop turn rather than called inline:
+            // show() right above just recreated the native window (the
+            // frameless flag flip forces that) and re-showed the status
+            // bar, and Windows/Qt's own post-show relayout for that isn't
+            // necessarily finished by the time this line runs - an inline
+            // resize() here landed a bit short in testing (2026-09-20,
+            // ~39px shorter than m_preMiniPlayerSize), consistent with
+            // that relayout still adjusting things and overriding part of
+            // an immediate resize. Queuing this after gives it the last
+            // word instead.
+            const QSize targetSize = m_preMiniPlayerSize;
+            QTimer::singleShot(0, this, [this, targetSize]() { resize(targetSize); });
+        }
+    }
+}
+
 // Repaints every part of the UI that isn't automatically covered by the QSS
 // stylesheet (setStyleSheet() only reaches stylesheet-driven widgets - hand
 // -painted icons/handles/placeholders need to be explicitly rebuilt so they
@@ -1333,12 +1477,13 @@ void MainWindow::onThemeResetClicked()
 // then persists the new palette so it survives a restart.
 void MainWindow::applyThemePalette()
 {
-    setStyleSheet(Theme::appStyleSheet());
+    applyWindowStyleSheet();
     updateThemeTabSwatches();
     refreshStaticIcons();
     updateShuffleIcon();
     updateRepeatIcon();
     updateVolumeIcon();
+    updateMiniPlayerIcon();
     updateNowPlayingIcon(); // the speaker glyph is painted in Theme::accentColor() too
     for (QSlider *slider : m_eqSliders)
         slider->update(); // EqSlider::paintEvent reads Theme::borderColor()/accentColor()/textColor() live
@@ -1377,12 +1522,41 @@ void MainWindow::refreshStaticIcons()
     m_prevBtn->setIcon(IconFactory::make(IconFactory::Glyph::Previous, c));
     m_stopBtn->setIcon(IconFactory::make(IconFactory::Glyph::Stop, c));
     m_nextBtn->setIcon(IconFactory::make(IconFactory::Glyph::Next, c));
+    m_exitBtn->setIcon(IconFactory::make(IconFactory::Glyph::Power, c));
     m_addFilesBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, c, 16));
     m_addFolderBtn->setIcon(IconFactory::make(IconFactory::Glyph::FolderOpen, c, 16));
     m_addIsoBtn->setIcon(IconFactory::make(IconFactory::Glyph::Disc, c, 16));
     m_loadPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::ListMusic, c, 16));
     m_savePlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Save, c, 16));
     m_clearPlaylistBtn->setIcon(IconFactory::make(IconFactory::Glyph::Clear, c, 16));
+}
+
+// Theme::appStyleSheet()'s blanket "QWidget { background-color }" rule is
+// what every part of the app normally relies on - including this window
+// itself, via the QMainWindow selector. Mini Player mode (see
+// onMiniPlayerToggled()) needs the opposite for #CentralWidget and this
+// QMainWindow specifically: fully transparent, so the frameless window's
+// corners show the real desktop instead of a solid rectangle, with only
+// #MiniPlayerPill (wrapping the transport row) staying opaque and rounded
+// to look like a floating pill rather than a window. Appending targeted
+// overrides after the base sheet - rather than writing a second, separate
+// stylesheet from scratch - is what lets this reuse the current palette's
+// colors without duplicating Theme::appStyleSheet()'s ~250 lines. Called
+// both from setupUi() (once, at startup) and applyThemePalette() (every
+// theme change) so a theme change while already in Mini Player mode
+// doesn't accidentally wipe these overrides back to opaque.
+void MainWindow::applyWindowStyleSheet()
+{
+    QString css = Theme::appStyleSheet();
+    if (m_miniPlayerMode) {
+        css += QStringLiteral(
+                   "QMainWindow, QWidget#CentralWidget { background: transparent; }"
+                   "QWidget#MiniPlayerPill { background-color: %1; border-radius: 22px; }")
+                   .arg(Theme::current().bg0.name());
+    } else {
+        css += QStringLiteral("QWidget#MiniPlayerPill { background: transparent; }");
+    }
+    setStyleSheet(css);
 }
 
 // Rearranges the tab bar to match Settings::tabOrder(), if a custom order
@@ -1579,6 +1753,12 @@ void MainWindow::updateShuffleIcon()
     const QColor color = m_playlist->shuffle() ? QColor(Qt::white) : Theme::textColor();
     m_shuffleBtn->setIcon(IconFactory::make(IconFactory::Glyph::Shuffle, color));
     m_shuffleBtn->setChecked(m_playlist->shuffle());
+}
+
+void MainWindow::updateMiniPlayerIcon()
+{
+    const QColor color = m_miniPlayerMode ? QColor(Qt::white) : Theme::textColor();
+    m_miniPlayerBtn->setIcon(IconFactory::make(IconFactory::Glyph::MiniPlayer, color));
 }
 
 void MainWindow::updateRepeatIcon()
@@ -2029,6 +2209,10 @@ void MainWindow::restoreSettings()
     m_playlist->setRepeatMode(static_cast<Playlist::RepeatMode>(m_settings.repeatMode()));
     updateRepeatIcon();
 
+    // Mini Player mode itself is never persisted (see saveSettings()) - this
+    // just paints the button's initial icon, since setupUi() doesn't.
+    updateMiniPlayerIcon();
+
     m_engine->equalizer().setEnabled(m_settings.eqEnabled());
     m_eqEnableCheck->setChecked(m_settings.eqEnabled());
 
@@ -2094,7 +2278,16 @@ void MainWindow::restoreSettings()
 
 void MainWindow::saveSettings()
 {
-    m_settings.setWindowGeometry(saveGeometry());
+    // Skipped while in Mini Player mode: the window is deliberately shrunk
+    // down to just the transport row then (see onMiniPlayerToggled()), and
+    // startup always opens in the full player, not Mini Player - saving
+    // that shrunk geometry here would make the NEXT launch restore the
+    // full UI squeezed into the mini player's tiny window instead. Leaving
+    // the last normal-mode geometry in place (whatever was saved before
+    // Mini Player was last turned on, or the built-in default on a first
+    // run) is what the full player actually needs on next launch.
+    if (!m_miniPlayerMode)
+        m_settings.setWindowGeometry(saveGeometry());
 
     m_settings.setPlaylistFiles(m_playlist->filePaths());
     m_settings.setLastPlaylistIndex(m_playlist->currentIndex());
@@ -2178,4 +2371,42 @@ void MainWindow::dropEvent(QDropEvent *event)
         }
     }
     addFilesToPlaylist(paths);
+}
+
+// Mini Player's frameless window (see onMiniPlayerToggled()) has no title
+// bar left to drag by, so a press anywhere on bare window background - not
+// on a child widget, since Qt already routes those events to the widget
+// under the cursor instead of up here - starts a manual move instead. Only
+// active in Mini Player mode: the normal player's title bar already
+// handles this natively, and letting a press-drag anywhere in the full
+// window move it would fight normal click behavior on everything in it.
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (m_miniPlayerMode && event->button() == Qt::LeftButton) {
+        m_dragOffset = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        m_dragging = true;
+        event->accept();
+        return;
+    }
+    QMainWindow::mousePressEvent(event);
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (m_miniPlayerMode && m_dragging && (event->buttons() & Qt::LeftButton)) {
+        move(event->globalPosition().toPoint() - m_dragOffset);
+        event->accept();
+        return;
+    }
+    QMainWindow::mouseMoveEvent(event);
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (m_miniPlayerMode && event->button() == Qt::LeftButton) {
+        m_dragging = false;
+        event->accept();
+        return;
+    }
+    QMainWindow::mouseReleaseEvent(event);
 }

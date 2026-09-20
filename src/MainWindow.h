@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include <QVector>
 #include <QDateTime>
+#include <QSize>
+#include <QPoint>
 
 #include <array>
 
@@ -38,6 +40,16 @@ protected:
     void closeEvent(QCloseEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+
+    // Click-and-drag-anywhere window moving, active only in Mini Player
+    // mode (see onMiniPlayerToggled()) - a frameless window has no title
+    // bar left to drag by otherwise. Only fires for presses that land on
+    // bare window/pill background, not on a child widget (a click on one
+    // of the transport buttons goes to that button, not here, same as any
+    // other Qt mouse event propagation).
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private slots:
     // Transport
@@ -90,6 +102,9 @@ private slots:
     void onThemeAccentColorClicked();
     void onThemeResetClicked();
 
+    // Mini Player
+    void onMiniPlayerToggled(bool on);
+
     // ISO import (see IsoImportWorker.h) - each mirrors one of its signals,
     // always delivered back on this (UI) thread via the queued connections
     // startIsoImport() sets up.
@@ -122,6 +137,7 @@ private:
     void updateShuffleIcon();
     void updateRepeatIcon();
     void updateVolumeIcon();
+    void updateMiniPlayerIcon();
     void updateCoverArt(const QString &filePath);
     void refreshTrackInfoLabels(const QString &filePath); // reads real tags via TagEditor, falls back to filename/folder
     void refreshPlaylistWidget();
@@ -136,6 +152,7 @@ private:
     void updateThemeTabSwatches();// repaints the two Theme-tab color buttons to match Theme::current()
     void refreshStaticIcons();    // re-icons buttons with no update*Icon() of their own (see call site for the list)
     void restoreTabOrder();       // reorders the tab bar to match Settings::tabOrder(), if a custom order was saved
+    void applyWindowStyleSheet(); // Theme::appStyleSheet() plus, only while m_miniPlayerMode, the transparent-window/rounded-pill overrides
 
     AudioEngine *m_engine = nullptr;
     Playlist *m_playlist = nullptr;
@@ -175,6 +192,29 @@ private:
     QPushButton *m_stopBtn = nullptr;
     QPushButton *m_nextBtn = nullptr;
     QPushButton *m_repeatBtn = nullptr;
+    // Mini Player toggle - lives in the transport row itself (right next to
+    // Repeat) rather than off on its own, so it's part of the one button
+    // group that stays visible in both modes. Checked/highlighted (the
+    // shared #TransportButton:checked QSS rule) while in mini mode.
+    // Toggling it hides m_normalModeContainer (cover art, tabs, visualizer,
+    // seek bar), goes frameless + translucent so only a rounded pill behind
+    // the transport row shows (see applyWindowStyleSheet()), and shrinks
+    // the window down to fit.
+    QPushButton *m_miniPlayerBtn = nullptr;
+    // Quick-exit button, right next to m_miniPlayerBtn (requested by the
+    // user, 2026-09-20, so there's a way to close the app straight from
+    // Mini Player mode without switching back to the full window first -
+    // that mode has no title bar/close button of its own). Just closes the
+    // app like the window's own close button would (connected directly to
+    // QWidget::close(), same "Are you sure you want to exit?" prompt from
+    // closeEvent() applies, no bypass).
+    QPushButton *m_exitBtn = nullptr;
+    QWidget *m_normalModeContainer = nullptr;
+    QWidget *m_transportContainer = nullptr; // wraps transportLayout; object name "MiniPlayerPill" is what applyWindowStyleSheet()'s mini-mode CSS targets
+    bool m_miniPlayerMode = false;
+    QSize m_preMiniPlayerSize; // restored on the way back out of mini mode
+    QPoint m_dragOffset;       // click point minus frameGeometry().topLeft(), for mouse*Event()'s drag-to-move
+    bool m_dragging = false;
     QToolButton *m_muteBtn = nullptr;
     QSlider *m_volumeSlider = nullptr;
 
