@@ -236,6 +236,13 @@ inline QString appStyleSheet()
                true 40x40 square so border-radius: 20px (exactly half) is
                a perfect circle. */
         }
+        /* Set for 2s after a press by MainWindow::flashTransportButton()
+           (Previous/Next/Stop). Attribute selector => more specific than
+           the plain #TransportButton/:hover rules, so it wins over them. */
+        QPushButton#TransportButton[flash="true"] {
+            background-color: %7;
+            border-color: %7;
+        }
         QPushButton#PlayButton {
             border-radius: 26px;
             min-width: 52px; min-height: 52px;

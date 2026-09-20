@@ -950,13 +950,45 @@ void MainWindow::onPlayPauseClicked()
     m_engine->play();
 }
 
+// Previous/Next/Stop are momentary buttons, not toggles, so they have no
+// lasting "on" state of their own to tint - the accent color after a press
+// (requested by the user, 2026-09-20: 2 seconds) is just feedback that the
+// press registered. Driven by a dynamic property that Theme.h's QSS keys
+// on (QPushButton#TransportButton[flash="true"]), so it follows the current
+// theme and Mini Player's translucent override rather than hardcoding a
+// color here. Qt doesn't re-evaluate a property selector when the property
+// changes on its own, hence the unpolish/polish.
+void MainWindow::flashTransportButton(QPushButton *btn)
+{
+    constexpr int kTransportFlashMs = 2000;
+
+    auto setFlash = [btn](bool on) {
+        btn->setProperty("flash", on);
+        btn->style()->unpolish(btn);
+        btn->style()->polish(btn);
+    };
+    setFlash(true);
+
+    // A press during an earlier flash must restart the 2s, not be cut short
+    // by that earlier timer firing - each press bumps a generation counter
+    // and a timer only clears the flash if it is still the newest one.
+    const int gen = btn->property("flashGen").toInt() + 1;
+    btn->setProperty("flashGen", gen);
+    QTimer::singleShot(kTransportFlashMs, btn, [btn, gen, setFlash]() {
+        if (btn->property("flashGen").toInt() == gen)
+            setFlash(false);
+    });
+}
+
 void MainWindow::onStopClicked()
 {
+    flashTransportButton(m_stopBtn);
     m_engine->stop();
 }
 
 void MainWindow::onPreviousClicked()
 {
+    flashTransportButton(m_prevBtn);
     if (m_engine->positionMs() > 3000) {
         m_engine->seek(0); // standard UX: "previous" restarts the current track once you're a few seconds in
         return;
@@ -969,6 +1001,7 @@ void MainWindow::onPreviousClicked()
 
 void MainWindow::onNextClicked()
 {
+    flashTransportButton(m_nextBtn);
     if (m_playlist->advanceToNext())
         playIndex(m_playlist->currentIndex(), true);
     else
@@ -1644,7 +1677,7 @@ void MainWindow::applyWindowStyleSheet()
                    "QMainWindow, QWidget#CentralWidget { background: transparent; }"
                    "QWidget#MiniPlayerPill { background-color: rgba(%1, %2, %3, 128); border-radius: 22px; }"
                    "QPushButton#TransportButton { background-color: rgba(%4, %5, %6, 128); }"
-                   "QPushButton#TransportButton:checked, QPushButton#PlayButton { background-color: rgba(%7, %8, %9, 128); }"
+                   "QPushButton#TransportButton:checked, QPushButton#PlayButton, QPushButton#TransportButton[flash=\"true\"] { background-color: rgba(%7, %8, %9, 128); }"
                    "QPushButton#PlayButton:hover { background-color: rgba(%10, %11, %12, 128); }")
                    .arg(bg.red())
                    .arg(bg.green())
