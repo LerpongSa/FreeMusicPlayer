@@ -483,7 +483,12 @@ void MainWindow::setupUi()
     m_exitBtn->setIcon(IconFactory::make(IconFactory::Glyph::Power, iconColor));
     m_exitBtn->setToolTip(tr("Exit"));
 
+    // Exit sits at the left end, not the right (requested by the user,
+    // 2026-09-20) - away from Mini Player/the rest of the transport
+    // buttons so an accidental click reaching for Play/Next is less
+    // likely to land on it.
     transportLayout->addStretch(1);
+    transportLayout->addWidget(m_exitBtn);
     transportLayout->addWidget(m_shuffleBtn);
     transportLayout->addWidget(m_prevBtn);
     transportLayout->addWidget(m_playBtn);
@@ -491,7 +496,6 @@ void MainWindow::setupUi()
     transportLayout->addWidget(m_nextBtn);
     transportLayout->addWidget(m_repeatBtn);
     transportLayout->addWidget(m_miniPlayerBtn);
-    transportLayout->addWidget(m_exitBtn);
     transportLayout->addStretch(1);
     // Volume (mute button + slider) now lives in the seek row instead of
     // here, so this row is purely [stretch][8 transport buttons][stretch]
