@@ -22,9 +22,11 @@
 #include <QString>
 #include <QTimer>
 #include <QMutex>
+#include <QThread>
 #include <QVector>
 
 #include <atomic>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -131,8 +133,29 @@ private:
     qint64 pullAudio(char *data, qint64 maxSize); // called from the audio thread
 
     std::unique_ptr<QAudioDecoder> m_decoder;
-    std::unique_ptr<QAudioSink> m_sink;
-    std::unique_ptr<PcmIODevice> m_ioDevice;
+    // Playback output lives on its OWN thread (m_audioThread), not the UI
+    // thread. QAudioSink's Windows backend pulls from the QIODevice from an
+    // event/timer on whichever thread owns the sink, so with the sink on the
+    // UI thread any UI stall starves the pull and the device buffer runs dry
+    // - measured: dragging the window by its title bar (Windows runs a
+    // modal move loop that stops normal event dispatch for as long as the
+    // mouse is held, however still) left ~500 ms-1 s gaps between pulls,
+    // against a device buffer of only ~130 ms, i.e. audible silence
+    // (reported by the user, 2026-09-22: "moving the mini player or the main
+    // window makes the music stutter for about a second"). With the sink on
+    // this thread nothing the UI does can delay a pull.
+    //
+    // m_sink/m_ioDevice are plain pointers because they are created and
+    // destroyed on the audio thread (QAudioSink must be used from the thread
+    // it lives on) and must only be *touched* via runOnAudioThread().
+    // m_audioCtx is just a QObject parked on that thread to give
+    // invokeMethod something to target - no Q_OBJECT/moc needed.
+    QThread m_audioThread;
+    QObject *m_audioCtx = nullptr;
+    QAudioSink *m_sink = nullptr;
+    PcmIODevice *m_ioDevice = nullptr;
+    void runOnAudioThread(const std::function<void()> &fn); // blocks until fn has finished there
+    void destroyPlaybackDevice();
     QTimer m_positionTimer;
 
     // Fires the deferred auto-play once decoding finishes (see

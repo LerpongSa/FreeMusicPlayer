@@ -212,21 +212,45 @@ AudioEngine::AudioEngine(QObject *parent)
 
     m_pendingPlayTimer.setSingleShot(true);
     connect(&m_pendingPlayTimer, &QTimer::timeout, this, &AudioEngine::play);
+
+    m_audioCtx = new QObject;
+    m_audioCtx->moveToThread(&m_audioThread);
+    m_audioThread.setObjectName("AudioOutput");
+    // Elevated so that a busy UI/decoder thread can't win the scheduler
+    // against the thread that keeps the device fed.
+    m_audioThread.start(QThread::TimeCriticalPriority);
 }
 
 AudioEngine::~AudioEngine()
 {
-    if (m_sink)
-        m_sink->stop();
+    destroyPlaybackDevice();
+    m_audioThread.quit();
+    m_audioThread.wait();
+    delete m_audioCtx; // its thread has finished; nothing left that could still deliver to it
+}
+
+void AudioEngine::runOnAudioThread(const std::function<void()> &fn)
+{
+    QMetaObject::invokeMethod(m_audioCtx, fn, Qt::BlockingQueuedConnection);
+}
+
+void AudioEngine::destroyPlaybackDevice()
+{
+    if (!m_sink && !m_ioDevice)
+        return;
+    runOnAudioThread([this]() {
+        if (m_sink)
+            m_sink->stop();
+        delete m_sink;
+        delete m_ioDevice;
+    });
+    m_sink = nullptr;
+    m_ioDevice = nullptr;
 }
 
 void AudioEngine::resetForNewTrack()
 {
-    if (m_sink) {
-        m_sink->stop();
-        m_sink.reset();
-    }
-    m_ioDevice.reset();
+    destroyPlaybackDevice();
 
     m_pcm.clear();
     m_pcm.shrink_to_fit();
@@ -449,7 +473,7 @@ void AudioEngine::onDecoderFinished()
         // Defer the actual start-playing call by at least one event-loop
         // turn instead of calling play() synchronously right here.
         // Confirmed via user report (2026-08-22): calling play() - which
-        // calls m_sink->start(m_ioDevice.get()) - immediately within the
+        // calls m_sink->start(m_ioDevice) - immediately within the
         // same call stack as the sink's own construction a few lines above
         // in startPlaybackDevice() reliably left the track "loaded" (title,
         // duration and the 0:00 position all showed up correctly) but never
@@ -527,23 +551,28 @@ void AudioEngine::startPlaybackDevice()
                    << "- attempting anyway.";
     }
 
-    m_sink = std::make_unique<QAudioSink>(device, fmt, this);
-    m_sink->setVolume(m_muted ? 0.0 : m_volumePercent / 100.0);
+    const double initialVolume = m_muted ? 0.0 : m_volumePercent / 100.0;
 
-    connect(m_sink.get(), &QAudioSink::stateChanged, this, [this](QAudio::State s) {
-        if (s == QAudio::ActiveState) {
-            emit audioActive();
-        } else if (s == QAudio::IdleState && m_state == State::Playing) {
-            // Sink ran dry - our own end-of-track signal (emitted from
-            // pullAudio) is the authoritative source of truth, so this is
-            // just a safety net; nothing to do here.
-        } else if (s == QAudio::StoppedState && m_sink && m_sink->error() != QAudio::NoError) {
-            emit errorOccurred(tr("Audio output error."));
-        }
+    runOnAudioThread([this, device, fmt, initialVolume]() {
+        m_sink = new QAudioSink(device, fmt);
+        m_sink->setVolume(initialVolume);
+
+        // Context is m_audioCtx, so this runs directly on the audio thread
+        // (where m_sink lives and is safe to query); the signals it emits
+        // are then delivered to their UI-thread receivers as queued calls.
+        QObject::connect(m_sink, &QAudioSink::stateChanged, m_audioCtx, [this](QAudio::State s) {
+            if (s == QAudio::ActiveState) {
+                emit audioActive();
+            } else if (s == QAudio::StoppedState && m_sink && m_sink->error() != QAudio::NoError) {
+                emit errorOccurred(tr("Audio output error."));
+            }
+            // IdleState (sink ran dry): our own end-of-track signal from
+            // pullAudio() is the authoritative one, so nothing to do here.
+        });
+
+        m_ioDevice = new PcmIODevice(this);
+        m_ioDevice->open(QIODevice::ReadOnly);
     });
-
-    m_ioDevice = std::make_unique<PcmIODevice>(this);
-    m_ioDevice->open(QIODevice::ReadOnly);
 }
 
 qint64 AudioEngine::pullAudio(char *data, qint64 maxSize)
@@ -625,7 +654,7 @@ void AudioEngine::play()
         m_endSignaled = false;
     }
 
-    m_sink->start(m_ioDevice.get());
+    runOnAudioThread([this]() { m_sink->start(m_ioDevice); });
     m_positionTimer.start();
     setState(State::Playing);
 }
@@ -634,7 +663,7 @@ void AudioEngine::pause()
 {
     if (!m_sink)
         return;
-    m_sink->stop();
+    runOnAudioThread([this]() { m_sink->stop(); });
     m_positionTimer.stop();
     setState(State::Paused);
 }
@@ -642,7 +671,7 @@ void AudioEngine::pause()
 void AudioEngine::stop()
 {
     if (m_sink)
-        m_sink->stop();
+        runOnAudioThread([this]() { m_sink->stop(); });
     m_positionTimer.stop();
     m_frameCursor.store(0, std::memory_order_relaxed);
     m_equalizer.resetState();
@@ -669,7 +698,7 @@ void AudioEngine::seek(qint64 positionMs)
 
     const bool wasPlaying = (m_state == State::Playing);
     if (m_sink)
-        m_sink->stop();
+        runOnAudioThread([this]() { m_sink->stop(); });
 
     m_frameCursor.store(frame, std::memory_order_relaxed);
     m_equalizer.resetState(); // avoid an audible pop from stale filter state
@@ -678,7 +707,7 @@ void AudioEngine::seek(qint64 positionMs)
     emit positionChanged(positionMs);
 
     if (wasPlaying && m_sink) {
-        m_sink->start(m_ioDevice.get());
+        runOnAudioThread([this]() { m_sink->start(m_ioDevice); });
     }
 }
 
@@ -686,14 +715,14 @@ void AudioEngine::setVolume(int volumePercent)
 {
     m_volumePercent = std::clamp(volumePercent, 0, 100);
     if (m_sink && !m_muted)
-        m_sink->setVolume(m_volumePercent / 100.0);
+        runOnAudioThread([this, v = m_volumePercent / 100.0]() { m_sink->setVolume(v); });
 }
 
 void AudioEngine::setMuted(bool muted)
 {
     m_muted = muted;
     if (m_sink)
-        m_sink->setVolume(m_muted ? 0.0 : m_volumePercent / 100.0);
+        runOnAudioThread([this, v = m_muted ? 0.0 : m_volumePercent / 100.0]() { m_sink->setVolume(v); });
 }
 
 qint64 AudioEngine::positionMs() const

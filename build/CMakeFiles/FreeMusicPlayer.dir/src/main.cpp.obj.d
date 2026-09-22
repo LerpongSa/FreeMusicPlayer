@@ -358,6 +358,15 @@ CMakeFiles/FreeMusicPlayer.dir/src/main.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qbasictimer.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qabstracteventdispatcher.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qeventloop.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QThread \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/qthread.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/future \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/mutex \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/std_mutex.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/unique_lock.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/condition_variable \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/atomic_futex.h \
+ C:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/std_thread.h \
  D:\AI_Programming\C++\FreeMusicPlayer\src\Playlist.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/QStringList \
  D:\AI_Programming\C++\FreeMusicPlayer\src\Settings.h \
@@ -432,6 +441,8 @@ CMakeFiles/FreeMusicPlayer.dir/src/main.cpp.obj: \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qdatetime.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qcalendar.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qlocale.h \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QSize \
+ C:/Qt/6.11.1/mingw_64/include/QtCore/QPoint \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/QApplication \
  C:/Qt/6.11.1/mingw_64/include/QtWidgets/qapplication.h \
  C:/Qt/6.11.1/mingw_64/include/QtCore/qcoreapplication.h \

@@ -494,6 +494,39 @@ thread จะได้ spin อีกครั้ง ซึ่งระหว่
 
 ## Thread safety
 
+- **`QAudioSink` อยู่บน audio thread ของตัวเอง (`AudioEngine::m_audioThread`)
+  ไม่ใช่ UI thread — แก้บั๊ก "ลาก/ย้ายหน้าต่างแล้วเพลงสะดุดหรือเงียบประมาณ 1
+  วินาที" (ผู้ใช้แจ้ง 2026-09-22 ทั้งตอนลาก Mini Player และหน้าต่างหลัก)**
+  - **สาเหตุ (วัดจริง ไม่ได้เดา):** backend ของ `QAudioSink` บน Windows ดึงข้อมูล
+    จาก `QIODevice` (`pullAudio()`) ด้วย event/timer ของ thread ที่ sink อาศัย
+    อยู่ — เดิมคือ UI thread ตอนลากหน้าต่างด้วย title bar Windows เข้า modal
+    move loop ที่หยุด event dispatch ปกติตราบเท่าที่ยังกดเมาส์ค้าง จึงไม่มีการ
+    ดึงเสียงเลย ใส่ตัวจับเวลาชั่วคราวใน `pullAudio()` แล้วจำลองการกดค้าง 1.5
+    วินาทีแล้วลากด้วย `mouse_event` จริง: ช่องว่างระหว่างการดึงเสียงยาว **525 ms
+    บน main thread** ขณะที่ buffer ของอุปกรณ์เสียงมีแค่ ~130 ms (เพลง 88.2kHz
+    float stereo) → buffer หมด = เสียงเงียบ (เครื่องผู้ใช้นานถึง ~1 วินาที) ส่วน
+    Mini Player ที่ลากด้วย `mouseMoveEvent` เองก็ทำให้ main thread งานหนักเช่นกัน
+    (ทุก `move()` ของหน้าต่าง translucent ต้อง composite ใหม่)
+  - **วิธีแก้:** ย้าย `QAudioSink` + `PcmIODevice` ไปสร้าง/ใช้/ทำลายบน
+    `QThread` แยก (priority `TimeCriticalPriority`) ไม่ว่า UI จะค้างเพราะอะไรก็ไม่
+    มีผลกับการป้อนเสียงอีก การเรียก `start/stop/setVolume` จาก UI thread ผ่าน
+    `runOnAudioThread()` = `QMetaObject::invokeMethod(m_audioCtx, fn,
+    Qt::BlockingQueuedConnection)` (รอจนเสร็จ ลำดับ stop → ตั้ง cursor → start ใน
+    `seek()` จึงเหมือนเดิมเป๊ะ) โดย `m_audioCtx` เป็น `QObject` เปล่า ๆ ที่ย้ายไปอยู่
+    บน audio thread เพื่อเป็นเป้าให้ `invokeMethod` — ไม่ต้องมี `Q_OBJECT`/moc
+    เพิ่ม ส่วน `QAudioSink::stateChanged` ต่อไว้กับ context เดียวกัน (รันบน audio
+    thread ตรง ๆ) แล้วค่อย emit `audioActive()`/`errorOccurred()` ให้ UI thread
+    รับผ่าน queued connection อัตโนมัติ
+  - **ผลวัดหลังแก้:** ลากด้วยวิธีเดียวกัน (ทั้ง title bar หลัก และลาก Mini Player)
+    **ไม่มีช่องว่างเกิน 60 ms เลย** เพลงเดินต่อเนื่อง และ Pause/Resume/Next/
+    Mini Player ยังทำงานปกติ — ข้อควรรู้: ระหว่างลากด้วย title bar หน้าจอ (แถบ
+    เวลา/visualizer) ยังหยุดนิ่งชั่วคราวเพราะเป็นงานของ UI thread เอง แต่เสียงไม่
+    ตกหล่นแล้ว
+  - **ข้อควรระวังตอนแก้โค้ดส่วนนี้:** `m_sink`/`m_ioDevice` เป็น raw pointer ที่
+    ต้องแตะผ่าน `runOnAudioThread()` เท่านั้น (สร้าง/ลบบน audio thread เพราะ
+    `QAudioSink` ต้องถูกใช้จาก thread ที่มันอยู่) และห้ามเรียก `runOnAudioThread()`
+    ขณะถือ mutex ของ `Equalizer` (audio thread ต้องล็อกตัวเดียวกันใน `pullAudio()`
+    → deadlock)
 - ตำแหน่งเล่นปัจจุบัน (`m_frameCursor`), mute, และ end-of-track flag เป็น
   `std::atomic` เพราะถูกอ่าน/เขียนข้าม UI thread กับ audio thread ของ
   `QAudioSink`
