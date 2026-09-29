@@ -855,7 +855,18 @@ void MainWindow::setupConnections()
     connect(m_muteBtn, &QToolButton::clicked, this, &MainWindow::onMuteToggled);
     connect(m_volumeSlider, &QSlider::valueChanged, this, &MainWindow::onVolumeSliderMoved);
     connect(m_miniPlayerBtn, &QPushButton::toggled, this, &MainWindow::onMiniPlayerToggled);
-    connect(m_exitBtn, &QPushButton::clicked, this, &QWidget::close);
+    connect(m_exitBtn, &QPushButton::clicked, this, [this]() {
+        // Same accent-flash feedback as Previous/Next/Stop (requested by
+        // the user, 2026-09-29), fired before close() rather than after -
+        // close() opens closeEvent()'s "Are you sure...?" confirmation
+        // dialog, which blocks right here until answered, so the flash is
+        // already lit and visible underneath it the moment it appears. If
+        // the user cancels, flashTransportButton()'s own timer reverts the
+        // color normally; if they confirm, the app exits with it still lit
+        // and there is nothing left to revert.
+        flashTransportButton(m_exitBtn);
+        close();
+    });
 
     connect(m_seekSlider, &QSlider::sliderPressed, this, &MainWindow::onSeekSliderPressed);
     connect(m_seekSlider, &QSlider::sliderReleased, this, &MainWindow::onSeekSliderReleased);
@@ -1520,8 +1531,14 @@ void MainWindow::onMiniPlayerToggled(bool on)
         // WA_TranslucentBackground is NOT set here - it's set once in
         // setupUi(), before the first show(), and left on (see the comment
         // there for why toggling it here broke the first entry).
+        // Always-on-top (requested by the user, 2026-09-29: "no other
+        // program should be able to cover it") so the pill stays above
+        // whatever else is focused - a normal top-level window only stays
+        // above others while it has focus, and clicking any other app's
+        // window would otherwise bury the mini player behind it.
         hide();
         setWindowFlag(Qt::FramelessWindowHint, true);
+        setWindowFlag(Qt::WindowStaysOnTopHint, true);
         applyWindowStyleSheet();
         show();
 
@@ -1568,6 +1585,7 @@ void MainWindow::onMiniPlayerToggled(bool on)
 
         hide();
         setWindowFlag(Qt::FramelessWindowHint, false);
+        setWindowFlag(Qt::WindowStaysOnTopHint, false);
         applyWindowStyleSheet();
         show();
 
@@ -1686,28 +1704,30 @@ void MainWindow::applyWindowStyleSheet()
 {
     QString css = Theme::appStyleSheet();
     if (m_miniPlayerMode) {
-        // 50% alpha (requested by the user, 2026-09-20) so the desktop
-        // shows through the pill AND the buttons on it, not just the
-        // pill's own background gaps between them - the user specifically
-        // asked to see a desktop icon that had ended up sitting right
-        // behind the Power button. Qt Style Sheets' rgba() takes four
-        // 0-255 ints - unlike plain CSS, the alpha channel is NOT 0-1 here
-        // - so 128 is the ~50% point, not 0.5. Each button's own semantic
-        // color (bg2 for the plain transport buttons, accent/accentHi for
-        // Play and any checked button) is kept, just with alpha added -
-        // the glyphs drawn on top (IconFactory::make(), opaque pixels on a
-        // transparent PNG) stay fully crisp/legible either way, since
-        // they're painted separately from this background.
+        // Alpha (0-255, NOT the 0-1 range plain CSS rgba() uses) so the
+        // desktop shows through the pill AND the buttons on it, not just
+        // the pill's own background gaps between them. Originally 50%
+        // (alpha 128, requested 2026-09-20 so a desktop icon behind the
+        // Power button stayed visible); tightened to 20% opacity - alpha
+        // 51 (0.20 * 255, rounded) - per a follow-up request (2026-09-29)
+        // to make the pill even more see-through. Each button's own
+        // semantic color (bg2 for the plain transport buttons,
+        // accent/accentHi for Play and any checked button) is kept, just
+        // with alpha added - the glyphs drawn on top (IconFactory::make(),
+        // opaque pixels on a transparent PNG) stay fully crisp/legible
+        // either way, since they're painted separately from this
+        // background.
+        constexpr int kMiniPlayerAlpha = 51; // 20% of 255
         const QColor bg = Theme::current().bg0;
         const QColor btnBg = Theme::current().bg2;
         const QColor accent = Theme::current().accent;
         const QColor accentHi = Theme::current().accentHi;
         css += QStringLiteral(
                    "QMainWindow, QWidget#CentralWidget { background: transparent; }"
-                   "QWidget#MiniPlayerPill { background-color: rgba(%1, %2, %3, 128); border-radius: 22px; }"
-                   "QPushButton#TransportButton { background-color: rgba(%4, %5, %6, 128); }"
-                   "QPushButton#TransportButton:checked, QPushButton#PlayButton, QPushButton#TransportButton[flash=\"true\"] { background-color: rgba(%7, %8, %9, 128); }"
-                   "QPushButton#PlayButton:hover { background-color: rgba(%10, %11, %12, 128); }")
+                   "QWidget#MiniPlayerPill { background-color: rgba(%1, %2, %3, %13); border-radius: 22px; }"
+                   "QPushButton#TransportButton { background-color: rgba(%4, %5, %6, %13); }"
+                   "QPushButton#TransportButton:checked, QPushButton#PlayButton, QPushButton#TransportButton[flash=\"true\"] { background-color: rgba(%7, %8, %9, %13); }"
+                   "QPushButton#PlayButton:hover { background-color: rgba(%10, %11, %12, %13); }")
                    .arg(bg.red())
                    .arg(bg.green())
                    .arg(bg.blue())
@@ -1719,7 +1739,8 @@ void MainWindow::applyWindowStyleSheet()
                    .arg(accent.blue())
                    .arg(accentHi.red())
                    .arg(accentHi.green())
-                   .arg(accentHi.blue());
+                   .arg(accentHi.blue())
+                   .arg(kMiniPlayerAlpha);
     } else {
         css += QStringLiteral("QWidget#MiniPlayerPill { background: transparent; }");
     }

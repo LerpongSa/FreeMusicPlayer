@@ -121,25 +121,37 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
     แถบปุ่มเล่นเพลงถูกห่อด้วย widget ใหม่ชื่อ `m_transportContainer`
     (object name `"MiniPlayerPill"`) ซึ่งเป็นจุดเดียวที่ยังมีพื้นหลัง/มุมมน
     (`border-radius: 22px`) ส่วน `QMainWindow`/central widget โปร่งใสหมด —
-    **พื้นหลัง pill รวมถึงตัวปุ่มเองก็โปร่งแสง 50% ทั้งหมด** (ผู้ใช้ขอ
-    2026-09-20 หลังเห็นว่า pill ทึบแสง 100%, แล้วขอเพิ่มอีกรอบให้ตัวปุ่มเอง
-    โปร่งแสงด้วยหลังเจอ icon บน desktop ซ้อนอยู่ข้างใต้ปุ่ม Power แล้วมองไม่เห็น)
-    ใช้ `rgba(r, g, b, 128)` กับสีของแต่ละส่วน (`bg0` สำหรับ pill, `bg2`
-    สำหรับ `#TransportButton` ปกติ, `accent`/`accentHi` สำหรับ `#PlayButton`
-    และปุ่มที่ `:checked` เช่น Mini Player ตอนกำลัง active) — Qt Style
-    Sheets' `rgba()` รับค่า alpha เป็น int 0-255 ไม่ใช่ 0-1 แบบ CSS ทั่วไป 128
-    จึงเป็นจุดกึ่งกลาง ~50% ไอคอนบนปุ่ม (วาดจาก `IconFactory::make()` เป็น
-    pixel ทึบบน PNG โปร่งใส) ยังคมชัดปกติเพราะเป็นคนละ layer จากพื้นหลังปุ่ม —
-    ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS override ต่อท้าย
-    `Theme::appStyleSheet()` เดิม (ไม่ได้เขียน stylesheet แยกใหม่ทั้งชุด) มี
-    ผลเฉพาะตอน `m_miniPlayerMode` เท่านั้น เรียกทั้งตอน setupUi() และทุกครั้งที่
-    เปลี่ยนธีม (`applyThemePalette()`) กันธีมเปลี่ยนระหว่างอยู่ใน Mini Player
-    แล้วโปร่งใสหาย **ไม่มีขอบให้ลาก resize และไม่มีปุ่ม minimize เดิมให้กด**
-    (ยืนยันกับผู้ใช้แล้ว 2026-09-20) — ย้ายหน้าต่างด้วยการลากค้างที่ไหนก็ได้บน
-    ตัวหน้าต่างที่ไม่ใช่ปุ่ม (`mousePressEvent`/`mouseMoveEvent`/
-    `mouseReleaseEvent` ที่ override ไว้ ทำงานเฉพาะตอน `m_miniPlayerMode`) —
-    Alt+F4 ยังปิดได้ตรงๆ เหมือนเดิมเพราะ Windows ส่ง WM_SYSCOMMAND/SC_CLOSE
-    โดยไม่สนว่าหน้าต่างมี title bar หรือไม่
+    **พื้นหลัง pill รวมถึงตัวปุ่มเองก็โปร่งแสงทั้งหมด** (ผู้ใช้ขอ 2026-09-20
+    หลังเห็นว่า pill ทึบแสง 100%, แล้วขอเพิ่มอีกรอบให้ตัวปุ่มเองโปร่งแสงด้วย
+    หลังเจอ icon บน desktop ซ้อนอยู่ข้างใต้ปุ่ม Power แล้วมองไม่เห็น — เริ่มที่
+    50% แล้วผู้ใช้ขอเพิ่มความโปร่งใสอีกรอบเป็น **20% opacity** 2026-09-29)
+    ใช้ `rgba(r, g, b, kMiniPlayerAlpha)` กับสีของแต่ละส่วน (`bg0` สำหรับ pill,
+    `bg2` สำหรับ `#TransportButton` ปกติ, `accent`/`accentHi` สำหรับ
+    `#PlayButton` และปุ่มที่ `:checked` เช่น Mini Player ตอนกำลัง active) —
+    Qt Style Sheets' `rgba()` รับค่า alpha เป็น int 0-255 ไม่ใช่ 0-1 แบบ CSS
+    ทั่วไป `kMiniPlayerAlpha` (ใน `applyWindowStyleSheet()`) จึงเป็น 51
+    (0.20 × 255 ปัดเศษ) ไม่ใช่ 128 (50%) เหมือนเดิม ไอคอนบนปุ่ม (วาดจาก
+    `IconFactory::make()` เป็น pixel ทึบบน PNG โปร่งใส) ยังคมชัดปกติเพราะเป็น
+    คนละ layer จากพื้นหลังปุ่ม — ทำผ่าน `applyWindowStyleSheet()` ที่เติม CSS
+    override ต่อท้าย `Theme::appStyleSheet()` เดิม (ไม่ได้เขียน stylesheet แยก
+    ใหม่ทั้งชุด) มีผลเฉพาะตอน `m_miniPlayerMode` เท่านั้น เรียกทั้งตอน
+    setupUi() และทุกครั้งที่เปลี่ยนธีม (`applyThemePalette()`) กันธีมเปลี่ยน
+    ระหว่างอยู่ใน Mini Player แล้วโปร่งใสหาย **ไม่มีขอบให้ลาก resize และไม่มี
+    ปุ่ม minimize เดิมให้กด** (ยืนยันกับผู้ใช้แล้ว 2026-09-20) — ย้ายหน้าต่างด้วย
+    การลากค้างที่ไหนก็ได้บนตัวหน้าต่างที่ไม่ใช่ปุ่ม
+    (`mousePressEvent`/`mouseMoveEvent`/`mouseReleaseEvent` ที่ override ไว้
+    ทำงานเฉพาะตอน `m_miniPlayerMode`) — Alt+F4 ยังปิดได้ตรงๆ เหมือนเดิมเพราะ
+    Windows ส่ง WM_SYSCOMMAND/SC_CLOSE โดยไม่สนว่าหน้าต่างมี title bar หรือไม่
+  - **Always-on-top: ไม่มีโปรแกรมไหนบังทับได้ (ผู้ใช้ขอ 2026-09-29)** — เข้า
+    Mini Player แล้วตั้ง `Qt::WindowStaysOnTopHint` เพิ่มจาก
+    `Qt::FramelessWindowHint` เดิม (ตั้งคู่กันตอนเดียว ก่อน `show()` เดียวกัน
+    ไม่ต้อง `hide()`/`show()` เพิ่มรอบ) แล้วปิดกลับตอนออกจากโหมด — เหตุผลที่
+    ต้องมี flag นี้ชัด ๆ คือหน้าต่างปกติจะลอยอยู่บนสุดแค่ตอนมันมี focus เท่านั้น
+    พอคลิกไปโปรแกรมอื่น มันจะถูกโปรแกรมนั้นบังทันที ซึ่งขัดกับจุดประสงค์ของ Mini
+    Player ที่อยากให้เห็นแถบควบคุมเพลงค้างอยู่ตลอดเวลาไม่ว่าจะสลับไปทำงานอะไร
+    ยืนยันด้วยการ screenshot จริง: เปิด Mini Player แล้วสลับไป focus หน้าต่าง
+    อื่น (VS Code) ที่วางซ้อนอยู่ตำแหน่งเดียวกับ pill — pill ยังคงลอยอยู่บนสุด
+    ไม่ถูกบังแม้หน้าต่างนั้นจะ active อยู่ก็ตาม
     - **แก้บั๊ก: เห็น icon บน desktop (เช่น VLC) โผล่มาข้าง ๆ ปุ่มได้** (ผู้ใช้ส่ง
       รูปมาชี้ 2026-09-20) สาเหตุคือ margin ซ้อนกัน 2 ชั้น: `rootLayout` ของ
       `centralWidget()` เอง (`14,14,14,10`, ตั้งไว้ครั้งเดียวตอน `setupUi()`
@@ -173,9 +185,16 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
       `resize(m_preMiniPlayerSize)` รัน) แก้ด้วยการเลื่อน `resize()` นั้นไปรันผ่าน
       `QTimer::singleShot(0, ...)` แทน (ให้ relayout จบก่อนค่อย resize) ยืนยัน
       แล้วว่าขนาดหน้าต่างตรงเป๊ะกับก่อนเข้า Mini Player
-- **ปุ่ม Previous / Next / Stop เปลี่ยนเป็นสี accent หลังกด แล้วกลับเองเมื่อ
-  เมาส์ Loading (busy cursor) หาย** — กดแล้วปุ่มนั้นเปลี่ยนเป็นสี accent ของธีม
-  ทันที ใช้ได้ทั้งโหมดปกติและ Mini Player
+- **ปุ่ม Previous / Next / Stop / Exit (power) เปลี่ยนเป็นสี accent หลังกด
+  แล้วกลับเองเมื่อเมาส์ Loading (busy cursor) หาย** — กดแล้วปุ่มนั้นเปลี่ยนเป็นสี
+  accent ของธีมทันที ใช้ได้ทั้งโหมดปกติและ Mini Player (ผู้ใช้ขอเพิ่ม Exit เข้า
+  กลุ่มนี้ทีหลัง 2026-09-29 — เดิมมีแค่ Previous/Next/Stop)
+  - **Exit ต่างจากอีกสามปุ่มตรงที่ flash ต้องยิงก่อน `close()`** ไม่ใช่หลัง —
+    `close()` เปิด dialog ยืนยัน "Are you sure you want to exit?" จาก
+    `closeEvent()` ที่ **block อยู่ตรงนั้น** จนกว่าจะตอบ เรียก
+    `flashTransportButton(m_exitBtn)` ก่อนเสมอ ปุ่มจึงติดสีค้างให้เห็นอยู่ใต้
+    dialog พอดี (ยืนยันด้วย screenshot) — กด No แล้วปุ่มกลับสีปกติตามเวลาเหมือน
+    ปุ่มอื่นทุกอย่าง กด Yes แอปก็ปิดไปเลยไม่มีอะไรต้อง revert
   - **ประวัติการปรับระยะเวลา (ผู้ใช้สั่ง 2026-09-20):** แรกสุดผู้ใช้พิมพ์ "2
     นาที" (ถามยืนยันแล้วว่าหมายถึง 2 วินาที) → ลดเหลือ 1 วินาที → สุดท้ายขอเป็น
     "จนกว่า Mouse Loading หาย" คือให้ค้างสีไว้จนกว่า busy cursor ที่ขึ้นตอนโหลด
@@ -199,7 +218,7 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
     ยังยิงตามเวลาเดิม จึงเก็บเลขรุ่นไว้ใน property `flashGen` (เพิ่มทีละ 1
     ทุกครั้งที่กด) timer จะปิดสีเฉพาะเมื่อเลขรุ่นยังตรงกับตอนที่ตั้ง — กัน
     timer เก่าปิดสีก่อนเวลาของการกดครั้งล่าสุด
-  - **โหมด Mini Player:** ปุ่มโปร่งแสง (`rgba(bg2,128)`) อยู่แล้ว จึงเพิ่ม
+  - **โหมด Mini Player:** ปุ่มโปร่งแสง (`rgba(bg2,kMiniPlayerAlpha)`) อยู่แล้ว จึงเพิ่ม
     selector `[flash="true"]` เข้าไปในกฎ override สี accent ของ
     `applyWindowStyleSheet()` ให้กะพริบเป็น accent โปร่งแสงระดับเดียวกับปุ่ม
     Play ไม่ใช่สีทึบที่ดูโดดออกมาจาก pill
