@@ -553,6 +553,44 @@ thread จะได้ spin อีกครั้ง ซึ่งระหว่
     `QAudioSink` ต้องถูกใช้จาก thread ที่มันอยู่) และห้ามเรียก `runOnAudioThread()`
     ขณะถือ mutex ของ `Equalizer` (audio thread ต้องล็อกตัวเดียวกันใน `pullAudio()`
     → deadlock)
+  - **ยังไม่จบแค่นั้น: ผู้ใช้แจ้งต่อ (2026-09-29) ว่าเลื่อน/ลาก "Windows
+    Explorer" — คนละโปรแกรมกับแอปนี้เลย ไม่ใช่หน้าต่างของแอปเอง — ก็ยังทำให้
+    เพลงกระตุกได้บางเครื่อง** เพิ่ม MMCSS (`AvSetMmThreadCharacteristicsW`
+    ประเภท `"Pro Audio"` จาก `avrt.dll`/`avrt.h`) ให้ `m_audioThread` เพื่อรับมือ
+    กับสาเหตุคนละแบบจากบั๊กก่อนหน้านี้:
+    - **ทำไม `TimeCriticalPriority` เพียวๆ ไม่พอ:** priority ระดับนี้ยังเป็นแค่
+      priority ปกติของตัว Windows scheduler เอง (`THREAD_PRIORITY_TIME_
+      CRITICAL`) ซึ่งกิจกรรมของระบบระดับสูงอื่น ๆ อย่าง DWM (ตัว compositor ที่
+      render/animate หน้าต่างทุกบานบนจอ) ยังแย่ง cycle ได้เมื่อมันทำงานหนัก
+      กะทันหัน (ลากหรือ scroll หน้าต่างไหนก็ตามเร็ว ๆ กระตุ้นงาน GPU/CPU ของ DWM
+      พุ่งขึ้นชั่วครู่) — ต่างจากบั๊กก่อนหน้า (ลากหน้าต่างของแอปเอง) ตรงที่คราวนี้
+      ปัญหาไม่ได้มาจาก UI thread ของเราค้าง (เราแก้จุดนั้นไปแล้ว) แต่มาจากระบบ
+      ทั้งเครื่องแย่ง scheduler กับ audio thread เราเองในจังหวะที่ DWM ยุ่ง
+    - **MMCSS คืออะไร:** service ของ Windows ที่ WASAPI exclusive-mode client
+      และโปรแกรมเสียง/DAW มืออาชีพใช้กันเป็นมาตรฐาน สำหรับบอก OS ตรง ๆ ว่า
+      thread นี้เป็น real-time audio thread ที่ต้องรักษา duty cycle ให้แน่น
+      ไม่มีสะดุด OS จะปกป้อง scheduling ของ thread นี้เป็นพิเศษ (boost เหนือ
+      งานระบบทั่วไปรวมถึง DWM) ตลอดเวลาที่ยังลงทะเบียนอยู่ - เป็นกลไกคนละชั้น
+      จาก "ตั้ง priority สูงเฉย ๆ"
+    - **การลงทะเบียน/เลิกทะเบียน:** เรียก `AvSetMmThreadCharacteristicsW`
+      ผ่าน `runOnAudioThread()` ทันทีหลัง `m_audioThread.start()` (ต้องเรียกบน
+      thread นั้นเองเพราะ API นี้ผูกกับ thread ปัจจุบัน) เก็บ handle ที่ได้ไว้ใน
+      `m_mmcssHandle` แล้วเรียก `AvRevertMmThreadCharacteristics` คืนใน
+      destructor ก่อน `m_audioThread.quit()` ถ้าลงทะเบียนไม่สำเร็จ (เช่น
+      Windows รุ่นเก่ามาก หรือ service ปิดอยู่) ก็แค่ไม่ error อะไร thread ยัง
+      เหลือ priority เดิมเหมือนก่อนมี MMCSS
+    - **ผูกกับ build:** ต้อง link `avrt` (`target_link_libraries(... avrt)`
+      ใน `CMakeLists.txt`, เฉพาะ `if(WIN32)`) โค้ดฝั่ง C++ เองก็ครอบด้วย
+      `#ifdef Q_OS_WIN` ทั้งหมด (include `<windows.h>`/`<avrt.h>`, ตัว
+      function body) ให้ compile ผ่านได้แม้ในทางทฤษฎีจะ build บนแพลตฟอร์มอื่น
+    - **ทดสอบยืนยัน:** เล่นเพลงแล้วเปิด Windows Explorer จริง (คนละ process
+      กับแอป) ทั้งลากไตเติลบาร์และสลับมุมมอง+scroll โฟลเดอร์ที่มีไฟล์ 100 ไฟล์
+      รัว ๆ ไม่พบช่องว่างระหว่างการดึงเสียงเกิน 60 ms เลยแม้แต่ครั้งเดียว (ก่อน
+      เพิ่ม MMCSS ก็วัดไม่เจอ gap ในการทดสอบชุดนี้บนเครื่องทดสอบอยู่แล้ว แสดงว่า
+      บั๊กนี้ขึ้นกับสเปกเครื่อง/GPU driver ของผู้ใช้ - MMCSS เป็นการป้องกันเชิง
+      รุกตามมาตรฐาน Windows ที่แนะนำสำหรับเคสนี้โดยเฉพาะ ไม่ใช่การแก้ไขที่
+      reproduce บั๊กได้ตรง ๆ บนเครื่องที่ใช้พัฒนา) ลากหน้าต่างของแอปเองซ้ำ
+      อีกรอบก็ยังผ่าน (67 ms ครั้งเดียว ต่ำกว่า buffer ~130 ms มาก ไม่ได้ยิน)
 - ตำแหน่งเล่นปัจจุบัน (`m_frameCursor`), mute, และ end-of-track flag เป็น
   `std::atomic` เพราะถูกอ่าน/เขียนข้าม UI thread กับ audio thread ของ
   `QAudioSink`

@@ -103,6 +103,12 @@ target_link_libraries(FreeMusicPlayer PRIVATE
 )
 
 if(WIN32)
+    # AvSetMmThreadCharacteristicsW/AvRevertMmThreadCharacteristics (MMCSS) -
+    # see AudioEngine.cpp's audio-thread setup for why.
+    target_link_libraries(FreeMusicPlayer PRIVATE avrt)
+endif()
+
+if(WIN32)
     # Copy Qt DLLs + plugins next to the exe after each build (dev convenience).
     # windeployqt does NOT ship the MinGW runtime - see README "Portable packaging".
     find_program(WINDEPLOYQT_EXE windeployqt HINTS "C:/Qt/6.11.1/mingw_64/bin")

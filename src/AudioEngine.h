@@ -156,6 +156,16 @@ private:
     PcmIODevice *m_ioDevice = nullptr;
     void runOnAudioThread(const std::function<void()> &fn); // blocks until fn has finished there
     void destroyPlaybackDevice();
+
+    // MMCSS ("Pro Audio" task) registration for m_audioThread - see the
+    // comment on registerAudioThreadWithMmcss() in AudioEngine.cpp for what
+    // this buys over plain QThread::TimeCriticalPriority. Opaque HANDLE
+    // (stored as void* so this header doesn't have to drag in <avrt.h>/
+    // windows.h); null if registration never succeeded, in which case
+    // nothing needs reverting.
+    void *m_mmcssHandle = nullptr;
+    void registerAudioThreadWithMmcss();
+    void unregisterAudioThreadFromMmcss();
     QTimer m_positionTimer;
 
     // Fires the deferred auto-play once decoding finishes (see

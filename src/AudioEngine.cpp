@@ -15,6 +15,11 @@
 #include <cstring>
 #include <limits>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <avrt.h> // AvSetMmThreadCharacteristicsW/AvRevertMmThreadCharacteristics - see registerAudioThreadWithMmcss()
+#endif
+
 // ---------------------------------------------------------------------------
 // PcmIODevice: pull-mode source for QAudioSink. No signals/slots needed, so
 // no Q_OBJECT and no moc involvement - just virtual overrides.
@@ -219,14 +224,62 @@ AudioEngine::AudioEngine(QObject *parent)
     // Elevated so that a busy UI/decoder thread can't win the scheduler
     // against the thread that keeps the device fed.
     m_audioThread.start(QThread::TimeCriticalPriority);
+    runOnAudioThread([this]() { registerAudioThreadWithMmcss(); });
 }
 
 AudioEngine::~AudioEngine()
 {
     destroyPlaybackDevice();
+    runOnAudioThread([this]() { unregisterAudioThreadFromMmcss(); });
     m_audioThread.quit();
     m_audioThread.wait();
     delete m_audioCtx; // its thread has finished; nothing left that could still deliver to it
+}
+
+// Windows-only: registers m_audioThread with MMCSS (the Multimedia Class
+// Scheduler Service) under the "Pro Audio" task, the same mechanism WASAPI
+// exclusive-mode clients and DAWs use to get glitch-resistant scheduling.
+//
+// Why this exists on top of QThread::TimeCriticalPriority (requested by the
+// user, 2026-09-29: "moving/scrolling a Windows Explorer window - not even
+// this app's own window - makes playback stutter"): THREAD_PRIORITY_TIME_
+// CRITICAL (what TimeCriticalPriority maps to) is still just a priority
+// level inside Windows' regular scheduler, which the desktop compositor
+// (DWM) and other system-level work can still contend with during heavy UI
+// activity elsewhere on the system - dragging or rapidly scrolling ANY
+// window's content can burst DWM's own GPU/CPU work enough to delay a
+// merely "very high priority" ordinary thread for a moment. MMCSS is a
+// separate, dedicated mechanism specifically for exactly this: it tells
+// Windows this thread is a real-time audio thread that must keep a tight,
+// glitch-free duty cycle, and the OS actively protects its scheduling
+// (including boosting it above normal system work) for as long as it's
+// registered - not just "run with a high normal-scheduler priority" the
+// way TimeCriticalPriority is. Registered once, right after the thread
+// starts (via runOnAudioThread() so the call happens ON that thread, which
+// AvSetMmThreadCharacteristicsW requires), reverted once in the destructor
+// before the thread is torn down.
+//
+// A failure here (missing service, old Windows, no permission) is not
+// fatal - it just leaves the thread at the TimeCriticalPriority it already
+// had, so no error is surfaced to the user over it.
+void AudioEngine::registerAudioThreadWithMmcss()
+{
+#ifdef Q_OS_WIN
+    DWORD taskIndex = 0;
+    HANDLE h = AvSetMmThreadCharacteristicsW(L"Pro Audio", &taskIndex);
+    if (h)
+        m_mmcssHandle = h;
+#endif
+}
+
+void AudioEngine::unregisterAudioThreadFromMmcss()
+{
+#ifdef Q_OS_WIN
+    if (!m_mmcssHandle)
+        return;
+    AvRevertMmThreadCharacteristics(static_cast<HANDLE>(m_mmcssHandle));
+    m_mmcssHandle = nullptr;
+#endif
 }
 
 void AudioEngine::runOnAudioThread(const std::function<void()> &fn)
@@ -577,6 +630,7 @@ void AudioEngine::startPlaybackDevice()
 
 qint64 AudioEngine::pullAudio(char *data, qint64 maxSize)
 {
+
     const int bytesPerFrame = m_channelCount * static_cast<int>(sizeof(float));
     if (bytesPerFrame <= 0)
         return 0;
