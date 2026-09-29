@@ -234,7 +234,14 @@ Music Player บน Windows เขียนด้วย C++17 + Qt 6.11.1 (Qt Wi
   อิสระต่อกัน
 - **Equalizer** — 10-band graphic EQ (31Hz–16kHz) เปิด/ปิดได้ พร้อมพรีเซ็ต
   สำเร็จรูป **8 แบบ**: Flat, Pop, Rock, Jazz, Classical, Bass Boost,
-  Treble Boost, Vocal Boost และปรับเองได้ (จะกลายเป็น "Custom" อัตโนมัติ)
+  Treble Boost, Vocal Boost และปรับเองได้ (จะกลายเป็น "Custom" อัตโนมัติ) —
+  **ค่าเริ่มต้น Disabled** (ผู้ใช้ขอ 2026-09-29) มีผลแค่ตอนเปิดโปรแกรมครั้งแรก
+  สุด ๆ ที่ยังไม่เคยมี `FreeMusicPlayer.ini` เลย (`Settings::eqEnabled()`'s
+  fallback ใน `QSettings::value("eq/enabled", ...)` เปลี่ยนจาก `true` เป็น
+  `false`) การเปิด/ปิดครั้งถัดไปของผู้ใช้ยังถูกจำและโหลดกลับมาเหมือนเดิมทุก
+  ประการ เหมือนค่าอื่น ๆ ทั้งหมดในแอป — ทดสอบยืนยันด้วยการลบ
+  `FreeMusicPlayer.ini` ออกชั่วคราวแล้วเปิดแอปใหม่: checkbox "Enable
+  Equalizer" ในแท็บ Equalizer ไม่ติ๊กตั้งแต่แรกเปิด
 - **Theme** — แท็บ Theme ให้เลือกสีพื้นหลังกับสี accent เอง แล้วเฉดสีอื่น ๆ
   (พาเนล เส้นขอบ ไฮไลต์ตอน hover) จะถูกสร้างต่อจากสองสีนั้นให้อัตโนมัติ กด
   reset กลับเป็นธีมมืดมาตรฐานได้

@@ -110,7 +110,12 @@ void Settings::setLastPlaylistIndex(int index)
 
 bool Settings::eqEnabled() const
 {
-    return m_settings->value("eq/enabled", true).toBool();
+    // Default false (requested by the user, 2026-09-29): only takes effect
+    // the very first time the app ever runs, before FreeMusicPlayer.ini has
+    // an "eq/enabled" key at all - every run after that reads back whatever
+    // the user last set (setEqEnabled() below), same as every other setting
+    // here.
+    return m_settings->value("eq/enabled", false).toBool();
 }
 void Settings::setEqEnabled(bool on)
 {
